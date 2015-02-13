@@ -1,0 +1,42 @@
+{
+  "name": "ml-pca",
+  "version": "0.0.1",
+  "description": "Principal component analysis",
+  "main": "src/index.js",
+  "directories": {
+    "lib": "src",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha --require should-approximately-deep --reporter mocha-better-spec-reporter --recursive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mljs/pca.git"
+  },
+  "keywords": [
+    "pca",
+    "principal",
+    "component",
+    "analysis",
+    "dimensionality",
+    "reduction",
+    "data",
+    "mining",
+    "datamining",
+    "machine",
+    "learning"
+  ],
+  "author": "Michaël Zasso",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mljs/pca/issues"
+  },
+  "homepage": "https://github.com/mljs/pca",
+  "devDependencies": {
+    "mocha-better-spec-reporter": "latest",
+    "mocha": "latest",
+    "should": "latest",
+    "should-approximately-deep": "latest"
+  }
+}
