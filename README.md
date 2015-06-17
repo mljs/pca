@@ -11,6 +11,59 @@ Principal component analysis
 
 `$ npm install ml-pca`
 
+## Methods
+
+### new PCA(dataset)
+
+__Arguments__
+
+* `dataset` - Data to get the PCA
+
+__Example__
+
+```js
+var dataset = [ ... ];
+
+var pca = new PCA(dataset);
+```
+
+### project(dataset, k)
+
+Project the dataset over k dimensions 
+
+__Arguments__
+
+* `dataset` - A Matrix of the dataset.
+* `k` - Number of dimensions to be projected.
+
+__Example__
+
+```js
+var data = [ ... ];
+
+var projectedData = pca.project(data, k);
+```
+
+### getExplainedVariance()
+
+Returns the percentage of variance of each vector of the PCA.
+
+### export()
+
+Exports the actual Neural Network to an Javascript Object.
+
+### load(model)
+
+Returns a new Neural Network with the given model.
+
+__Arguments__
+
+* `model` - Javascript Object generated from export() function.
+
+## Authors
+
+- [Jefferson Hernandez](https://github.com/JeffersonH44)
+
 ## License
 
   [MIT](./LICENSE)
