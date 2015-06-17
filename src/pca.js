@@ -38,6 +38,13 @@ PCA.load = function (model) {
 };
 
 PCA.prototype.export = function () {
+    var model = {
+        modelName: "PCA",
+        U: this.U,
+        S: this.S
+    };
+
+    return model;
 };
 
 PCA.prototype.project = function (dataset, dimensions) {
