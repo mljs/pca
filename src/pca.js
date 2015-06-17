@@ -5,6 +5,11 @@ var SVD = Matrix.DC.SVD;
 
 module.exports = PCA;
 
+/*
+* Creates new PCA (Principal Component Analysis) from the dataset
+* @param {Matrix} dataset
+* @constructor
+* */
 function PCA(dataset, reload) {
 
     if (reload) {
@@ -30,6 +35,11 @@ function PCA(dataset, reload) {
     }
 }
 
+/*
+* Load a PCA model from JSON
+* @oaram {Object} model
+* @return {PCA}
+* */
 PCA.load = function (model) {
     if(model.modelName !== 'PCA')
         throw new RangeError("The current model is invalid!");
@@ -37,6 +47,10 @@ PCA.load = function (model) {
     return new PCA(model, true);
 };
 
+/*
+* Exports the current model to an Object
+* @return {Object} model
+* */
 PCA.prototype.export = function () {
     var model = {
         modelName: "PCA",
@@ -47,15 +61,28 @@ PCA.prototype.export = function () {
     return model;
 };
 
-PCA.prototype.project = function (dataset, dimensions) {
-    var dim = dimensions - 1;
-    if(dimensions > this.U.columns)
+/*
+* Function that project the dataset into new space of k dimensions,
+* this method doesn't modify your dataset.
+* @param {Matrix} dataset.
+* @param {Number} k - dimensions to project.
+* @return {Matrix} dataset projected in k dimensions.
+* @throws {RangeError} if k is larger than the number of eigenvector
+*                      of the model.
+* */
+PCA.prototype.project = function (dataset, k) {
+    var dimensions = k - 1;
+    if(k > this.U.columns)
         throw new RangeError("the number of dimensions must not be larger than " + this.U.columns);
 
     var X = featureNormalize(Matrix(dataset).clone());
-    return X.mmul(this.U.subMatrix(0, this.U.rows - 1, 0, dim));
+    return X.mmul(this.U.subMatrix(0, this.U.rows - 1, 0, dimensions));
 };
 
+/*
+* This method returns the percentage variance of each eigenvector.
+* @return {vector} variances
+* */
 PCA.prototype.getExplainedVariance = function () {
     var sum = this.S.reduce(function (previous, value) {
         return previous + value;
@@ -65,6 +92,12 @@ PCA.prototype.getExplainedVariance = function () {
     });
 };
 
+/*
+* This method returns a dataset normalized in the following form:
+* X = (X - mean) / std
+* @param dataset
+* @return A dataset normalized
+* */
 function featureNormalize(dataset) {
     var means = Stat.matrix.mean(dataset);
     var std = Matrix.rowVector(Stat.matrix.standardDeviation(dataset, means, true));
