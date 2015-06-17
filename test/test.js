@@ -80,5 +80,23 @@ describe('PCA algorithm', function () {
         var varianceExplained = pca.getExplainedVariance();
         varianceExplained[0].should.be.approximately(0.8677, 1e-4);
         varianceExplained[1].should.be.approximately(0.1322, 1e-4);
+    });
+
+    it('Export and import', function () {
+        var model = pca.export();
+        var newpca = PCA.load(model);
+
+        var U = [ [0.7071, 0.7071], [0.7071, -0.7071]];
+        var S = [ 1.70081, 0.25918];
+
+        for(var i = 0; i < 2; ++i) {
+            for(var j = 0; j < 2; ++j) {
+                (pca.U[i][j]).should.be.approximately(U[i][j], 1e-3);
+            }
+        }
+
+        for(i = 0; i < 2; ++i) {
+            (pca.S[i]).should.be.approximately(S[i], 1e-3);
+        }
     })
 });

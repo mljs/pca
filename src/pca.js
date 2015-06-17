@@ -52,13 +52,11 @@ PCA.load = function (model) {
 * @return {Object} model
 * */
 PCA.prototype.export = function () {
-    var model = {
+    return {
         modelName: "PCA",
         U: this.U,
         S: this.S
     };
-
-    return model;
 };
 
 /**
