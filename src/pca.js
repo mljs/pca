@@ -31,15 +31,13 @@ function PCA(dataset, reload) {
 }
 
 PCA.load = function (model) {
-    // check the model
-    // return new pca object from model
-    // see https://github.com/mljs/som/blob/master/src/index.js#L95
+    if(model.modelName !== 'PCA')
+        throw new RangeError("The current model is invalid!");
+
     return new PCA(model, true);
 };
 
 PCA.prototype.export = function () {
-    // export model
-    // see https://github.com/mljs/som/blob/master/src/index.js#L116
 };
 
 PCA.prototype.project = function (dataset, dimensions) {
