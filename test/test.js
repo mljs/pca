@@ -1,5 +1,5 @@
 'use strict';
-var pca = require('../src/pca');
+var PCA = require('../src/pca');
 var Matrix = require('ml-matrix');
 
 describe('PCA algorithm', function () {
@@ -55,8 +55,8 @@ describe('PCA algorithm', function () {
                         [3.95524687147485, 4.50532709674253],
                         [5.11795499426461, 6.08507386392396]];
 
-    it('Main test', function () {
-        var result = pca(Matrix(testDataset));
+    it('PCA Main test', function () {
+        var result = new PCA(Matrix(testDataset));
         var U = [ [0.7071, 0.7071], [0.7071, -0.7071]];
         var S = [ 1.70081, 0.25918];
 
@@ -69,5 +69,11 @@ describe('PCA algorithm', function () {
         for(i = 0; i < 2; ++i) {
             (result.S[i]).should.be.approximately(S[i], 1e-3);
         }
-    })
+    });
+
+    it('Projection method', function () {
+        var pca = new PCA(Matrix(testDataset));
+        var result = pca.project(testDataset, 1);
+        result[0][0].should.be.approximately(-1.481274, 1e-5);
+    });
 });
