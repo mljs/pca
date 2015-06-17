@@ -5,7 +5,7 @@ var SVD = Matrix.DC.SVD;
 
 module.exports = PCA;
 
-/*
+/**
 * Creates new PCA (Principal Component Analysis) from the dataset
 * @param {Matrix} dataset
 * @constructor
@@ -35,7 +35,7 @@ function PCA(dataset, reload) {
     }
 }
 
-/*
+/**
 * Load a PCA model from JSON
 * @oaram {Object} model
 * @return {PCA}
@@ -47,7 +47,7 @@ PCA.load = function (model) {
     return new PCA(model, true);
 };
 
-/*
+/**
 * Exports the current model to an Object
 * @return {Object} model
 * */
@@ -61,7 +61,7 @@ PCA.prototype.export = function () {
     return model;
 };
 
-/*
+/**
 * Function that project the dataset into new space of k dimensions,
 * this method doesn't modify your dataset.
 * @param {Matrix} dataset.
@@ -79,9 +79,9 @@ PCA.prototype.project = function (dataset, k) {
     return X.mmul(this.U.subMatrix(0, this.U.rows - 1, 0, dimensions));
 };
 
-/*
+/**
 * This method returns the percentage variance of each eigenvector.
-* @return {vector} variances
+* @return {vector} percentage variance of each eigenvector.
 * */
 PCA.prototype.getExplainedVariance = function () {
     var sum = this.S.reduce(function (previous, value) {
@@ -92,11 +92,11 @@ PCA.prototype.getExplainedVariance = function () {
     });
 };
 
-/*
+/**
 * This method returns a dataset normalized in the following form:
 * X = (X - mean) / std
-* @param dataset
-* @return A dataset normalized
+* @param dataset.
+* @return A dataset normalized.
 * */
 function featureNormalize(dataset) {
     var means = Stat.matrix.mean(dataset);
