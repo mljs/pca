@@ -50,11 +50,11 @@ Returns the percentage of variance of each vector of the PCA.
 
 ### export()
 
-Exports the actual Neural Network to an Javascript Object.
+Exports the actual PCA to an Javascript Object.
 
 ### load(model)
 
-Returns a new Neural Network with the given model.
+Returns a new PCA with the given model.
 
 __Arguments__
 
