@@ -1,1 +1,1 @@
-exports.pca = require('./pca');
+module.exports = require('./pca');

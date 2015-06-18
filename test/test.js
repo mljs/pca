@@ -1,5 +1,5 @@
 'use strict';
-var PCA = require('../src/pca');
+var PCA = require('..');
 var Matrix = require('ml-matrix');
 
 describe('PCA algorithm', function () {
