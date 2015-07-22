@@ -91,6 +91,22 @@ PCA.prototype.getExplainedVariance = function () {
 };
 
 /**
+ * Function that returns the Eigenvectors of the covariance matrix.
+ * @returns {Matrix}
+ */
+PCA.prototype.getEigenvectors = function () {
+    return this.U;
+};
+
+/**
+ * Function that returns the Eigenvalues (on the diagonal).
+ * @returns {*}
+ */
+PCA.prototype.getEigenvalues = function () {
+    return this.S;
+};
+
+/**
 * This method returns a dataset normalized in the following form:
 * X = (X - mean) / std
 * @param dataset.

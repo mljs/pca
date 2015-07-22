@@ -60,14 +60,17 @@ describe('PCA algorithm', function () {
         var U = [ [0.7071, 0.7071], [0.7071, -0.7071]];
         var S = [ 1.70081, 0.25918];
 
+        var currentU = pca.getEigenvectors();
+        var currentS = pca.getEigenvalues();
+
         for(var i = 0; i < 2; ++i) {
             for(var j = 0; j < 2; ++j) {
-                (pca.U[i][j]).should.be.approximately(U[i][j], 1e-3);
+                (currentU[i][j]).should.be.approximately(U[i][j], 1e-3);
             }
         }
 
         for(i = 0; i < 2; ++i) {
-            (pca.S[i]).should.be.approximately(S[i], 1e-3);
+            (currentS[i]).should.be.approximately(S[i], 1e-3);
         }
     });
 
@@ -89,14 +92,17 @@ describe('PCA algorithm', function () {
         var U = [ [0.7071, 0.7071], [0.7071, -0.7071]];
         var S = [ 1.70081, 0.25918];
 
+        var currentU = pca.getEigenvectors();
+        var currentS = pca.getEigenvalues();
+
         for(var i = 0; i < 2; ++i) {
             for(var j = 0; j < 2; ++j) {
-                (pca.U[i][j]).should.be.approximately(U[i][j], 1e-3);
+                (currentU[i][j]).should.be.approximately(U[i][j], 1e-3);
             }
         }
 
         for(i = 0; i < 2; ++i) {
-            (pca.S[i]).should.be.approximately(S[i], 1e-3);
+            (currentS[i]).should.be.approximately(S[i], 1e-3);
         }
     })
 });

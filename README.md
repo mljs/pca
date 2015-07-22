@@ -5,7 +5,7 @@
   [![David deps][david-image]][david-url]
   [![npm download][download-image]][download-url]
 
-Principal component analysis
+Principal component analysis (PCA)
 
 ## Installation
 
@@ -47,6 +47,14 @@ var projectedData = pca.project(data, k);
 ### getExplainedVariance()
 
 Returns the percentage of variance of each vector of the PCA.
+
+### getEigenvectors()
+
+Get the eigenvectors of the covariance matrix.
+
+### getEigenvalues()
+
+Get the eigenvalues on the diagonal.
 
 ### export()
 
