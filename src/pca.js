@@ -8,20 +8,27 @@ module.exports = PCA;
 /**
 * Creates new PCA (Principal Component Analysis) from the dataset
 * @param {Matrix} dataset
+* @param {boolean} reload - for load purposes
+* @param {Object} model - for load purposes
 * @constructor
 * */
-function PCA(dataset, reload) {
+function PCA(dataset, reload, model) {
 
     if (reload) {
-        this.U = dataset.U;
-        this.S = dataset.S;
+        this.U = model.U;
+        this.S = model.S;
+        this.means = model.means;
+        this.std = model.std;
     } else {
         if (!Matrix.isMatrix(dataset)) {
             dataset = new Matrix(dataset);
         } else {
             dataset = dataset.clone();
         }
-        var normalizedDataset = featureNormalize(dataset);
+
+        var normalization = featureNormalize(dataset);
+        var normalizedDataset = normalization.result;
+
         var covarianceMatrix = normalizedDataset.transpose().mmul(normalizedDataset).divS(dataset.rows);
 
         var target = new SVD(covarianceMatrix, {
@@ -32,6 +39,8 @@ function PCA(dataset, reload) {
 
         this.U = target.leftSingularVectors;
         this.S = target.diagonal;
+        this.means = normalization.means;
+        this.std = normalization.std;
     }
 }
 
@@ -44,7 +53,7 @@ PCA.load = function (model) {
     if(model.modelName !== 'PCA')
         throw new RangeError("The current model is invalid!");
 
-    return new PCA(model, true);
+    return new PCA(null, true, model);
 };
 
 /**
@@ -55,7 +64,9 @@ PCA.prototype.export = function () {
     return {
         modelName: "PCA",
         U: this.U,
-        S: this.S
+        S: this.S,
+        means: this.means,
+        std: this.std
     };
 };
 
@@ -73,13 +84,13 @@ PCA.prototype.project = function (dataset, k) {
     if(k > this.U.columns)
         throw new RangeError("the number of dimensions must not be larger than " + this.U.columns);
 
-    var X = featureNormalize(Matrix(dataset).clone());
+    var X = featureNormalize(Matrix(dataset).clone()).result;
     return X.mmul(this.U.subMatrix(0, this.U.rows - 1, 0, dimensions));
 };
 
 /**
 * This method returns the percentage variance of each eigenvector.
-* @return {vector} percentage variance of each eigenvector.
+* @return {Number} percentage variance of each eigenvector.
 * */
 PCA.prototype.getExplainedVariance = function () {
     var sum = this.S.reduce(function (previous, value) {
@@ -118,5 +129,9 @@ function featureNormalize(dataset) {
     means = Matrix.rowVector(means);
 
     var result = dataset.subRowVector(means);
-    return result.divRowVector(std);
+    return {
+        result: result.divRowVector(std),
+        means: means,
+        std: std
+    }
 }
