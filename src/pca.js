@@ -21,7 +21,7 @@ function PCA(dataset, reload, model) {
         this.std = model.std;
     } else {
         if (!Matrix.isMatrix(dataset)) {
-            dataset = new Matrix(dataset);
+            dataset = new Matrix(dataset, true);
         } else {
             dataset = dataset.clone();
         }

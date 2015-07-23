@@ -1,6 +1,6 @@
 {
   "name": "ml-pca",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Principal component analysis",
   "main": "src/index.js",
   "directories": {
