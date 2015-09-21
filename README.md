@@ -11,13 +11,15 @@ Principal component analysis (PCA)
 
 `$ npm install ml-pca`
 
+* This package depends on [ml-matrix](https://github.com/mljs/matrix).
+
 ## Methods
 
 ### new PCA(dataset)
 
 __Arguments__
 
-* `dataset` - Data to get the PCA
+* `dataset` - Data to get the PCA, must be [ml-matrix](https://github.com/mljs/matrix).
 
 __Example__
 
@@ -33,7 +35,7 @@ Project the dataset over k dimensions
 
 __Arguments__
 
-* `dataset` - A Matrix of the dataset.
+* `dataset` - A Matrix of the dataset, must me a [ml-matrix](https://github.com/mljs/matrix).
 * `k` - Number of dimensions to be projected.
 
 __Example__
