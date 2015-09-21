@@ -54,7 +54,7 @@ describe('PCA algorithm', function () {
                         [1.91895045046187, 5.07107847507096],
                         [3.95524687147485, 4.50532709674253],
                         [5.11795499426461, 6.08507386392396]];
-    var pca = new PCA(Matrix(testDataset));
+    var pca = new PCA(new Matrix(testDataset));
 
     it('PCA Main test', function () {
         var U = [ [0.7071, 0.7071], [0.7071, -0.7071]];
