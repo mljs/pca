@@ -13,11 +13,15 @@ Principal component analysis (PCA)
 
 ## Methods
 
-### new PCA(dataset)
+### new PCA(dataset, options)
 
 __Arguments__
 
 * `dataset` - Data to get the PCA.
+
+__Options__
+
+* `standardize` - Standardize the dataset, i.e. divide by the standard deviation after centering (default: false)
 
 __Example__
 

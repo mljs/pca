@@ -8,25 +8,35 @@ module.exports = PCA;
 /**
 * Creates new PCA (Principal Component Analysis) from the dataset
 * @param {Matrix} dataset
+* @param {Object} options - options for the PCA algorithm
 * @param {boolean} reload - for load purposes
 * @param {Object} model - for load purposes
 * @constructor
 * */
-function PCA(dataset, reload, model) {
+function PCA(dataset, options, reload, model) {
 
     if (reload) {
         this.U = model.U;
         this.S = model.S;
         this.means = model.means;
         this.std = model.std;
+        this.standardize = model.standardize
     } else {
+        if(options === undefined) {
+            options = {
+                standardize: false
+            };
+        }
+
+        this.standardize = options.standardize;
+
         if (!Matrix.isMatrix(dataset)) {
             dataset = new Matrix(dataset, true);
         } else {
             dataset = dataset.clone();
         }
 
-        var normalization = featureNormalize(dataset);
+        var normalization = adjust(dataset, this.standardize);
         var normalizedDataset = normalization.result;
 
         var covarianceMatrix = normalizedDataset.transpose().mmul(normalizedDataset).divS(dataset.rows);
@@ -53,7 +63,7 @@ PCA.load = function (model) {
     if(model.modelName !== 'PCA')
         throw new RangeError("The current model is invalid!");
 
-    return new PCA(null, true, model);
+    return new PCA(null, null, true, model);
 };
 
 /**
@@ -66,7 +76,8 @@ PCA.prototype.export = function () {
         U: this.U,
         S: this.S,
         means: this.means,
-        std: this.std
+        std: this.std,
+        standardize: this.standardize
     };
 };
 
@@ -84,7 +95,13 @@ PCA.prototype.project = function (dataset, k) {
     if(k > this.U.columns)
         throw new RangeError("the number of dimensions must not be larger than " + this.U.columns);
 
-    var X = featureNormalize(Matrix(dataset).clone()).result;
+    if (!Matrix.isMatrix(dataset)) {
+        dataset = new Matrix(dataset, true);
+    } else {
+        dataset = dataset.clone();
+    }
+
+    var X = adjust(dataset, this.standardize).result;
     return X.mmul(this.U.subMatrix(0, this.U.rows - 1, 0, dimensions));
 };
 
@@ -121,16 +138,16 @@ PCA.prototype.getEigenvalues = function () {
 * This method returns a dataset normalized in the following form:
 * X = (X - mean) / std
 * @param dataset.
+* @param {Boolean} standarize - do standardization
 * @return A dataset normalized.
 * */
-function featureNormalize(dataset) {
+function adjust(dataset, standarize) {
     var means = Stat.matrix.mean(dataset);
-    var std = Matrix.rowVector(Stat.matrix.standardDeviation(dataset, means, true));
-    means = Matrix.rowVector(means);
+    var std = standarize ? Stat.matrix.standardDeviation(dataset, means, true) : undefined;
 
     var result = dataset.subRowVector(means);
     return {
-        result: result.divRowVector(std),
+        result: standarize ? result.divRowVector(std) : result,
         means: means,
         std: std
     }
