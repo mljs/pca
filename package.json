@@ -34,13 +34,13 @@
   },
   "homepage": "https://github.com/mljs/pca",
   "dependencies": {
-    "ml-matrix": "0.1.0",
-    "ml-stat": "^1.0.1"
+    "ml-matrix": "^1.0.3",
+    "ml-stat": "^1.1.0"
   },
   "devDependencies": {
-    "mocha-better-spec-reporter": "latest",
-    "mocha": "latest",
-    "should": "latest",
-    "should-approximately-deep": "latest"
+    "mocha": "^2.3.4",
+    "mocha-better-spec-reporter": "^3.0.1",
+    "should": "^7.1.1",
+    "should-approximately-deep": "^1.1.0"
   }
 }

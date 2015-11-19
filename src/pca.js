@@ -31,7 +31,7 @@ function PCA(dataset, options, reload, model) {
         this.standardize = options.standardize;
 
         if (!Matrix.isMatrix(dataset)) {
-            dataset = new Matrix(dataset, true);
+            dataset = new Matrix(dataset);
         } else {
             dataset = dataset.clone();
         }
@@ -96,7 +96,7 @@ PCA.prototype.project = function (dataset, k) {
         throw new RangeError("the number of dimensions must not be larger than " + this.U.columns);
 
     if (!Matrix.isMatrix(dataset)) {
-        dataset = new Matrix(dataset, true);
+        dataset = new Matrix(dataset);
     } else {
         dataset = dataset.clone();
     }
