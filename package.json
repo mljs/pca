@@ -7,6 +7,9 @@
     "lib": "src",
     "test": "test"
   },
+  "files": [
+    "src"
+  ],
   "scripts": {
     "test": "mocha --require should-approximately-deep --reporter mocha-better-spec-reporter --recursive"
   },
