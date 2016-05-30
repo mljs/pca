@@ -2,7 +2,7 @@
   "name": "ml-pca",
   "version": "0.1.1",
   "description": "Principal component analysis",
-  "main": "src/index.js",
+  "main": "src/pca.js",
   "directories": {
     "lib": "src",
     "test": "test"
