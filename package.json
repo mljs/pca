@@ -40,7 +40,7 @@
   "devDependencies": {
     "mocha": "^2.3.4",
     "mocha-better-spec-reporter": "^3.0.1",
-    "should": "^7.1.1",
+    "should": "^9.0.0",
     "should-approximately-deep": "^1.1.0"
   }
 }
