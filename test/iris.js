@@ -18,7 +18,7 @@ const expectedLoadings = [
 ];
 
 describe('iris dataset', function () {
-    var pca = new PCA(iris, {scale: true});
+    var pca = new PCA(iris, {scale: true, useCovarianceMatrix: false});
     it('loadings', function () {
         checkLoadings(pca);
     });
@@ -34,8 +34,8 @@ describe('iris dataset', function () {
     it('prediction', function () {
         var pred = pca.predict(iris.slice(0,2));
         pred.should.approximatelyDeep([
-            [-2.257, -0.478, 0.127, 0.024],
-            [-2.074, 0.672, 0.233, 0.103]
+            [-2.257, -0.478, 0.127, -0.024],
+            [-2.074, 0.672, 0.233, -0.103]
         ], 1e-3);
     });
 });
