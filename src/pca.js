@@ -2,10 +2,13 @@
 
 const Matrix = require('ml-matrix');
 const SVD = Matrix.DC.SVD;
-const Stat = require('ml-stat');
+const Stat = require('ml-stat').matrix;
+const mean = Stat.mean;
+const stdev = Stat.standardDeviation;
 
 const defaultOptions = {
-    standardize: false
+    center: true,
+    scale: false
 };
 
 class PCA {
@@ -19,27 +22,32 @@ class PCA {
      * */
     constructor(dataset, options, reload, model) {
         if (reload) {
-            this.U = model.U;
-            this.S = model.S;
+            this.center = model.center;
+            this.scale = model.scale;
             this.means = model.means;
-            this.std = model.std;
-            this.standardize = model.standardize
+            this.stdevs = model.stdevs;
+            this.U = Matrix.checkMatrix(model.U);
+            this.S = model.S;
         } else {
             options = Object.assign({}, defaultOptions, options);
 
-            this.standardize = !!options.standardize;
+            this.center = !!options.center;
+            this.scale = !!options.scale;
 
-            if (!Matrix.isMatrix(dataset)) {
-                dataset = new Matrix(dataset);
-            } else {
-                dataset = dataset.clone();
+            dataset = new Matrix(dataset);
+
+            if (this.center) {
+                const means = mean(dataset);
+                const stdevs = this.scale ? stdev(dataset, means, true) : null;
+                this.means = means;
+                dataset.subRowVector(means);
+                if (this.scale) {
+                    this.stdevs = stdevs;
+                    dataset.divRowVector(stdevs);
+                }
             }
 
-            var normalization = adjust(dataset, this.standardize);
-            var normalizedDataset = normalization.result;
-
-            var covarianceMatrix = normalizedDataset.transpose().mmul(normalizedDataset).divS(dataset.rows);
-
+            var covarianceMatrix = dataset.transpose().mmul(dataset).divS(dataset.rows - 1);
             var target = new SVD(covarianceMatrix, {
                 computeLeftSingularVectors: true,
                 computeRightSingularVectors: true,
@@ -48,8 +56,6 @@ class PCA {
 
             this.U = target.leftSingularVectors;
             this.S = target.diagonal;
-            this.means = normalization.means;
-            this.std = normalization.std;
         }
     }
 
@@ -71,45 +77,55 @@ class PCA {
     toJSON() {
         return {
             name: 'PCA',
+            center: this.center,
+            scale: this.scale,
+            means: this.means,
+            stdevs: this.stdevs,
             U: this.U,
             S: this.S,
-            means: this.means,
-            std: this.std,
-            standardize: this.standardize
         };
     }
 
     /**
-     * Projects the dataset into new space of k dimensions,
-     * this method doesn't modify your dataset.
-     * @param {Matrix} dataset.
-     * @param {Number} k - dimensions to project.
-     * @return {Matrix} dataset projected in k dimensions.
-     * @throws {RangeError} if k is larger than the number of eigenvector
-     *                      of the model.
+     * Projects the dataset into new space of k dimensions.
+     * @param {Matrix} dataset
+     * @return {Matrix} dataset projected in the PCA space.
      */
-    project(dataset, k) {
-        var dimensions = k - 1;
-        if (k > this.U.columns)
-            throw new RangeError("the number of dimensions must not be larger than " + this.U.columns);
+    predict(dataset) {
+        dataset = new Matrix(dataset);
 
-        if (!Matrix.isMatrix(dataset)) {
-            dataset = new Matrix(dataset);
-        } else {
-            dataset = dataset.clone();
+        if (this.center) {
+            dataset.subRowVector(this.means);
+            if (this.scale) {
+                dataset.divRowVector(this.stdevs);
+            }
         }
-
-        var X = adjust(dataset, this.standardize, this.means, this.std).result;
-        return X.mmul(this.U.subMatrix(0, this.U.rows - 1, 0, dimensions));
+        
+        return dataset.mmul(this.U);
     }
 
     /**
-     * Returns the percentage variance of each eigenvector.
-     * @return {Number}
+     * Returns the proportion of variance for each component.
+     * @return {[number]}
      */
     getExplainedVariance() {
-        var sum = this.S.reduce((previous, value) => previous + value);
+        var sum = 0;
+        for (var i = 0; i < this.S.length; i++) {
+            sum += this.S[i];
+        }
         return this.S.map(value => value / sum);
+    }
+
+    /**
+     * Returns the cumulative proportion of variance.
+     * @return {[number]}
+     */
+    getCumulativeVariance() {
+        var explained = this.getExplainedVariance();
+        for (var i = 1; i < explained.length; i++) {
+            explained[i] += explained[i - 1];
+        }
+        return explained;
     }
 
     /**
@@ -122,22 +138,26 @@ class PCA {
 
     /**
      * Returns the Eigenvalues (on the diagonal).
-     * @returns {*}
+     * @returns {[number]}
      */
     getEigenvalues() {
         return this.S;
     }
-}
 
-function adjust(dataset, standarize, means, std) {
-    if (!means) means = Stat.matrix.mean(dataset);
-    if (!std) std = standarize ? Stat.matrix.standardDeviation(dataset, means, true) : undefined;
+    /**
+     * Returns the standard deviations of the principal components
+     * @returns {[number]}
+     */
+    getStandardDeviations() {
+        return this.S.map(x => Math.sqrt(x));
+    }
 
-    var result = dataset.subRowVector(means);
-    return {
-        result: standarize ? result.divRowVector(std) : result,
-        means: means,
-        std: std
+    /**
+     * Returns the loadings matrix
+     * @return {Matrix}
+     */
+    getLoadings() {
+        return this.U.transpose();
     }
 }
 

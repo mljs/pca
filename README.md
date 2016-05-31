@@ -17,40 +17,32 @@ Principal component analysis (PCA)
 
 __Arguments__
 
-* `dataset` - Data to get the PCA.
+* `dataset` - Data to get the PCA. It must be a two-dimensional array with observations as rows and variables as columns.
 
 __Options__
 
-* `standardize` - Standardize the dataset, i.e. divide by the standard deviation after centering (default: false)
+* `center` - Center the dataset (default: true)
+* `scale` - Standardize the dataset, i.e. divide by the standard deviation after centering (default: false)
 
-__Example__
+### predict(dataset)
 
-```js
-var dataset = [ ... ];
-
-var pca = new PCA(dataset);
-```
-
-### project(dataset, k)
-
-Project the dataset over k dimensions 
+Project the dataset in the PCA space
 
 __Arguments__
 
-* `dataset` - A Matrix of the dataset.
-* `k` - Number of dimensions to be projected.
-
-__Example__
-
-```js
-var data = [ ... ];
-
-var projectedData = pca.project(data, k);
-```
+* `dataset` - A Matrix of the dataset to project.
 
 ### getExplainedVariance()
 
-Returns the percentage of variance of each vector of the PCA.
+Returns the percentage of variance explained by each component.
+
+### getCumulativeVariance()
+
+Returns the cumulative explained variance.
+
+### getStandardDeviations()
+
+Returns the standard deviations of each component.
 
 ### getEigenvectors()
 
@@ -60,21 +52,9 @@ Get the eigenvectors of the covariance matrix.
 
 Get the eigenvalues on the diagonal.
 
-### export()
+### getLoadings()
 
-Exports the actual PCA to an Javascript Object.
-
-### load(model)
-
-Returns a new PCA with the given model.
-
-__Arguments__
-
-* `model` - Javascript Object generated from export() function.
-
-## Authors
-
-- [Jefferson Hernandez](https://github.com/JeffersonH44)
+Get the loadings matrix (each row is a component and each column is a variable)
 
 ## License
 

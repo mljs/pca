@@ -58,12 +58,12 @@ describe('PCA algorithm', function () {
     ];
 
     var pca = new PCA(testDataset, {
-        standardize: true
+        scale: true
     });
 
     it('PCA Main test', function () {
         var U = [[0.7071, 0.7071], [0.7071, -0.7071]];
-        var S = [1.70081, 0.25918];
+        var S = [1.73553, 0.2644696];
 
         var currentU = pca.getEigenvectors();
         var currentS = pca.getEigenvalues();
@@ -80,7 +80,7 @@ describe('PCA algorithm', function () {
     });
 
     it('Projection method', function () {
-        var result = pca.project(testDataset, 1);
+        var result = pca.predict(testDataset, 1);
         result[0][0].should.be.approximately(-1.481274, 1e-5);
     });
 
@@ -91,11 +91,11 @@ describe('PCA algorithm', function () {
     });
 
     it('Export and import', function () {
-        var model = pca.toJSON();
-        var newpca = PCA.load(model);
+        var model = JSON.stringify(pca.toJSON());
+        var newpca = PCA.load(JSON.parse(model));
 
         var U = [[0.7071, 0.7071], [0.7071, -0.7071]];
-        var S = [1.70081, 0.25918];
+        var S = [1.73553, 0.2644696];
 
         var currentU = newpca.getEigenvectors();
         var currentS = newpca.getEigenvalues();

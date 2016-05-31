@@ -41,6 +41,7 @@
     "ml-stat": "^1.1.0"
   },
   "devDependencies": {
+    "ml-dataset-iris": "^1.0.0",
     "mocha": "^2.3.4",
     "mocha-better-spec-reporter": "^3.0.1",
     "should": "^9.0.0",
