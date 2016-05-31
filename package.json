@@ -37,7 +37,7 @@
   },
   "homepage": "https://github.com/mljs/pca",
   "dependencies": {
-    "ml-matrix": "^1.0.3",
+    "ml-matrix": "^1.1.5",
     "ml-stat": "^1.1.0"
   },
   "devDependencies": {

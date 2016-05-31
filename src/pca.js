@@ -1,12 +1,14 @@
 'use strict';
 
 const Matrix = require('ml-matrix');
+const EVD = Matrix.DC.EVD;
 const SVD = Matrix.DC.SVD;
 const Stat = require('ml-stat').matrix;
 const mean = Stat.mean;
 const stdev = Stat.standardDeviation;
 
 const defaultOptions = {
+    isCovarianceMatrix: false,
     center: true,
     scale: false
 };
@@ -28,34 +30,48 @@ class PCA {
             this.stdevs = model.stdevs;
             this.U = Matrix.checkMatrix(model.U);
             this.S = model.S;
+            return;
+        }
+
+        options = Object.assign({}, defaultOptions, options);
+
+        this.center = false;
+        this.scale = false;
+        this.means = null;
+        this.stdevs = null;
+
+        if (options.isCovarianceMatrix) { // user provided a covariance matrix instead of dataset
+            this._computeFromCovarianceMatrix(dataset);
+            return;
+        }
+
+        var useCovarianceMatrix;
+        if (typeof options.useCovarianceMatrix === 'boolean') {
+            useCovarianceMatrix = options.useCovarianceMatrix;
         } else {
-            options = Object.assign({}, defaultOptions, options);
-
-            this.center = !!options.center;
-            this.scale = !!options.scale;
-
-            dataset = new Matrix(dataset);
-
-            if (this.center) {
-                const means = mean(dataset);
-                const stdevs = this.scale ? stdev(dataset, means, true) : null;
-                this.means = means;
-                dataset.subRowVector(means);
-                if (this.scale) {
-                    this.stdevs = stdevs;
-                    dataset.divRowVector(stdevs);
-                }
-            }
-
-            var covarianceMatrix = dataset.transpose().mmul(dataset).divS(dataset.rows - 1);
-            var target = new SVD(covarianceMatrix, {
-                computeLeftSingularVectors: true,
+            useCovarianceMatrix = dataset.length > dataset[0].length;
+        }
+        
+        if (useCovarianceMatrix) { // user provided a dataset but wants us to compute and use the covariance matrix
+            dataset = this._adjust(dataset, options);
+            const covarianceMatrix = dataset.transpose().mmul(dataset).div(dataset.rows - 1);
+            this._computeFromCovarianceMatrix(covarianceMatrix);
+        } else {
+            dataset = this._adjust(dataset, options);
+            var svd = new SVD(dataset, {
+                computeLeftSingularVectors: false,
                 computeRightSingularVectors: true,
-                autoTranspose: false
+                autoTranspose: true
             });
 
-            this.U = target.leftSingularVectors;
-            this.S = target.diagonal;
+            this.U = svd.rightSingularVectors;
+
+            const singularValues = svd.diagonal;
+            const eigenvalues = new Array(singularValues.length);
+            for (var i = 0; i < singularValues.length; i++) {
+                eigenvalues[i] = singularValues[i] * singularValues[i] / (dataset.length - 1);
+            }
+            this.S = eigenvalues;
         }
     }
 
@@ -158,6 +174,35 @@ class PCA {
      */
     getLoadings() {
         return this.U.transpose();
+    }
+
+    _adjust(dataset, options) {
+        this.center = !!options.center;
+        this.scale = !!options.scale;
+
+        dataset = new Matrix(dataset);
+
+        if (this.center) {
+            const means = mean(dataset);
+            const stdevs = this.scale ? stdev(dataset, means, true) : null;
+            this.means = means;
+            dataset.subRowVector(means);
+            if (this.scale) {
+                this.stdevs = stdevs;
+                dataset.divRowVector(stdevs);
+            }
+        }
+
+        return dataset;
+    }
+
+    _computeFromCovarianceMatrix(dataset) {
+        const evd = new EVD(dataset, {assumeSymmetric: true});
+        this.U = evd.eigenvectorMatrix;
+        for (var i = 0; i < this.U.length; i++) {
+            this.U[i].reverse();
+        }
+        this.S = evd.realEigenvalues.reverse();
     }
 }
 
