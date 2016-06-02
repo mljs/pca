@@ -109,5 +109,12 @@ describe('PCA algorithm', function () {
         for (i = 0; i < 2; ++i) {
             (currentS[i]).should.be.approximately(S[i], 1e-3);
         }
-    })
+    });
+
+    it('Standardization error with constant column', function () {
+        var dataset = [[1, 2, 0], [3, 4, 0], [5, 6, 0]];
+        (function () {
+            new PCA(dataset, {scale: true});
+        }).should.throw(/standard deviation is zero at index 2/)
+    });
 });
