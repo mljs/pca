@@ -89,22 +89,6 @@ class PCA {
     }
 
     /**
-     * Export the current model to a JSON object
-     * @return {Object} model
-     */
-    toJSON() {
-        return {
-            name: 'PCA',
-            center: this.center,
-            scale: this.scale,
-            means: this.means,
-            stdevs: this.stdevs,
-            U: this.U,
-            S: this.S,
-        };
-    }
-
-    /**
      * Project the dataset into the PCA space
      * @param {Matrix} dataset
      * @return {Matrix} dataset projected in the PCA space
@@ -176,6 +160,22 @@ class PCA {
      */
     getLoadings() {
         return this.U.transpose();
+    }
+
+    /**
+     * Export the current model to a JSON object
+     * @return {Object} model
+     */
+    toJSON() {
+        return {
+            name: 'PCA',
+            center: this.center,
+            scale: this.scale,
+            means: this.means,
+            stdevs: this.stdevs,
+            U: this.U,
+            S: this.S,
+        };
     }
 
     _adjust(dataset, options) {
