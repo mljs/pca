@@ -1,12 +1,6 @@
 # PCA
 
-[src/pca.js:19-216](https://github.com/mljs/pca/blob/aea0ea65b4cc83248a4310b0d02407826cb438b4/src/pca.js#L19-L216 "Source code on GitHub")
-
-Class representing a PCA
-
-## constructor
-
-[src/pca.js:28-80](https://github.com/mljs/pca/blob/aea0ea65b4cc83248a4310b0d02407826cb438b4/src/pca.js#L28-L80 "Source code on GitHub")
+[src/pca.js:24-213](https://github.com/mljs/pca/blob/794c550cc253affcdabf42e24f24de0052bf1c05/src/pca.js#L24-L213 "Source code on GitHub")
 
 Creates new PCA (Principal Component Analysis) from the dataset
 
@@ -20,7 +14,7 @@ Creates new PCA (Principal Component Analysis) from the dataset
 
 ## predict
 
-[src/pca.js:98-109](https://github.com/mljs/pca/blob/aea0ea65b4cc83248a4310b0d02407826cb438b4/src/pca.js#L98-L109 "Source code on GitHub")
+[src/pca.js:95-106](https://github.com/mljs/pca/blob/794c550cc253affcdabf42e24f24de0052bf1c05/src/pca.js#L95-L106 "Source code on GitHub")
 
 Project the dataset into the PCA space
 
@@ -32,7 +26,7 @@ Returns **Matrix** dataset projected in the PCA space
 
 ## getExplainedVariance
 
-[src/pca.js:115-121](https://github.com/mljs/pca/blob/aea0ea65b4cc83248a4310b0d02407826cb438b4/src/pca.js#L115-L121 "Source code on GitHub")
+[src/pca.js:112-118](https://github.com/mljs/pca/blob/794c550cc253affcdabf42e24f24de0052bf1c05/src/pca.js#L112-L118 "Source code on GitHub")
 
 Returns the proportion of variance for each component
 
@@ -40,7 +34,7 @@ Returns **\[[number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Ref
 
 ## getCumulativeVariance
 
-[src/pca.js:127-133](https://github.com/mljs/pca/blob/aea0ea65b4cc83248a4310b0d02407826cb438b4/src/pca.js#L127-L133 "Source code on GitHub")
+[src/pca.js:124-130](https://github.com/mljs/pca/blob/794c550cc253affcdabf42e24f24de0052bf1c05/src/pca.js#L124-L130 "Source code on GitHub")
 
 Returns the cumulative proportion of variance
 
@@ -48,7 +42,7 @@ Returns **\[[number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Ref
 
 ## getEigenvectors
 
-[src/pca.js:139-141](https://github.com/mljs/pca/blob/aea0ea65b4cc83248a4310b0d02407826cb438b4/src/pca.js#L139-L141 "Source code on GitHub")
+[src/pca.js:136-138](https://github.com/mljs/pca/blob/794c550cc253affcdabf42e24f24de0052bf1c05/src/pca.js#L136-L138 "Source code on GitHub")
 
 Returns the Eigenvectors of the covariance matrix
 
@@ -56,7 +50,7 @@ Returns **Matrix**
 
 ## getEigenvalues
 
-[src/pca.js:147-149](https://github.com/mljs/pca/blob/aea0ea65b4cc83248a4310b0d02407826cb438b4/src/pca.js#L147-L149 "Source code on GitHub")
+[src/pca.js:144-146](https://github.com/mljs/pca/blob/794c550cc253affcdabf42e24f24de0052bf1c05/src/pca.js#L144-L146 "Source code on GitHub")
 
 Returns the Eigenvalues (on the diagonal)
 
@@ -64,7 +58,7 @@ Returns **\[[number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Ref
 
 ## getStandardDeviations
 
-[src/pca.js:155-157](https://github.com/mljs/pca/blob/aea0ea65b4cc83248a4310b0d02407826cb438b4/src/pca.js#L155-L157 "Source code on GitHub")
+[src/pca.js:152-154](https://github.com/mljs/pca/blob/794c550cc253affcdabf42e24f24de0052bf1c05/src/pca.js#L152-L154 "Source code on GitHub")
 
 Returns the standard deviations of the principal components
 
@@ -72,7 +66,7 @@ Returns **\[[number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Ref
 
 ## getLoadings
 
-[src/pca.js:163-165](https://github.com/mljs/pca/blob/aea0ea65b4cc83248a4310b0d02407826cb438b4/src/pca.js#L163-L165 "Source code on GitHub")
+[src/pca.js:160-162](https://github.com/mljs/pca/blob/794c550cc253affcdabf42e24f24de0052bf1c05/src/pca.js#L160-L162 "Source code on GitHub")
 
 Returns the loadings matrix
 
@@ -80,7 +74,7 @@ Returns **Matrix**
 
 ## toJSON
 
-[src/pca.js:171-181](https://github.com/mljs/pca/blob/aea0ea65b4cc83248a4310b0d02407826cb438b4/src/pca.js#L171-L181 "Source code on GitHub")
+[src/pca.js:168-178](https://github.com/mljs/pca/blob/794c550cc253affcdabf42e24f24de0052bf1c05/src/pca.js#L168-L178 "Source code on GitHub")
 
 Export the current model to a JSON object
 
@@ -88,12 +82,12 @@ Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refer
 
 ## load
 
-[src/pca.js:87-91](https://github.com/mljs/pca/blob/aea0ea65b4cc83248a4310b0d02407826cb438b4/src/pca.js#L87-L91 "Source code on GitHub")
+[src/pca.js:84-88](https://github.com/mljs/pca/blob/794c550cc253affcdabf42e24f24de0052bf1c05/src/pca.js#L84-L88 "Source code on GitHub")
 
 Load a PCA model from JSON
 
 **Parameters**
 
--   `model`  
+-   `model` **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
 
 Returns **PCA** 
