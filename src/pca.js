@@ -13,6 +13,9 @@ const defaultOptions = {
     scale: false
 };
 
+/**
+ * Class representing a PCA
+ */
 class PCA {
     /**
      * Creates new PCA (Principal Component Analysis) from the dataset
@@ -21,7 +24,6 @@ class PCA {
      * @param {boolean} [options.isCovarianceMatrix=false]
      * @param {boolean} [options.center=true] - should the data be centered (subtract the mean)
      * @param {boolean} [options.scale=false] - should the data be scaled (divide by the standard deviation)
-     * @constructor
      * */
     constructor(dataset, options) {
         if (dataset === true) {
