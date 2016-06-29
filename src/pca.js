@@ -17,7 +17,7 @@ const defaultOptions = {
  * Creates new PCA (Principal Component Analysis) from the dataset
  * @param {Matrix} dataset - dataset or covariance matrix
  * @param {Object} options
- * @param {boolean} [options.isCovarianceMatrix=false]
+ * @param {boolean} [options.isCovarianceMatrix=false] - true if the dataset is a covariance matrix
  * @param {boolean} [options.center=true] - should the data be centered (subtract the mean)
  * @param {boolean} [options.scale=false] - should the data be scaled (divide by the standard deviation)
  * */
