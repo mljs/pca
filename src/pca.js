@@ -16,14 +16,16 @@ const defaultOptions = {
 class PCA {
     /**
      * Creates new PCA (Principal Component Analysis) from the dataset
-     * @param {Matrix} dataset
-     * @param {Object} options - options for the PCA algorithm
-     * @param {boolean} reload - for load purposes
-     * @param {Object} model - for load purposes
+     * @param {Matrix} dataset - dataset or covariance matrix
+     * @param {Object} options
+     * @param {boolean} [options.isCovarianceMatrix=false]
+     * @param {boolean} [options.center=true] - should the data be centered (subtract the mean)
+     * @param {boolean} [options.scale=false] - should the data be scaled (divide by the standard deviation)
      * @constructor
      * */
-    constructor(dataset, options, reload, model) {
-        if (reload) {
+    constructor(dataset, options) {
+        if (dataset === true) {
+            const model = options;
             this.center = model.center;
             this.scale = model.scale;
             this.means = model.means;
@@ -83,11 +85,11 @@ class PCA {
     static load(model) {
         if (model.name !== 'PCA')
             throw new RangeError('Invalid model: ' + model.name);
-        return new PCA(null, null, true, model);
+        return new PCA(true, model);
     }
 
     /**
-     * Exports the current model to an Object
+     * Export the current model to a JSON object
      * @return {Object} model
      */
     toJSON() {
@@ -103,9 +105,9 @@ class PCA {
     }
 
     /**
-     * Projects the dataset into new space of k dimensions.
+     * Project the dataset into the PCA space
      * @param {Matrix} dataset
-     * @return {Matrix} dataset projected in the PCA space.
+     * @return {Matrix} dataset projected in the PCA space
      */
     predict(dataset) {
         dataset = new Matrix(dataset);
@@ -121,7 +123,7 @@ class PCA {
     }
 
     /**
-     * Returns the proportion of variance for each component.
+     * Returns the proportion of variance for each component
      * @return {[number]}
      */
     getExplainedVariance() {
@@ -133,7 +135,7 @@ class PCA {
     }
 
     /**
-     * Returns the cumulative proportion of variance.
+     * Returns the cumulative proportion of variance
      * @return {[number]}
      */
     getCumulativeVariance() {
@@ -145,7 +147,7 @@ class PCA {
     }
 
     /**
-     * Returns the Eigenvectors of the covariance matrix.
+     * Returns the Eigenvectors of the covariance matrix
      * @returns {Matrix}
      */
     getEigenvectors() {
@@ -153,7 +155,7 @@ class PCA {
     }
 
     /**
-     * Returns the Eigenvalues (on the diagonal).
+     * Returns the Eigenvalues (on the diagonal)
      * @returns {[number]}
      */
     getEigenvalues() {
