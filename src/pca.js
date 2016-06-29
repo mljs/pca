@@ -14,17 +14,14 @@ const defaultOptions = {
 };
 
 /**
- * Class representing a PCA
- */
+ * Creates new PCA (Principal Component Analysis) from the dataset
+ * @param {Matrix} dataset - dataset or covariance matrix
+ * @param {Object} options
+ * @param {boolean} [options.isCovarianceMatrix=false]
+ * @param {boolean} [options.center=true] - should the data be centered (subtract the mean)
+ * @param {boolean} [options.scale=false] - should the data be scaled (divide by the standard deviation)
+ * */
 class PCA {
-    /**
-     * Creates new PCA (Principal Component Analysis) from the dataset
-     * @param {Matrix} dataset - dataset or covariance matrix
-     * @param {Object} options
-     * @param {boolean} [options.isCovarianceMatrix=false]
-     * @param {boolean} [options.center=true] - should the data be centered (subtract the mean)
-     * @param {boolean} [options.scale=false] - should the data be scaled (divide by the standard deviation)
-     * */
     constructor(dataset, options) {
         if (dataset === true) {
             const model = options;
@@ -55,7 +52,7 @@ class PCA {
         } else {
             useCovarianceMatrix = dataset.length > dataset[0].length;
         }
-        
+
         if (useCovarianceMatrix) { // user provided a dataset but wants us to compute and use the covariance matrix
             dataset = this._adjust(dataset, options);
             const covarianceMatrix = dataset.transpose().mmul(dataset).div(dataset.rows - 1);
@@ -81,7 +78,7 @@ class PCA {
 
     /**
      * Load a PCA model from JSON
-     * @oaram {Object} model
+     * @param {Object} model
      * @return {PCA}
      */
     static load(model) {
@@ -104,7 +101,7 @@ class PCA {
                 dataset.divRowVector(this.stdevs);
             }
         }
-        
+
         return dataset.mmul(this.U);
     }
 
