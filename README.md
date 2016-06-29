@@ -11,7 +11,7 @@ Principal component analysis (PCA)
 
 `$ npm install ml-pca`
 
-## [Documentation](./Documentation.md)
+## [Documentation](https://mljs.github.io/pca/)
 
 ## License
 

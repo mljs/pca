@@ -11,8 +11,9 @@
     "src"
   ],
   "scripts": {
-    "doc": "documentation build --github --output Documentation.md --format md",
-    "prepublish": "npm run doc",
+    "build-doc": "documentation build --github --output doc --format html",
+    "publish-doc": "npm run build-doc && git add doc && git commit -m 'rebuild doc' && git subtree push --prefix doc origin gh-pages",
+    "prepublish": "npm run publish-doc",
     "test": "mocha --require should-approximately-deep --reporter mocha-better-spec-reporter --recursive"
   },
   "repository": {
