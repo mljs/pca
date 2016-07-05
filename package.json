@@ -11,9 +11,6 @@
     "src"
   ],
   "scripts": {
-    "build-doc": "documentation build --github --output doc --format html",
-    "publish-doc": "npm run build-doc && git add doc && git commit -m 'rebuild doc' && git subtree push --prefix doc origin gh-pages",
-    "prepublish": "npm run publish-doc",
     "test": "mocha --require should-approximately-deep --reporter mocha-better-spec-reporter --recursive"
   },
   "repository": {
@@ -44,7 +41,6 @@
     "ml-stat": "^1.1.0"
   },
   "devDependencies": {
-    "documentation": "^4.0.0-beta5",
     "ml-dataset-iris": "^1.0.0",
     "mocha": "^2.3.4",
     "mocha-better-spec-reporter": "^3.0.1",
