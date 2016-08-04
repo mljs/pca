@@ -55,7 +55,7 @@ class PCA {
 
         if (useCovarianceMatrix) { // user provided a dataset but wants us to compute and use the covariance matrix
             dataset = this._adjust(dataset, options);
-            const covarianceMatrix = dataset.transpose().mmul(dataset).div(dataset.rows - 1);
+            const covarianceMatrix = dataset.transposeView().mmul(dataset).div(dataset.rows - 1);
             this._computeFromCovarianceMatrix(covarianceMatrix);
         } else {
             dataset = this._adjust(dataset, options);
