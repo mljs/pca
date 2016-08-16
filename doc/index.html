@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>ml-pca 1.1.1 | Documentation</title>
+  <title>ml-pca 1.1.2 | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
@@ -14,7 +14,7 @@
       <div class='fixed xs-hide fix-3 overflow-auto max-height-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ml-pca</h3>
-          <div class='mb1'><code>1.1.1</code></div>
+          <div class='mb1'><code>1.1.2</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -25,7 +25,7 @@
               
                 
                 <li><a
-                  href='#PCA'
+                  href='#pca'
                   class=" toggle-sibling">
                   PCA
                   <span class='icon'>▸</span>
@@ -34,7 +34,7 @@
                 <div class='toggle-target display-none'>
                   
                   <ul class='list-reset py1-ul pl1'>
-                    <li class='h5'>Static members</li>
+                    <li class='h5'><span>Static members</span></li>
                     
                       <li><a
                         href='#PCA.load'
@@ -46,7 +46,7 @@
                   
                   
                     <ul class='list-reset py1-ul pl1'>
-                      <li class='h5'>Instance members</li>
+                      <li class='h5'><span>Instance members</span></li>
                       
                       <li><a
                         href='#PCA#predict'
@@ -111,18 +111,17 @@
         </div>
       </div>
       <div class='fix-margin-3'>
-        <div class='px2'>
+        
           
-            
-              <section class='py2 clearfix'>
+            <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
   <div class='clearfix'>
-    <h2 class='fl' id='PCA'>
+    <h3 class='fl m0' id='pca'>
       PCA
-    </h2>
+    </h3>
     
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/e484f9389ff0ecc4cb5a8eeecd8bce826b4e79b0/src/pca.js#L24-L213'>
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/64d45ff4565f1283217f0410d311cd385d448070/src/pca.js#L24-L213'>
       <span>src/pca.js</span>
       </a>
     
@@ -132,7 +131,7 @@
   <p>Creates new PCA (Principal Component Analysis) from the dataset</p>
 
 
-  <div class='pre p1 fill-light'>PCA(dataset: Matrix, options: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</div>
+  <div class='pre p1 fill-light mt0'>new PCA(dataset: Matrix, options: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</div>
 
   
 
@@ -159,15 +158,15 @@
             <span class='code bold'>options</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code> 
           </div>
           
-          <table class='mt1 mb2 fixed-table h5'>
+          <table class='mt1 mb2 fixed-table h5 col-12'>
             <colgroup>
               <col width='30%' />
               <col width='70%' />
             </colgroup>
             <thead>
               <tr class='bold fill-light'>
-                <td>Name</td>
-                <td>Description</td>
+                <th>Name</th>
+                <th>Description</th>
               </tr>
             </thead>
             <tbody class='mt1'>
@@ -219,23 +218,22 @@
     <div class='py1 quiet mt1 prose-big'>Static Members</div>
     <div class="clearfix">
   
-    <div class='keyline-bottom' id='PCA.load'>
+    <div class='border-bottom' id='PCA.load'>
       <div class="clearfix small pointer toggle-sibling">
-        <div class="pad1y contain">
-            <a class='icon pin-right pad1y dark-link caret-right'></a>
-            <span class='code strong strong truncate'>load</span>
-            <span class='quiet code space-right2'>(model)</span>
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>load(model)</span>
         </div>
       </div>
-      <div class="clearfix hidden toggle-target">
-        <section class='py2 clearfix'>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
 
   <p>Load a PCA model from JSON</p>
 
 
-  <div class='pre p1 fill-light'>load(model: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>): <a href="#PCA">PCA</a></div>
+  <div class='pre p1 fill-light mt0'>load(model: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>): <a href="#pca">PCA</a></div>
 
   
 
@@ -264,7 +262,7 @@
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="#PCA">PCA</a></code>:
+      <code><a href="#pca">PCA</a></code>:
         
       
     
@@ -292,23 +290,22 @@
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
-    <div class='keyline-bottom' id='PCA#predict'>
+    <div class='border-bottom' id='PCA#predict'>
       <div class="clearfix small pointer toggle-sibling">
-        <div class="pad1y contain">
-            <a class='icon pin-right pad1y dark-link caret-right'></a>
-            <span class='code strong strong truncate'>predict</span>
-            <span class='quiet code space-right2'>(dataset)</span>
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>predict(dataset)</span>
         </div>
       </div>
-      <div class="clearfix hidden toggle-target">
-        <section class='py2 clearfix'>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
 
   <p>Project the dataset into the PCA space</p>
 
 
-  <div class='pre p1 fill-light'>predict(dataset: Matrix): Matrix</div>
+  <div class='pre p1 fill-light mt0'>predict(dataset: Matrix): Matrix</div>
 
   
 
@@ -358,23 +355,22 @@
       </div>
     </div>
   
-    <div class='keyline-bottom' id='PCA#getExplainedVariance'>
+    <div class='border-bottom' id='PCA#getExplainedVariance'>
       <div class="clearfix small pointer toggle-sibling">
-        <div class="pad1y contain">
-            <a class='icon pin-right pad1y dark-link caret-right'></a>
-            <span class='code strong strong truncate'>getExplainedVariance</span>
-            <span class='quiet code space-right2'>()</span>
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getExplainedVariance()</span>
         </div>
       </div>
-      <div class="clearfix hidden toggle-target">
-        <section class='py2 clearfix'>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
 
   <p>Returns the proportion of variance for each component</p>
 
 
-  <div class='pre p1 fill-light'>getExplainedVariance(): [<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>]</div>
+  <div class='pre p1 fill-light mt0'>getExplainedVariance(): [<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>]</div>
 
   
 
@@ -411,23 +407,22 @@
       </div>
     </div>
   
-    <div class='keyline-bottom' id='PCA#getCumulativeVariance'>
+    <div class='border-bottom' id='PCA#getCumulativeVariance'>
       <div class="clearfix small pointer toggle-sibling">
-        <div class="pad1y contain">
-            <a class='icon pin-right pad1y dark-link caret-right'></a>
-            <span class='code strong strong truncate'>getCumulativeVariance</span>
-            <span class='quiet code space-right2'>()</span>
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getCumulativeVariance()</span>
         </div>
       </div>
-      <div class="clearfix hidden toggle-target">
-        <section class='py2 clearfix'>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
 
   <p>Returns the cumulative proportion of variance</p>
 
 
-  <div class='pre p1 fill-light'>getCumulativeVariance(): [<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>]</div>
+  <div class='pre p1 fill-light mt0'>getCumulativeVariance(): [<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>]</div>
 
   
 
@@ -464,23 +459,22 @@
       </div>
     </div>
   
-    <div class='keyline-bottom' id='PCA#getEigenvectors'>
+    <div class='border-bottom' id='PCA#getEigenvectors'>
       <div class="clearfix small pointer toggle-sibling">
-        <div class="pad1y contain">
-            <a class='icon pin-right pad1y dark-link caret-right'></a>
-            <span class='code strong strong truncate'>getEigenvectors</span>
-            <span class='quiet code space-right2'>()</span>
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getEigenvectors()</span>
         </div>
       </div>
-      <div class="clearfix hidden toggle-target">
-        <section class='py2 clearfix'>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
 
   <p>Returns the Eigenvectors of the covariance matrix</p>
 
 
-  <div class='pre p1 fill-light'>getEigenvectors(): Matrix</div>
+  <div class='pre p1 fill-light mt0'>getEigenvectors(): Matrix</div>
 
   
 
@@ -517,23 +511,22 @@
       </div>
     </div>
   
-    <div class='keyline-bottom' id='PCA#getEigenvalues'>
+    <div class='border-bottom' id='PCA#getEigenvalues'>
       <div class="clearfix small pointer toggle-sibling">
-        <div class="pad1y contain">
-            <a class='icon pin-right pad1y dark-link caret-right'></a>
-            <span class='code strong strong truncate'>getEigenvalues</span>
-            <span class='quiet code space-right2'>()</span>
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getEigenvalues()</span>
         </div>
       </div>
-      <div class="clearfix hidden toggle-target">
-        <section class='py2 clearfix'>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
 
   <p>Returns the Eigenvalues (on the diagonal)</p>
 
 
-  <div class='pre p1 fill-light'>getEigenvalues(): [<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>]</div>
+  <div class='pre p1 fill-light mt0'>getEigenvalues(): [<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>]</div>
 
   
 
@@ -570,23 +563,22 @@
       </div>
     </div>
   
-    <div class='keyline-bottom' id='PCA#getStandardDeviations'>
+    <div class='border-bottom' id='PCA#getStandardDeviations'>
       <div class="clearfix small pointer toggle-sibling">
-        <div class="pad1y contain">
-            <a class='icon pin-right pad1y dark-link caret-right'></a>
-            <span class='code strong strong truncate'>getStandardDeviations</span>
-            <span class='quiet code space-right2'>()</span>
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getStandardDeviations()</span>
         </div>
       </div>
-      <div class="clearfix hidden toggle-target">
-        <section class='py2 clearfix'>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
 
   <p>Returns the standard deviations of the principal components</p>
 
 
-  <div class='pre p1 fill-light'>getStandardDeviations(): [<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>]</div>
+  <div class='pre p1 fill-light mt0'>getStandardDeviations(): [<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>]</div>
 
   
 
@@ -623,23 +615,22 @@
       </div>
     </div>
   
-    <div class='keyline-bottom' id='PCA#getLoadings'>
+    <div class='border-bottom' id='PCA#getLoadings'>
       <div class="clearfix small pointer toggle-sibling">
-        <div class="pad1y contain">
-            <a class='icon pin-right pad1y dark-link caret-right'></a>
-            <span class='code strong strong truncate'>getLoadings</span>
-            <span class='quiet code space-right2'>()</span>
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getLoadings()</span>
         </div>
       </div>
-      <div class="clearfix hidden toggle-target">
-        <section class='py2 clearfix'>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
 
   <p>Returns the loadings matrix</p>
 
 
-  <div class='pre p1 fill-light'>getLoadings(): Matrix</div>
+  <div class='pre p1 fill-light mt0'>getLoadings(): Matrix</div>
 
   
 
@@ -676,23 +667,22 @@
       </div>
     </div>
   
-    <div class='keyline-bottom' id='PCA#toJSON'>
+    <div class='border-bottom' id='PCA#toJSON'>
       <div class="clearfix small pointer toggle-sibling">
-        <div class="pad1y contain">
-            <a class='icon pin-right pad1y dark-link caret-right'></a>
-            <span class='code strong strong truncate'>toJSON</span>
-            <span class='quiet code space-right2'>()</span>
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>toJSON()</span>
         </div>
       </div>
-      <div class="clearfix hidden toggle-target">
-        <section class='py2 clearfix'>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
 
   <p>Export the current model to a JSON object</p>
 
 
-  <div class='pre p1 fill-light'>toJSON(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></div>
+  <div class='pre p1 fill-light mt0'>toJSON(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></div>
 
   
 
@@ -737,9 +727,8 @@
   
 </section>
 
-            
           
-        </div>
+        
       </div>
     </div>
   </div>
