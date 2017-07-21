@@ -1,9 +1,10 @@
 'use strict';
 
-const Matrix = require('ml-matrix');
-const EVD = Matrix.DC.EVD;
-const SVD = Matrix.DC.SVD;
-const Stat = require('ml-stat').matrix;
+const matrixLib = require('ml-matrix');
+const Matrix = matrixLib.Matrix;
+const EVD = matrixLib.EVD;
+const SVD = matrixLib.SVD;
+const Stat = require('ml-stat/matrix');
 const mean = Stat.mean;
 const stdev = Stat.standardDeviation;
 

@@ -2,8 +2,8 @@
 
 // Ref: http://www.r-bloggers.com/computing-and-visualizing-pca-in-r/
 
-const Matrix = require('ml-matrix');
-const Stat = require('ml-stat').matrix;
+const Matrix = require('ml-matrix').Matrix;
+const Stat = require('ml-stat/matrix');
 const mean = Stat.mean;
 const stdev = Stat.standardDeviation;
 
