@@ -7,14 +7,6 @@ const Stat = require('ml-stat').matrix;
 const mean = Stat.mean;
 const stdev = Stat.standardDeviation;
 
-function xrange(n){
-    var range = []; 
-    for (var i = 0; i < n; i++) {
-        range.push(i);
-    }
-    return range;
-}
-
 const defaultOptions = {
     isCovarianceMatrix: false,
     center: true,
