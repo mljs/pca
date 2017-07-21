@@ -1,3 +1,18 @@
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/mljs/pca/compare/v1.1.2...v2.0.0) (2017-07-21)
+
+
+### Chores
+
+* remove support for Node 4 ([b749c19](https://github.com/mljs/pca/commit/b749c19))
+
+
+### BREAKING CHANGES
+
+* Removed support for Node 4
+
+
+
 <a name="1.1.2"></a>
 ## [1.1.2](https://github.com/mljs/pca/compare/v1.1.1...v1.1.2) (2016-08-16)
 
