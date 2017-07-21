@@ -7,6 +7,14 @@ const Stat = require('ml-stat').matrix;
 const mean = Stat.mean;
 const stdev = Stat.standardDeviation;
 
+function xrange(n){
+    var range = []; 
+    for (var i = 0; i < n; i++) {
+        range.push(i);
+    }
+    return range;
+}
+
 const defaultOptions = {
     isCovarianceMatrix: false,
     center: true,
@@ -87,14 +95,15 @@ class PCA {
         return new PCA(true, model);
     }
 
+
     /**
      * Project the dataset into the PCA space
      * @param {Matrix} dataset
+     * @param {number} number of components
      * @return {Matrix} dataset projected in the PCA space
      */
-    predict(dataset) {
+    predict(dataset, numberComponents = -1) {
         dataset = new Matrix(dataset);
-
         if (this.center) {
             dataset.subRowVector(this.means);
             if (this.scale) {
@@ -102,7 +111,16 @@ class PCA {
             }
         }
 
-        return dataset.mmul(this.U);
+        var predictions = dataset.mmul(this.U);
+        if (numberComponents == -1) {
+            return predictions;
+        } else {
+            if (numberComponents <= predictions.columns) {
+                return predictions.subMatrixColumn(xrange(numberComponents))
+            } else {
+                return predictions;
+            }
+        }
     }
 
     /**
