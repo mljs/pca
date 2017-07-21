@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>ml-pca 1.1.2 | Documentation</title>
+  <title>ml-pca 2.0.0 | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
@@ -14,7 +14,7 @@
       <div class='fixed xs-hide fix-3 overflow-auto max-height-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ml-pca</h3>
-          <div class='mb1'><code>1.1.2</code></div>
+          <div class='mb1'><code>2.0.0</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -99,6 +99,7 @@
                     </ul>
                   
                   
+                  
                 </div>
                 
                 </li>
@@ -117,11 +118,13 @@
 
   
   <div class='clearfix'>
+    
     <h3 class='fl m0' id='pca'>
       PCA
     </h3>
     
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/64d45ff4565f1283217f0410d311cd385d448070/src/pca.js#L24-L213'>
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/f0b1c595c0c3de7d27b0c25079f54163ea46c812/src/pca.js#L25-L214'>
       <span>src/pca.js</span>
       </a>
     
@@ -132,9 +135,10 @@
 
 
   <div class='pre p1 fill-light mt0'>new PCA(dataset: Matrix, options: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</div>
-
+  
   
 
+  
   
   
   
@@ -147,7 +151,8 @@
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>dataset</span> <code class='quiet'>(Matrix)</code> dataset or covariance matrix
+            <span class='code bold'>dataset</span> <code class='quiet'>(Matrix)</code>
+	    dataset or covariance matrix
 
           </div>
           
@@ -155,7 +160,8 @@
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>options</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code> 
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+	    
           </div>
           
           <table class='mt1 mb2 fixed-table h5 col-12'>
@@ -172,7 +178,7 @@
             <tbody class='mt1'>
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>options.isCovarianceMatrix</span> <code class='quiet'>[<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>]</code>
+                  <td class='break-word'><span class='code bold'>options.isCovarianceMatrix</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>
                   
                     (default <code>false</code>)
                   </td>
@@ -181,7 +187,7 @@
                 </tr>
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>options.center</span> <code class='quiet'>[<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>]</code>
+                  <td class='break-word'><span class='code bold'>options.center</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>
                   
                     (default <code>true</code>)
                   </td>
@@ -190,7 +196,7 @@
                 </tr>
               
                 <tr>
-                  <td class='break-word'><span class='code bold'>options.scale</span> <code class='quiet'>[<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>]</code>
+                  <td class='break-word'><span class='code bold'>options.scale</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>
                   
                     (default <code>false</code>)
                   </td>
@@ -229,14 +235,24 @@
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
+  <div class='clearfix'>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/f0b1c595c0c3de7d27b0c25079f54163ea46c812/src/pca.js#L85-L89'>
+      <span>src/pca.js</span>
+      </a>
+    
+  </div>
+  
 
   <p>Load a PCA model from JSON</p>
 
 
   <div class='pre p1 fill-light mt0'>load(model: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>): <a href="#pca">PCA</a></div>
-
+  
   
 
+  
   
   
   
@@ -249,7 +265,8 @@
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>model</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code> 
+            <span class='code bold'>model</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+	    
           </div>
           
         </div>
@@ -264,6 +281,7 @@
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="#pca">PCA</a></code>:
         
+
       
     
   
@@ -301,14 +319,24 @@
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
+  <div class='clearfix'>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/f0b1c595c0c3de7d27b0c25079f54163ea46c812/src/pca.js#L96-L107'>
+      <span>src/pca.js</span>
+      </a>
+    
+  </div>
+  
 
   <p>Project the dataset into the PCA space</p>
 
 
   <div class='pre p1 fill-light mt0'>predict(dataset: Matrix): Matrix</div>
-
+  
   
 
+  
   
   
   
@@ -321,7 +349,8 @@
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>dataset</span> <code class='quiet'>(Matrix)</code> 
+            <span class='code bold'>dataset</span> <code class='quiet'>(Matrix)</code>
+	    
           </div>
           
         </div>
@@ -366,14 +395,24 @@
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
+  <div class='clearfix'>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/f0b1c595c0c3de7d27b0c25079f54163ea46c812/src/pca.js#L113-L119'>
+      <span>src/pca.js</span>
+      </a>
+    
+  </div>
+  
 
   <p>Returns the proportion of variance for each component</p>
 
 
   <div class='pre p1 fill-light mt0'>getExplainedVariance(): [<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>]</div>
-
+  
   
 
+  
   
   
   
@@ -389,6 +428,7 @@
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code>[<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>]</code>:
         
+
       
     
   
@@ -418,14 +458,24 @@
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
+  <div class='clearfix'>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/f0b1c595c0c3de7d27b0c25079f54163ea46c812/src/pca.js#L125-L131'>
+      <span>src/pca.js</span>
+      </a>
+    
+  </div>
+  
 
   <p>Returns the cumulative proportion of variance</p>
 
 
   <div class='pre p1 fill-light mt0'>getCumulativeVariance(): [<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>]</div>
-
+  
   
 
+  
   
   
   
@@ -441,6 +491,7 @@
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code>[<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>]</code>:
         
+
       
     
   
@@ -470,14 +521,24 @@
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
+  <div class='clearfix'>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/f0b1c595c0c3de7d27b0c25079f54163ea46c812/src/pca.js#L137-L139'>
+      <span>src/pca.js</span>
+      </a>
+    
+  </div>
+  
 
   <p>Returns the Eigenvectors of the covariance matrix</p>
 
 
   <div class='pre p1 fill-light mt0'>getEigenvectors(): Matrix</div>
-
+  
   
 
+  
   
   
   
@@ -493,6 +554,7 @@
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code>Matrix</code>:
         
+
       
     
   
@@ -522,14 +584,24 @@
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
+  <div class='clearfix'>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/f0b1c595c0c3de7d27b0c25079f54163ea46c812/src/pca.js#L145-L147'>
+      <span>src/pca.js</span>
+      </a>
+    
+  </div>
+  
 
   <p>Returns the Eigenvalues (on the diagonal)</p>
 
 
   <div class='pre p1 fill-light mt0'>getEigenvalues(): [<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>]</div>
-
+  
   
 
+  
   
   
   
@@ -545,6 +617,7 @@
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code>[<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>]</code>:
         
+
       
     
   
@@ -574,14 +647,24 @@
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
+  <div class='clearfix'>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/f0b1c595c0c3de7d27b0c25079f54163ea46c812/src/pca.js#L153-L155'>
+      <span>src/pca.js</span>
+      </a>
+    
+  </div>
+  
 
   <p>Returns the standard deviations of the principal components</p>
 
 
   <div class='pre p1 fill-light mt0'>getStandardDeviations(): [<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>]</div>
-
+  
   
 
+  
   
   
   
@@ -597,6 +680,7 @@
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code>[<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>]</code>:
         
+
       
     
   
@@ -626,14 +710,24 @@
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
+  <div class='clearfix'>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/f0b1c595c0c3de7d27b0c25079f54163ea46c812/src/pca.js#L161-L163'>
+      <span>src/pca.js</span>
+      </a>
+    
+  </div>
+  
 
   <p>Returns the loadings matrix</p>
 
 
   <div class='pre p1 fill-light mt0'>getLoadings(): Matrix</div>
-
+  
   
 
+  
   
   
   
@@ -649,6 +743,7 @@
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code>Matrix</code>:
         
+
       
     
   
@@ -678,14 +773,24 @@
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
+  <div class='clearfix'>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/f0b1c595c0c3de7d27b0c25079f54163ea46c812/src/pca.js#L169-L179'>
+      <span>src/pca.js</span>
+      </a>
+    
+  </div>
+  
 
   <p>Export the current model to a JSON object</p>
 
 
   <div class='pre p1 fill-light mt0'>toJSON(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></div>
-
+  
   
 
+  
   
   
   
