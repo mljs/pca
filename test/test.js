@@ -121,6 +121,6 @@ describe('PCA algorithm', function () {
     it('Test number components in function predict', function () {
         var dataset = [[1, 2, 0], [3, 4, 0], [5, 6, 0]];
         var newpca = new PCA(dataset);
-        newpca.predict(dataset, 2).columns.should.be.equal(2);
+        newpca.predict(dataset, {nComponents: 2}).columns.should.be.equal(2);
     });
 });
