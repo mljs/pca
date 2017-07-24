@@ -91,12 +91,12 @@ class PCA {
     /**
      * Project the dataset into the PCA space
      * @param {Matrix} dataset
-     * @param {number} number of components
+     * @param {Object} options
      * @return {Matrix} dataset projected in the PCA space
      */
     predict(dataset, options = {}) {
         const {
-           nComponents = -1
+           nComponents = this.U.columns
         } = options;
 
         dataset = new Matrix(dataset);
@@ -108,15 +108,7 @@ class PCA {
         }
 
         var predictions = dataset.mmul(this.U);
-        if (nComponents === -1) {
-            return predictions;
-        } else {
-            if (nComponents <= predictions.columns) {
-                return predictions.subMatrix(0, predictions.rows - 1, 0, nComponents - 1)
-            } else {
-                return predictions;
-            }
-        }
+        return predictions.subMatrix(0, predictions.rows - 1, 0, nComponents - 1);
     }
 
     /**
