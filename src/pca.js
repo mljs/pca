@@ -88,14 +88,19 @@ class PCA {
         return new PCA(true, model);
     }
 
+
     /**
      * Project the dataset into the PCA space
      * @param {Matrix} dataset
+     * @param {Object} options
      * @return {Matrix} dataset projected in the PCA space
      */
-    predict(dataset) {
-        dataset = new Matrix(dataset);
+    predict(dataset, options = {}) {
+        const {
+           nComponents = this.U.columns
+        } = options;
 
+        dataset = new Matrix(dataset);
         if (this.center) {
             dataset.subRowVector(this.means);
             if (this.scale) {
@@ -103,7 +108,8 @@ class PCA {
             }
         }
 
-        return dataset.mmul(this.U);
+        var predictions = dataset.mmul(this.U);
+        return predictions.subMatrix(0, predictions.rows - 1, 0, nComponents - 1);
     }
 
     /**

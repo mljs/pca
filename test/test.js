@@ -117,4 +117,10 @@ describe('PCA algorithm', function () {
             new PCA(dataset, {scale: true});
         }).should.throw(/standard deviation is zero at index 2/)
     });
+
+    it('Test number components in function predict', function () {
+        var dataset = [[1, 2, 0], [3, 4, 0], [5, 6, 0]];
+        var newpca = new PCA(dataset);
+        newpca.predict(dataset, {nComponents: 2}).columns.should.be.equal(2);
+    });
 });
