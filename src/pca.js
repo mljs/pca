@@ -11,7 +11,8 @@ const stdev = Stat.standardDeviation;
 const defaultOptions = {
     isCovarianceMatrix: false,
     center: true,
-    scale: false
+    scale: false,
+    algorithm: 'svd'
 };
 
 /**
@@ -36,44 +37,16 @@ class PCA {
         }
 
         options = Object.assign({}, defaultOptions, options);
-
         this.center = false;
         this.scale = false;
         this.means = null;
         this.stdevs = null;
+        
 
-        if (options.isCovarianceMatrix) { // user provided a covariance matrix instead of dataset
-            this._computeFromCovarianceMatrix(dataset);
-            return;
-        }
-
-        var useCovarianceMatrix;
-        if (typeof options.useCovarianceMatrix === 'boolean') {
-            useCovarianceMatrix = options.useCovarianceMatrix;
+        if (options.algorithm.toLowerCase() === 'nipals') {
+            this._nipals(dataset, options);
         } else {
-            useCovarianceMatrix = dataset.length > dataset[0].length;
-        }
-
-        if (useCovarianceMatrix) { // user provided a dataset but wants us to compute and use the covariance matrix
-            dataset = this._adjust(dataset, options);
-            const covarianceMatrix = dataset.transposeView().mmul(dataset).div(dataset.rows - 1);
-            this._computeFromCovarianceMatrix(covarianceMatrix);
-        } else {
-            dataset = this._adjust(dataset, options);
-            var svd = new SVD(dataset, {
-                computeLeftSingularVectors: false,
-                computeRightSingularVectors: true,
-                autoTranspose: true
-            });
-
-            this.U = svd.rightSingularVectors;
-
-            const singularValues = svd.diagonal;
-            const eigenvalues = new Array(singularValues.length);
-            for (var i = 0; i < singularValues.length; i++) {
-                eigenvalues[i] = singularValues[i] * singularValues[i] / (dataset.length - 1);
-            }
-            this.S = eigenvalues;
+            this._svd(dataset, options);
         }
     }
 
@@ -88,7 +61,6 @@ class PCA {
         return new PCA(true, model);
     }
 
-
     /**
      * Project the dataset into the PCA space
      * @param {Matrix} dataset
@@ -96,20 +68,16 @@ class PCA {
      * @return {Matrix} dataset projected in the PCA space
      */
     predict(dataset, options = {}) {
-        const {
-           nComponents = this.U.columns
-        } = options;
 
         dataset = new Matrix(dataset);
         if (this.center) {
             dataset.subRowVector(this.means);
             if (this.scale) {
                 dataset.divRowVector(this.stdevs);
-            }
+            }   
         }
 
-        var predictions = dataset.mmul(this.U);
-        return predictions.subMatrix(0, predictions.rows - 1, 0, nComponents - 1);
+        return dataset.mmul(this.U);
     }
 
     /**
@@ -184,6 +152,79 @@ class PCA {
         };
     }
 
+    _svd(dataset, options) {
+        if (options.isCovarianceMatrix) { // user provided a covariance matrix instead of dataset
+            this._computeFromCovarianceMatrix(dataset);
+            return;
+        }
+        var useCovarianceMatrix;
+        if (typeof options.useCovarianceMatrix === 'boolean') {
+            useCovarianceMatrix = options.useCovarianceMatrix;
+        } else {
+            useCovarianceMatrix = dataset.length > dataset[0].length;
+        }
+        dataset = this._adjust(dataset, options);
+
+        if (useCovarianceMatrix) { // user provided a dataset but wants us to compute and use the covariance matrix
+            const covarianceMatrix = dataset.transposeView().mmul(dataset).div(dataset.rows - 1);
+            this._computeFromCovarianceMatrix(covarianceMatrix);
+        } else {
+            var svd = new SVD(dataset, {
+                computeLeftSingularVectors: false,
+                computeRightSingularVectors: true,
+                autoTranspose: true
+            });
+
+            this.U = svd.rightSingularVectors;
+
+            const singularValues = svd.diagonal;
+            const eigenvalues = new Array(singularValues.length);
+            for (var i = 0; i < singularValues.length; i++) {
+                eigenvalues[i] = singularValues[i] * singularValues[i] / (dataset.length - 1);
+            }
+            this.S = eigenvalues;
+        }
+    }
+
+    _nipals(dataset, options = {}) {
+        dataset = this._adjust(dataset, options);
+        var {
+            nComponents = 2,
+            threshold = 1e-9,
+            maxIterations = 100
+        } = options;
+    
+        var eMatrix = this._adjust(dataset, options);
+        
+        var r = eMatrix.rows;
+        var c = eMatrix.columns;
+    
+        var T = Matrix.zeros(r, nComponents);
+        var P = Matrix.zeros(c, nComponents);
+        var eigenvalues = new Array(nComponents);
+        
+        for (let i = 0; i < nComponents; i++) {
+            let tIndex = maxSumColIndex(eMatrix.clone().mulM(eMatrix));
+            let t = eMatrix.getColumnVector(tIndex);
+    
+            let k = 0;
+            let tNew = t.dot(t);
+            for (let tOld = Number.MAX_SAFE_INTEGER; Math.abs(tNew - tOld) > threshold && k  < maxIterations; k++) {
+                var p = getLoading(eMatrix, t);
+                t = eMatrix.mmul(p);
+                tOld = tNew;
+                tNew = t.dot(t);
+            }
+            eigenvalues[i] = tNew;
+            T.setColumn(i, t);
+            P.setColumn(i, p);
+            eMatrix.sub(t.mmul(p.transpose()));
+        }
+        this.U = P.transpose();
+        this.T = T;
+        this.S = eigenvalues;
+    }
+
     _adjust(dataset, options) {
         this.center = !!options.center;
         this.scale = !!options.scale;
@@ -219,4 +260,31 @@ class PCA {
     }
 }
 
+function getLoading(e, t) {
+    var m = e.columns;
+    var n = e.rows;
+
+    var result = new Matrix(m, 1);
+
+    var Bcolj = new Array(n);
+    for (let i = 0; i < m; i++) {
+        var s = 0;
+        for (let k = 0; k < n; k++) {
+            s += e.get(k, i) * t[k][0];
+        }
+        result.set(i, 0, s);
+    }
+    return result.mul(1 / result.norm());
+}
+
+/**
+ * @private
+ * Function that returns the index where the sum of each
+ * column vector is maximum.
+ * @param {Matrix} data
+ * @return {number} index of the maximum
+ */
+function maxSumColIndex(data) {
+    return data.sum('column').maxIndex()[0];
+}
 module.exports = PCA;

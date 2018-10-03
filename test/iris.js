@@ -54,11 +54,24 @@ describe('iris dataset with provided covariance matrix', function () {
 
 describe('iris dataset with computed covariance matrix', function () {
     var pca = new PCA(iris, {scale: true, useCovarianceMatrix: true});
-    it('loadings', function () {
+    let predict = pca.predict(iris);
+    it('loadings', () => {
         checkLoadings(pca);
     });
 });
 
+describe('iris dataset with nipals algorithm', () => {
+    var pca = new PCA(iris, {scale: true, center: true, algorithm: 'nipals', maxIterations: 100, nComponents: 4});
+    it('loadins', () => {
+        var loadings = pca.getLoadings().map(x => x .map(y => Math.abs(y)));
+        loadings.should.approximatelyDeep([
+            [0.5210662, 0.37741676,  0.7195674, 0.2612842],
+            [0.2693468, 0.92329601, 0.2443815,  0.1235089],
+            [0.5804131, 0.02449134, 0.1421287,  0.8014488],
+            [0.5648566, 0.06694208, 0.6342712, 0.5235990]
+        ], 1e-3);
+    });
+});
 function checkLoadings(pca) {
     var loadings = pca.getLoadings().map(x => x .map(y => Math.abs(y)));
     loadings.should.approximatelyDeep(expectedLoadings, 1e-3);
