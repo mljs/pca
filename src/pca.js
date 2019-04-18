@@ -1,4 +1,4 @@
-import { Matrix, EVD, SVD } from 'ml-matrix';
+import { Matrix, MatrixTransposeView, EVD, SVD } from 'ml-matrix';
 
 /**
  * Creates new PCA (Principal Component Analysis) from the dataset
@@ -51,8 +51,7 @@ export class PCA {
     if (useCovarianceMatrix) {
       // user provided a dataset but wants us to compute and use the covariance matrix
       this._adjust(dataset);
-      const covarianceMatrix = dataset
-        .transposeView()
+      const covarianceMatrix = new MatrixTransposeView(dataset)
         .mmul(dataset)
         .div(dataset.rows - 1);
       this._computeFromCovarianceMatrix(covarianceMatrix);
