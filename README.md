@@ -1,11 +1,11 @@
 # ml-pca
 
-  [![NPM version][npm-image]][npm-url]
-  [![build status][travis-image]][travis-url]
-  [![David deps][david-image]][david-url]
-  [![npm download][download-image]][download-url]
+[![NPM version][npm-image]][npm-url]
+[![build status][travis-image]][travis-url]
+[![David deps][david-image]][david-url]
+[![npm download][download-image]][download-url]
 
-Principal component analysis (PCA)
+Principal component analysis (PCA).
 
 ## Installation
 
@@ -14,7 +14,7 @@ Principal component analysis (PCA)
 ## Usage
 
 ```js
-const PCA = require('ml-pca');
+const { PCA } = require('ml-pca');
 const dataset = require('ml-dataset-iris').getNumbers();
 // dataset is a two-dimensional array where rows represent the samples and columns the features
 const pca = new PCA(dataset);
@@ -40,11 +40,11 @@ console.log(pca.predict(newPoints)); // project new points into the PCA space
 */
 ```
 
-## [Documentation](https://mljs.github.io/pca/)
+## [API Documentation](https://mljs.github.io/pca/)
 
 ## License
 
-  [MIT](./LICENSE)
+[MIT](./LICENSE)
 
 [npm-image]: https://img.shields.io/npm/v/ml-pca.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/ml-pca

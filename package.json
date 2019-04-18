@@ -2,16 +2,25 @@
   "name": "ml-pca",
   "version": "2.1.0",
   "description": "Principal component analysis",
-  "main": "src/pca.js",
-  "directories": {
-    "lib": "src",
-    "test": "test"
-  },
+  "main": "pca.js",
+  "module": "src/pca.js",
+  "types": "pca.d.ts",
   "files": [
+    "pca.js",
+    "pca.d.ts",
     "src"
   ],
   "scripts": {
-    "test": "mocha --require should-approximately-deep --reporter mocha-better-spec-reporter --recursive"
+    "compile": "rollup -c",
+    "eslint": "eslint src",
+    "eslint-fix": "npm run eslint -- --fix",
+    "prepublishOnly": "npm run compile",
+    "test": "npm run test-coverage && npm run eslint",
+    "test-only": "jest",
+    "test-coverage": "jest --coverage"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "repository": {
     "type": "git",
@@ -37,14 +46,17 @@
   },
   "homepage": "https://github.com/mljs/pca",
   "dependencies": {
-    "ml-matrix": "^5.0.0",
-    "ml-stat": "^1.1.0"
+    "ml-matrix": "^6.0.0-4"
   },
   "devDependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.4.3",
+    "eslint": "^5.16.0",
+    "eslint-config-cheminfo": "^1.20.1",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-jest": "^22.4.1",
+    "jest": "^24.7.1",
+    "jest-matcher-deep-close-to": "^1.3.0",
     "ml-dataset-iris": "^1.0.0",
-    "mocha": "^3.0.1",
-    "mocha-better-spec-reporter": "^3.0.1",
-    "should": "^11.1.0",
-    "should-approximately-deep": "^1.1.0"
+    "rollup": "^1.10.0"
   }
 }
