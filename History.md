@@ -1,3 +1,7 @@
+# [3.0.0](https://github.com/mljs/pca/compare/v3.0.0-0...v3.0.0) (2019-04-25)
+
+
+
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/mljs/pca/compare/v2.0.0...v2.1.0) (2017-07-24)
 

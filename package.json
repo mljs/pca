@@ -1,6 +1,6 @@
 {
   "name": "ml-pca",
-  "version": "3.0.0-0",
+  "version": "3.0.0",
   "description": "Principal component analysis",
   "main": "pca.js",
   "module": "src/pca.js",
