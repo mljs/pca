@@ -46,7 +46,7 @@
   },
   "homepage": "https://github.com/mljs/pca",
   "dependencies": {
-    "ml-matrix": "^6.0.0-5"
+    "ml-matrix": "^6.0.0-6"
   },
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.4.3",

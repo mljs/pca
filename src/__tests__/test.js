@@ -120,4 +120,9 @@ describe('PCA algorithm', function () {
     var newpca = new PCA(dataset);
     expect(newpca.predict(dataset, { nComponents: 2 }).columns).toBe(2);
   });
+
+  it('should throw on load if wrong model', () => {
+    expect(() => PCA.load({})).toThrow(/model must have a name property/);
+    expect(() => PCA.load({ name: 'test' })).toThrow(/invalid model: test/);
+  });
 });

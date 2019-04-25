@@ -55,9 +55,9 @@ describe('iris dataset', function () {
 
 describe('iris dataset with provided covariance matrix', function () {
   var dataset = new Matrix(iris);
-  var means = dataset.mean('column');
-  var stdevs = dataset.standardDeviation(true, means);
-  dataset.subRowVector(means).divRowVector(stdevs);
+  var mean = dataset.mean('column');
+  var stdevs = dataset.standardDeviation('column', { mean });
+  dataset.subRowVector(mean).divRowVector(stdevs);
   var covarianceMatrix = dataset
     .transpose()
     .mmul(dataset)

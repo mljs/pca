@@ -66,10 +66,9 @@ export class PCA {
       this.U = svd.rightSingularVectors;
 
       const singularValues = svd.diagonal;
-      const eigenvalues = new Array(singularValues.length);
-      for (var i = 0; i < singularValues.length; i++) {
-        eigenvalues[i] =
-          (singularValues[i] * singularValues[i]) / (dataset.rows - 1);
+      const eigenvalues = [];
+      for (const singularValue of singularValues) {
+        eigenvalues.push((singularValue * singularValue) / (dataset.rows - 1));
       }
       this.S = eigenvalues;
     }
@@ -81,6 +80,9 @@ export class PCA {
    * @return {PCA}
    */
   static load(model) {
+    if (typeof model.name !== 'string') {
+      throw new TypeError('model must have a name property');
+    }
     if (model.name !== 'PCA') {
       throw new RangeError(`invalid model: ${model.name}`);
     }
@@ -114,8 +116,8 @@ export class PCA {
    */
   getExplainedVariance() {
     var sum = 0;
-    for (var i = 0; i < this.S.length; i++) {
-      sum += this.S[i];
+    for (const s of this.S) {
+      sum += s;
     }
     return this.S.map((value) => value / sum);
   }
@@ -182,10 +184,12 @@ export class PCA {
 
   _adjust(dataset) {
     if (this.center) {
-      const means = dataset.mean('column');
-      const stdevs = this.scale ? dataset.standardDeviation(true, means) : null;
-      this.means = means;
-      dataset.subRowVector(means);
+      const mean = dataset.mean('column');
+      const stdevs = this.scale
+        ? dataset.standardDeviation('column', { mean })
+        : null;
+      this.means = mean;
+      dataset.subRowVector(mean);
       if (this.scale) {
         for (var i = 0; i < stdevs.length; i++) {
           if (stdevs[i] === 0) {
@@ -203,7 +207,7 @@ export class PCA {
   _computeFromCovarianceMatrix(dataset) {
     const evd = new EVD(dataset, { assumeSymmetric: true });
     this.U = evd.eigenvectorMatrix;
-    this.U.reverseRows();
+    this.U.flipRows();
     this.S = evd.realEigenvalues;
     this.S.reverse();
   }
