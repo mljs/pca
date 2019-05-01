@@ -51,6 +51,26 @@ describe('iris dataset', function () {
       3
     );
   });
+  it('inverting scaled', () => {
+    var dataset = [[1, 2, 3], [0, 3, 5], [2, 2, 2]];
+    var input = iris.slice(0, 2);
+    var pred = pca.predict(input);
+
+    var mean = new Matrix(iris).mean('column');
+    var inv = pca.invert(pred, mean);
+
+    expect(inv.to2DArray()).toBeDeepCloseTo(dataset);
+  });
+  it('inverting not scaled', () => {
+    var dataset = [[1, 2, 3], [0, 3, 5], [2, 2, 2]];
+    var newpca = new PCA(dataset);
+    var pred = newpca.predict(dataset);
+
+    var mean = new Matrix(dataset).mean('column');
+    var inv = newpca.invert(pred, mean);
+
+    expect(inv.to2DArray()).toBeDeepCloseTo(dataset);
+  });
 });
 
 describe('iris dataset with provided covariance matrix', function () {

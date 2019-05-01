@@ -117,12 +117,15 @@ export class PCA {
    * @return {Matrix} dataset projected in the PCA space
    */
   invert(dataset, mean) {
-    dataset = new Matrix(dataset);
+    dataset = Matrix.checkMatrix(dataset);
 
-    var meanPlaceholder = new Array(dataset.length).fill(0);
-    var meanMatrix = new Matrix(meanPlaceholder.map(() => mean));
+    var inverse = dataset.mmul(this.U.transpose()).addRowVector(mean);
 
-    return dataset.mmul(this.U.transpose()).add(meanMatrix);
+    if (this.scale) {
+      inverse.mulRowVector(this.stdevs);
+    }
+
+    return inverse;
   }
 
 
