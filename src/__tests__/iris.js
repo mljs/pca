@@ -55,8 +55,7 @@ describe('iris dataset', function () {
     var input = iris.slice(0, 2);
     var pred = pca.predict(input);
 
-    var mean = new Matrix(iris).mean('column');
-    var inv = pca.invert(pred, mean);
+    var inv = pca.invert(pred);
 
     expect(inv.to2DArray()).toBeDeepCloseTo(input);
   });
@@ -65,8 +64,7 @@ describe('iris dataset', function () {
     var newpca = new PCA(dataset);
     var pred = newpca.predict(dataset);
 
-    var mean = new Matrix(dataset).mean('column');
-    var inv = newpca.invert(pred, mean);
+    var inv = newpca.invert(pred);
 
     expect(inv.to2DArray()).toBeDeepCloseTo(dataset);
   });

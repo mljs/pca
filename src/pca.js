@@ -113,10 +113,9 @@ export class PCA {
   /**
    * Calculates the inverse PCA transform
    * @param {Matrix} dataset
-   * @param {Array} mean
    * @return {Matrix} dataset projected in the PCA space
    */
-  invert(dataset, mean) {
+  invert(dataset) {
     dataset = Matrix.checkMatrix(dataset);
 
     var inverse = dataset.mmul(this.U.transpose());
@@ -125,7 +124,7 @@ export class PCA {
       if (this.scale) {
         inverse.mulRowVector(this.stdevs);
       }
-      inverse.addRowVector(mean);
+      inverse.addRowVector(this.means);
     }
 
     return inverse;
