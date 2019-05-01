@@ -1,4 +1,7 @@
+import { Matrix } from 'ml-matrix';
+
 import { PCA } from '../pca';
+
 
 describe('PCA algorithm', function () {
   var testDataset = [
@@ -124,5 +127,19 @@ describe('PCA algorithm', function () {
   it('should throw on load if wrong model', () => {
     expect(() => PCA.load({})).toThrow(/model must have a name property/);
     expect(() => PCA.load({ name: 'test' })).toThrow(/invalid model: test/);
+  });
+
+  it('should inverse pca should be equal to input', () => {
+    var dataset = [[2, 2, 0], [3, 4, 0], [5, 6, 0]];
+
+    var newpca = new PCA(dataset);
+    var pcaPrediction = newpca.predict([dataset[0]]);
+
+    var mean = new Matrix(dataset).mean('column');
+    var inv = newpca.invert(pcaPrediction, mean);
+
+    inv.data[0].forEach((v, key) => {
+      expect(v).toBeCloseTo(dataset[0][key]);
+    });
   });
 });
