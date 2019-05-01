@@ -111,6 +111,22 @@ export class PCA {
   }
 
   /**
+   * Calculates the inverse PCA transform
+   * @param {Matrix} dataset
+   * @param {Array} mean
+   * @return {Matrix} dataset projected in the PCA space
+   */
+  invert(dataset, mean) {
+    dataset = new Matrix(dataset);
+
+    var meanPlaceholder = new Array(dataset.length).fill(0);
+    var meanMatrix = new Matrix(meanPlaceholder.map(() => mean));
+
+    return dataset.mmul(this.U.transpose()).add(meanMatrix);
+  }
+
+
+  /**
    * Returns the proportion of variance for each component
    * @return {[number]}
    */
