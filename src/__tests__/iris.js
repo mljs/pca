@@ -52,14 +52,13 @@ describe('iris dataset', function () {
     );
   });
   it('inverting scaled', () => {
-    var dataset = [[1, 2, 3], [0, 3, 5], [2, 2, 2]];
     var input = iris.slice(0, 2);
     var pred = pca.predict(input);
 
     var mean = new Matrix(iris).mean('column');
     var inv = pca.invert(pred, mean);
 
-    expect(inv.to2DArray()).toBeDeepCloseTo(dataset);
+    expect(inv.to2DArray()).toBeDeepCloseTo(input);
   });
   it('inverting not scaled', () => {
     var dataset = [[1, 2, 3], [0, 3, 5], [2, 2, 2]];

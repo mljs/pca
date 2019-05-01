@@ -119,10 +119,13 @@ export class PCA {
   invert(dataset, mean) {
     dataset = Matrix.checkMatrix(dataset);
 
-    var inverse = dataset.mmul(this.U.transpose()).addRowVector(mean);
+    var inverse = dataset.mmul(this.U.transpose());
 
-    if (this.scale) {
-      inverse.mulRowVector(this.stdevs);
+    if (this.center) {
+      if (this.scale) {
+        inverse.mulRowVector(this.stdevs);
+      }
+      inverse.addRowVector(mean);
     }
 
     return inverse;

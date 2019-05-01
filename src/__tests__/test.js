@@ -1,6 +1,5 @@
 import { PCA } from '../pca';
 
-
 describe('PCA algorithm', function () {
   var testDataset = [
     [3.38156266663556, 3.38911268489207],
