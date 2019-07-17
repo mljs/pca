@@ -128,7 +128,7 @@ export class PCA {
     for (const s of this.S) {
       sum += s;
     }
-    return this.S.map((value) => value / sum);
+    return this.S.map((value) => (value) / sum);
   }
 
   /**
@@ -225,17 +225,18 @@ export class PCA {
     let { nCompNIPALS = 2 } = options;
 
     this.U = new Matrix(nCompNIPALS, dataset.columns);
-    this.S = new Matrix(1, nCompNIPALS);
+    this.S = []; // new Matrix(1, nCompNIPALS);
 
     let x = dataset;
     for (let i = 0; i < nCompNIPALS; i++) {
       let dc = new NIPALS(x);
 
       this.U.setRow(i, dc.w.transpose());
-      this.S.setColumn(i, dc.s);
+      // this.S.setColumn(i, dc.s);
+      this.S.push(Math.pow(dc.s.get(0, 0), 2));
 
       x = dc.xResidual;
     }
-    this.U = this.U.transpose();
+    this.U = this.U.transpose(); // to be compatible with API
   }
 }
