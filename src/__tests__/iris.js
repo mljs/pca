@@ -105,44 +105,52 @@ describe('iris dataset and nipals', function () {
       expectedLoadingsNIPALS.map((x) =>
         x.map((y) => Math.abs(y))), 3);
   });
+  it('loadings should be orthogonal', function () {
+    let m = pca.getLoadings().transpose().mmul(pca.getLoadings()).round();
+    expect(m.sub(Matrix.eye(4, 4)).sum()).toStrictEqual(0);
+  });
   it('eigenvalues', function () {
     let eigenvalues = pca
       .getEigenvalues()
       .to1DArray();
     expect(eigenvalues).toBeDeepCloseTo([20.853205, 11.670070, 4.676192, 1.756847], 6);
   });
-});
-
-describe('iris dataset and nipals default', function () {
-  var pca = new PCA(iris, { scale: true,
-    useNIPALS: true,
-    useCovarianceMatrix: false });
-
-  it('eigenvalues', function () {
-    let eigenvalues = pca
-      .getEigenvalues()
-      .to1DArray();
-    expect(eigenvalues).toBeDeepCloseTo([20.853205, 11.670070], 6);
-  });
-});
-
-describe('iris dataset and nipals default without scaling scores', function () {
-  var pca = new PCA(iris, { scale: true,
-    useNIPALS: true,
-    scaleScores: true,
-    useCovarianceMatrix: false });
-
-  it('eigenvalues', function () {
-    let eigenvalues = pca
-      .getEigenvalues()
-      .to1DArray();
-    expect(eigenvalues).toBeDeepCloseTo([20.853205, 11.670070], 6);
-  });
 
   it('scores', function () {
     let scores = pca.predict(iris);
     expect(scores.get(0, 0)).toBeCloseTo(-2.25714118, 6);
     expect(scores.get(0, 1)).toBeCloseTo(0.478423832, 6);
+  });
+
+  it('scores may be scaled', function () {
+    let scores = pca.predict(iris);
+    let eigenvalues = pca.getEigenvalues().to1DArray();
+    let scaledScores = scores.divRowVector(eigenvalues);
+    expect(scaledScores.get(0, 0)).toBeCloseTo(-0.1082392451, 6);
+  });
+
+  it('X may be recomputed', function () {
+    let U = pca.predict(iris);
+    let V = pca.getLoadings();
+    let S = pca.getEigenvalues();
+    // we scale the scores
+    let SU = U.divRowVector(S);
+    // we recompute X
+    let RX = SU.mmul(Matrix.diag(S.to1DArray())).mmul(V);
+    expect(RX.get(0, 0)).toBeCloseTo(-0.89767388, 6);
+  });
+});
+
+describe('iris dataset and nipals default nCompNIPALS', function () {
+  var pca = new PCA(iris, { scale: true,
+    useNIPALS: true,
+    useCovarianceMatrix: false });
+
+  it('eigenvalues', function () {
+    let eigenvalues = pca
+      .getEigenvalues()
+      .to1DArray();
+    expect(eigenvalues).toBeDeepCloseTo([20.853205, 11.670070], 6);
   });
 });
 
