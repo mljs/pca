@@ -109,10 +109,16 @@ describe('PCA algorithm', function () {
   });
 
   it('Standardization error with constant column', function () {
-    var dataset = [[1, 2, 0], [3, 4, 0], [5, 6, 0]];
-    expect(() => new PCA(dataset, { scale: true })).toThrow(
-      /standard deviation is zero at index 2/
-    );
+    var dataset = [
+      [1, 2, 3.7],
+      [1, 3, 3.2],
+      [1, 2.5, 3.1],
+      [1, 2.1, 3]
+    ];
+    expect(new PCA(dataset, { scale: true })
+      .getLoadings()
+      .to2DArray()
+      .map((x) => x.map((y) => Math.abs(y)))).toHaveLength(2);
   });
 
   it('Test number components in function predict', function () {

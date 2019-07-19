@@ -193,9 +193,11 @@ export class PCA {
       if (this.scale) {
         for (var i = 0; i < stdevs.length; i++) {
           if (stdevs[i] === 0) {
-            throw new RangeError(
-              `Cannot scale the dataset (standard deviation is zero at index ${i}`
+            console.warn(
+              `Some features where ignored: standard deviation is zero at column with index ${i}`
             );
+            dataset.removeColumn(i);
+            stdevs.splice(i, 1);
           }
         }
         this.stdevs = stdevs;
