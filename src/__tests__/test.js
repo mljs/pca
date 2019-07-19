@@ -109,16 +109,19 @@ describe('PCA algorithm', function () {
   });
 
   it('Standardization error with constant column', function () {
-    var dataset = [
+    let dataset = [
       [1, 2, 3.7],
       [1, 3, 3.2],
       [1, 2.5, 3.1],
       [1, 2.1, 3]
     ];
-    expect(new PCA(dataset, { scale: true })
+    let newpca = new PCA(dataset, { scale: true });
+    expect(newpca
       .getLoadings()
       .to2DArray()
       .map((x) => x.map((y) => Math.abs(y)))).toHaveLength(2);
+    expect(newpca.predict(dataset).rows).toStrictEqual(4);
+    expect(newpca.predict(dataset).columns).toStrictEqual(2);
   });
 
   it('Test number components in function predict', function () {

@@ -34,6 +34,7 @@ export class PCA {
     this.scale = scale;
     this.means = null;
     this.stdevs = null;
+    this.excludedFeatures = [];
 
     if (isCovarianceMatrix) {
       // user provided a covariance matrix instead of dataset
@@ -97,15 +98,16 @@ export class PCA {
    */
   predict(dataset, options = {}) {
     const { nComponents = this.U.columns } = options;
-
     dataset = new Matrix(dataset);
     if (this.center) {
       dataset.subRowVector(this.means);
       if (this.scale) {
+        for (let i of this.excludedFeatures) {
+          dataset.removeColumn(i);
+        }
         dataset.divRowVector(this.stdevs);
       }
     }
-
     var predictions = dataset.mmul(this.U);
     return predictions.subMatrix(0, predictions.rows - 1, 0, nComponents - 1);
   }
@@ -198,6 +200,7 @@ export class PCA {
             );
             dataset.removeColumn(i);
             stdevs.splice(i, 1);
+            this.excludedFeatures.push(i);
           }
         }
         this.stdevs = stdevs;
