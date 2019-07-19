@@ -19,10 +19,6 @@ const expectedLoadings = [
 
 describe('iris dataset', function () {
   var pca = new PCA(iris, { scale: true, useCovarianceMatrix: false });
-<<<<<<< HEAD
-=======
-
->>>>>>> 64e3385... correct predict() to take into account zero variance
   it('loadings', function () {
     var loadings = pca
       .getLoadings()
@@ -86,77 +82,3 @@ describe('iris dataset with computed covariance matrix', function () {
     expect(loadings).toBeDeepCloseTo(expectedLoadings, 3);
   });
 });
-<<<<<<< HEAD
-=======
-
-describe('iris dataset and nipals', function () {
-  var pca = new PCA(iris, { scale: true,
-    useNIPALS: true,
-    nCompNIPALS: 4,
-    useCovarianceMatrix: false });
-
-  it('loadings', function () {
-    let loadings = pca
-      .getLoadings()
-      .to2DArray()
-      .map((x) => x.map((y) => Math.abs(y)));
-    expect(loadings).toBeDeepCloseTo(
-      expectedLoadingsNIPALS.map((x) =>
-        x.map((y) => Math.abs(y))), 3);
-  });
-
-  it('loadings should be orthogonal', function () {
-    let m = pca.getLoadings().transpose().mmul(pca.getLoadings()).round();
-    expect(m.sub(Matrix.eye(4, 4)).sum()).toStrictEqual(0);
-  });
-
-  it('eigenvalues', function () {
-    let eigenvalues = pca
-      .getEigenvalues();
-    expect(eigenvalues.map((x) => Math.sqrt(x))).toBeDeepCloseTo([20.853205, 11.670070, 4.676192, 1.756847], 6);
-  });
-
-  it('scores', function () {
-    let scores = pca.predict(iris);
-    expect(scores.get(0, 0)).toBeCloseTo(-2.25714118, 6);
-    expect(scores.get(0, 1)).toBeCloseTo(0.478423832, 6);
-  });
-
-  it('scores may be scaled', function () {
-    let scores = pca.predict(iris);
-    let eigenvalues = pca.getStandardDeviations();
-    let scaledScores = scores.divRowVector(eigenvalues);
-    expect(scaledScores.get(0, 0)).toBeCloseTo(-0.1082392451, 6);
-  });
-
-  it('X may be recomputed', function () {
-    let U = pca.predict(iris);
-    let V = pca.getLoadings();
-    let S = pca.getEigenvalues();
-
-    // we scale the scores
-    let SU = U.divRowVector(S);
-    // we recompute X
-    let RX = SU.mmul(Matrix.diag(S)).mmul(V);
-    expect(RX.get(0, 0)).toBeCloseTo(-0.89767388, 6);
-  });
-
-  it('explained variance', function () {
-    let R2 = pca.getExplainedVariance();
-    expect(R2).toBeDeepCloseTo([0.729624454, 0.228507618, 0.036689219, 0.005178709], 4);
-  });
-});
-
-describe('iris dataset and nipals default nCompNIPALS', function () {
-  var pca = new PCA(iris, { scale: true,
-    useNIPALS: true,
-    useCovarianceMatrix: false });
-
-  it('eigenvalues', function () {
-    let sd = pca
-      .getStandardDeviations();
-    expect(sd).toBeDeepCloseTo([20.853205, 11.670070], 6);
-  });
-});
-
->>>>>>> 64e3385... correct predict() to take into account zero variance
