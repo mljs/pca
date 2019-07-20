@@ -1,4 +1,4 @@
-import { Matrix, MatrixTransposeView, EVD, SVD } from 'ml-matrix';
+import { Matrix, MatrixTransposeView, EVD, SVD, NIPALS } from 'ml-matrix';
 
 /**
  * Creates new PCA (Principal Component Analysis) from the dataset
@@ -6,6 +6,8 @@ import { Matrix, MatrixTransposeView, EVD, SVD } from 'ml-matrix';
  * @param {Object} [options]
  * @param {boolean} [options.isCovarianceMatrix=false] - true if the dataset is a covariance matrix
  * @param {boolean} [options.useCovarianceMatrix=false] - force the use of the covariance matrix instead of singular value decomposition.
+ * @param {boolean} [options.useNIPALS=false] - if true, then NIPALS algorithm is used to compute nCompNIPALS first components
+ * @param {boolean} [options.nCompNIPALS=2] - number of components to be computed with NIPALS
  * @param {boolean} [options.center=true] - should the data be centered (subtract the mean)
  * @param {boolean} [options.scale=false] - should the data be scaled (divide by the standard deviation)
  * */
@@ -19,6 +21,7 @@ export class PCA {
       this.stdevs = model.stdevs;
       this.U = Matrix.checkMatrix(model.U);
       this.S = model.S;
+      this.R = model.R;
       return;
     }
 
@@ -26,8 +29,10 @@ export class PCA {
 
     const {
       isCovarianceMatrix = false,
+      useNIPALS = false,
+      nCompNIPALS = 2,
       center = true,
-      scale = false
+      scale = false,
     } = options;
 
     this.center = center;
@@ -55,12 +60,15 @@ export class PCA {
         .mmul(dataset)
         .div(dataset.rows - 1);
       this._computeFromCovarianceMatrix(covarianceMatrix);
+    } else if (useNIPALS) {
+      this._adjust(dataset);
+      this._computeWithNIPALS(dataset, { nCompNIPALS });
     } else {
       this._adjust(dataset);
       var svd = new SVD(dataset, {
         computeLeftSingularVectors: false,
         computeRightSingularVectors: true,
-        autoTranspose: true
+        autoTranspose: true,
       });
 
       this.U = svd.rightSingularVectors;
@@ -178,7 +186,7 @@ export class PCA {
       means: this.means,
       stdevs: this.stdevs,
       U: this.U,
-      S: this.S
+      S: this.S,
     };
   }
 
@@ -194,7 +202,7 @@ export class PCA {
         for (var i = 0; i < stdevs.length; i++) {
           if (stdevs[i] === 0) {
             throw new RangeError(
-              `Cannot scale the dataset (standard deviation is zero at index ${i}`
+              `Cannot scale the dataset (standard deviation is zero at index ${i}`,
             );
           }
         }
@@ -210,5 +218,23 @@ export class PCA {
     this.U.flipRows();
     this.S = evd.realEigenvalues;
     this.S.reverse();
+  }
+
+  _computeWithNIPALS(dataset, options) {
+    let { nCompNIPALS = 2 } = options;
+
+    this.U = new Matrix(nCompNIPALS, dataset.columns);
+    this.S = [];
+
+    let x = dataset;
+    for (let i = 0; i < nCompNIPALS; i++) {
+      let dc = new NIPALS(x);
+
+      this.U.setRow(i, dc.w.transpose());
+      this.S.push(Math.pow(dc.s.get(0, 0), 2));
+
+      x = dc.xResidual;
+    }
+    this.U = this.U.transpose(); // to be compatible with API
   }
 }
