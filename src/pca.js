@@ -2,14 +2,15 @@ import { Matrix, MatrixTransposeView, EVD, SVD, NIPALS } from 'ml-matrix';
 
 /**
  * Creates new PCA (Principal Component Analysis) from the dataset
- * @param {Matrix} dataset - dataset or covariance matrix
+ * @param {Matrix} dataset - dataset or covariance matrix.
  * @param {Object} [options]
- * @param {boolean} [options.isCovarianceMatrix=false] - true if the dataset is a covariance matrix
+ * @param {boolean} [options.isCovarianceMatrix=false] - true if the dataset is a covariance matrix.
  * @param {boolean} [options.useCovarianceMatrix=false] - force the use of the covariance matrix instead of singular value decomposition.
- * @param {boolean} [options.useNIPALS=false] - if true, then NIPALS algorithm is used to compute nCompNIPALS first components
- * @param {boolean} [options.nCompNIPALS=2] - number of components to be computed with NIPALS
- * @param {boolean} [options.center=true] - should the data be centered (subtract the mean)
- * @param {boolean} [options.scale=false] - should the data be scaled (divide by the standard deviation)
+ * @param {boolean} [options.useNIPALS=false] - if true, then NIPALS algorithm is used to compute nCompNIPALS first components.
+ * @param {boolean} [options.nCompNIPALS=2] - number of components to be computed with NIPALS.
+ * @param {boolean} [options.center=true] - should the data be centered (subtract the mean).
+ * @param {boolean} [options.scale=false] - should the data be scaled (divide by the standard deviation).
+ * @param {boolean} [options.ignoreZeroVariance=false] - ignore columns with zero variance if `scale` is `true`.
  * */
 export class PCA {
   constructor(dataset, options = {}) {
@@ -22,6 +23,7 @@ export class PCA {
       this.U = Matrix.checkMatrix(model.U);
       this.S = model.S;
       this.R = model.R;
+      this.excludedFeatures = model.excludedFeatures;
       return;
     }
 
@@ -33,6 +35,7 @@ export class PCA {
       nCompNIPALS = 2,
       center = true,
       scale = false,
+      ignoreZeroVariance = false,
     } = options;
 
     this.center = center;
@@ -54,19 +57,17 @@ export class PCA {
       useCovarianceMatrix = dataset.rows > dataset.columns;
     }
 
+    this._adjust(dataset, ignoreZeroVariance);
     if (useCovarianceMatrix) {
-      // user provided a dataset but wants us to compute and use the covariance matrix
-      this._adjust(dataset);
+      // User provided a dataset but wants us to compute and use the covariance matrix.
       const covarianceMatrix = new MatrixTransposeView(dataset)
         .mmul(dataset)
         .div(dataset.rows - 1);
       this._computeFromCovarianceMatrix(covarianceMatrix);
     } else if (useNIPALS) {
-      this._adjust(dataset);
       this._computeWithNIPALS(dataset, nCompNIPALS);
     } else {
-      this._adjust(dataset);
-      var svd = new SVD(dataset, {
+      const svd = new SVD(dataset, {
         computeLeftSingularVectors: false,
         computeRightSingularVectors: true,
         autoTranspose: true,
@@ -192,7 +193,7 @@ export class PCA {
     };
   }
 
-  _adjust(dataset) {
+  _adjust(dataset, ignoreZeroVariance) {
     if (this.center) {
       const mean = dataset.mean('column');
       const stdevs = this.scale
@@ -201,14 +202,18 @@ export class PCA {
       this.means = mean;
       dataset.subRowVector(mean);
       if (this.scale) {
-        for (var i = 0; i < stdevs.length; i++) {
+        for (let i = 0; i < stdevs.length; i++) {
           if (stdevs[i] === 0) {
-            console.warn(
-              `Some features where ignored: standard deviation is zero at column with index ${i}`,
-            );
-            dataset.removeColumn(i);
-            stdevs.splice(i, 1);
-            this.excludedFeatures.push(i);
+            if (ignoreZeroVariance) {
+              dataset.removeColumn(i);
+              stdevs.splice(i, 1);
+              this.excludedFeatures.push(i);
+              i--;
+            } else {
+              throw new RangeError(
+                `Cannot scale the dataset (standard deviation is zero at index ${i}`,
+              );
+            }
           }
         }
         this.stdevs = stdevs;
