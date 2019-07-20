@@ -62,7 +62,7 @@ export class PCA {
       this._computeFromCovarianceMatrix(covarianceMatrix);
     } else if (useNIPALS) {
       this._adjust(dataset);
-      this._computeWithNIPALS(dataset, { nCompNIPALS });
+      this._computeWithNIPALS(dataset, nCompNIPALS);
     } else {
       this._adjust(dataset);
       var svd = new SVD(dataset, {
@@ -220,9 +220,7 @@ export class PCA {
     this.S.reverse();
   }
 
-  _computeWithNIPALS(dataset, options) {
-    let { nCompNIPALS = 2 } = options;
-
+  _computeWithNIPALS(dataset, nCompNIPALS) {
     this.U = new Matrix(nCompNIPALS, dataset.columns);
     this.S = [];
 
