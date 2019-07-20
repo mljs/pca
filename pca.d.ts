@@ -8,6 +8,7 @@ declare module 'ml-pca' {
     scale?: boolean;
     useNIPALS?: boolean;
     nCompNIPALS?: number;
+    ignoreZeroVariance?: boolean;
   }
 
   export interface IPCAModel {
