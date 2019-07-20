@@ -6,6 +6,8 @@ declare module 'ml-pca' {
     useCovarianceMatrix?: boolean;
     center?: boolean;
     scale?: boolean;
+    useNIPALS?: boolean;
+    nCompNIPALS?: number;
   }
 
   export interface IPCAModel {
