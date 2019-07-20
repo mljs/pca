@@ -1,6 +1,5 @@
 import { Matrix, MatrixTransposeView, EVD, SVD, NIPALS } from 'ml-matrix';
 
-
 /**
  * Creates new PCA (Principal Component Analysis) from the dataset
  * @param {Matrix} dataset - dataset or covariance matrix
@@ -33,7 +32,7 @@ export class PCA {
       useNIPALS = false,
       nCompNIPALS = 2,
       center = true,
-      scale = false
+      scale = false,
     } = options;
 
     this.center = center;
@@ -69,7 +68,7 @@ export class PCA {
       var svd = new SVD(dataset, {
         computeLeftSingularVectors: false,
         computeRightSingularVectors: true,
-        autoTranspose: true
+        autoTranspose: true,
       });
 
       this.U = svd.rightSingularVectors;
@@ -128,7 +127,7 @@ export class PCA {
     for (const s of this.S) {
       sum += s;
     }
-    return this.S.map((value) => (value) / sum);
+    return this.S.map((value) => value / sum);
   }
 
   /**
@@ -187,7 +186,7 @@ export class PCA {
       means: this.means,
       stdevs: this.stdevs,
       U: this.U,
-      S: this.S
+      S: this.S,
     };
   }
 
@@ -203,7 +202,7 @@ export class PCA {
         for (var i = 0; i < stdevs.length; i++) {
           if (stdevs[i] === 0) {
             throw new RangeError(
-              `Cannot scale the dataset (standard deviation is zero at index ${i}`
+              `Cannot scale the dataset (standard deviation is zero at index ${i}`,
             );
           }
         }
@@ -225,14 +224,13 @@ export class PCA {
     let { nCompNIPALS = 2 } = options;
 
     this.U = new Matrix(nCompNIPALS, dataset.columns);
-    this.S = []; // new Matrix(1, nCompNIPALS);
+    this.S = [];
 
     let x = dataset;
     for (let i = 0; i < nCompNIPALS; i++) {
       let dc = new NIPALS(x);
 
       this.U.setRow(i, dc.w.transpose());
-      // this.S.setColumn(i, dc.s);
       this.S.push(Math.pow(dc.s.get(0, 0), 2));
 
       x = dc.xResidual;
