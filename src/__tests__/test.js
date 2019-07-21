@@ -138,4 +138,8 @@ describe('PCA algorithm', function () {
     expect(() => PCA.load({})).toThrow(/model must have a name property/);
     expect(() => PCA.load({ name: 'test' })).toThrow(/invalid model: test/);
   });
+
+  it('should throw on wrong method', () => {
+    expect(() => new PCA([[0, 1], [1, 0]], { method: 'XXX ' })).toThrow(/unknown method: XXX/);
+  });
 });
