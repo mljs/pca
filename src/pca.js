@@ -44,7 +44,7 @@ export class PCA {
     this.excludedFeatures = [];
 
     if (isCovarianceMatrix) {
-      // user provided a covariance matrix instead of dataset
+      // User provided a covariance matrix instead of dataset.
       this._computeFromCovarianceMatrix(dataset);
       return;
     }
@@ -57,11 +57,12 @@ export class PCA {
           .mmul(dataset)
           .div(dataset.rows - 1);
         this._computeFromCovarianceMatrix(covarianceMatrix);
-      }
         break;
-      case 'NIPALS':
+      }
+      case 'NIPALS': {
         this._computeWithNIPALS(dataset, nCompNIPALS);
         break;
+      }
       case 'SVD': {
         const svd = new SVD(dataset, {
           computeLeftSingularVectors: false,
@@ -79,8 +80,9 @@ export class PCA {
         this.S = eigenvalues;
         break;
       }
-      default:
+      default: {
         throw new Error(`unknown method: ${method}`);
+      }
     }
   }
 
