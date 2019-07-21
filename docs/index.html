@@ -1,21 +1,21 @@
 <!doctype html>
 <html>
 <head>
-  <meta charset='utf-8' />
-  <title>ml-pca 3.0.0 | Documentation</title>
+  <meta charset='utf-8'>
+  <title>ml-pca 4.0.0 | Documentation</title>
   <meta name='description' content='Principal component analysis'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
-  <link href='assets/bass.css' rel='stylesheet' />
-  <link href='assets/style.css' rel='stylesheet' />
-  <link href='assets/github.css' rel='stylesheet' />
-  <link href='assets/split.css' rel='stylesheet' />
+  <link href='assets/bass.css' rel='stylesheet'>
+  <link href='assets/style.css' rel='stylesheet'>
+  <link href='assets/github.css' rel='stylesheet'>
+  <link href='assets/split.css' rel='stylesheet'>
 </head>
 <body class='documentation m0'>
     <div class='flex'>
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ml-pca</h3>
-          <div class='mb1'><code>3.0.0</code></div>
+          <div class='mb1'><code>4.0.0</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -86,6 +86,12 @@
                       </a></li>
                       
                       <li><a
+                        href='#pcainvert'
+                        class='regular pre-open'>
+                        #invert
+                      </a></li>
+                      
+                      <li><a
                         href='#pcapredict'
                         class='regular pre-open'>
                         #predict
@@ -125,7 +131,7 @@
     </h3>
     
     
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/c18e246558ced32b6ec122ba34ba1a8c72a97cca/src/pca.js#L12-L214'>
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/c91604d8146bb82a00e3dc34b494b5383a76f471/src/pca.js#L14-L271'>
       <span>src/pca.js</span>
       </a>
     
@@ -152,7 +158,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>dataset</span> <code class='quiet'>(Matrix)</code>
-	    dataset or covariance matrix
+	    dataset or covariance matrix.
 
           </div>
           
@@ -183,18 +189,29 @@
   
     (default <code>false</code>)
   </td>
-  <td class='break-word'><span>true if the dataset is a covariance matrix
+  <td class='break-word'><span>true if the dataset is a covariance matrix.
 </span></td>
 </tr>
 
 
               
                 <tr>
-  <td class='break-word'><span class='code bold'>options.useCovarianceMatrix</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>
+  <td class='break-word'><span class='code bold'>options.method</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>
   
-    (default <code>false</code>)
+    (default <code>&#39;SVD&#39;</code>)
   </td>
-  <td class='break-word'><span>force the use of the covariance matrix instead of singular value decomposition.
+  <td class='break-word'><span>select which method to use: SVD (default), covarianceMatrirx or NIPALS.
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.nCompNIPALS</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>
+  
+    (default <code>2</code>)
+  </td>
+  <td class='break-word'><span>number of components to be computed with NIPALS.
 </span></td>
 </tr>
 
@@ -205,7 +222,7 @@
   
     (default <code>true</code>)
   </td>
-  <td class='break-word'><span>should the data be centered (subtract the mean)
+  <td class='break-word'><span>should the data be centered (subtract the mean).
 </span></td>
 </tr>
 
@@ -216,7 +233,22 @@
   
     (default <code>false</code>)
   </td>
-  <td class='break-word'><span>should the data be scaled (divide by the standard deviation)
+  <td class='break-word'><span>should the data be scaled (divide by the standard deviation).
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.ignoreZeroVariance</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>
+  
+    (default <code>false</code>)
+  </td>
+  <td class='break-word'><span>ignore columns with zero variance if 
+<code>scale</code>
+ is 
+<code>true</code>
+.
 </span></td>
 </tr>
 
@@ -256,7 +288,7 @@
   <div class='clearfix'>
     
     
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/c18e246558ced32b6ec122ba34ba1a8c72a97cca/src/pca.js#L82-L90'>
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/c91604d8146bb82a00e3dc34b494b5383a76f471/src/pca.js#L94-L102'>
       <span>src/pca.js</span>
       </a>
     
@@ -341,7 +373,7 @@
   <div class='clearfix'>
     
     
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/c18e246558ced32b6ec122ba34ba1a8c72a97cca/src/pca.js#L129-L135'>
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/c91604d8146bb82a00e3dc34b494b5383a76f471/src/pca.js#L163-L169'>
       <span>src/pca.js</span>
       </a>
     
@@ -405,7 +437,7 @@
   <div class='clearfix'>
     
     
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/c18e246558ced32b6ec122ba34ba1a8c72a97cca/src/pca.js#L149-L151'>
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/c91604d8146bb82a00e3dc34b494b5383a76f471/src/pca.js#L183-L185'>
       <span>src/pca.js</span>
       </a>
     
@@ -469,7 +501,7 @@
   <div class='clearfix'>
     
     
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/c18e246558ced32b6ec122ba34ba1a8c72a97cca/src/pca.js#L141-L143'>
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/c91604d8146bb82a00e3dc34b494b5383a76f471/src/pca.js#L175-L177'>
       <span>src/pca.js</span>
       </a>
     
@@ -533,7 +565,7 @@
   <div class='clearfix'>
     
     
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/c18e246558ced32b6ec122ba34ba1a8c72a97cca/src/pca.js#L117-L123'>
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/c91604d8146bb82a00e3dc34b494b5383a76f471/src/pca.js#L151-L157'>
       <span>src/pca.js</span>
       </a>
     
@@ -597,7 +629,7 @@
   <div class='clearfix'>
     
     
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/c18e246558ced32b6ec122ba34ba1a8c72a97cca/src/pca.js#L165-L167'>
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/c91604d8146bb82a00e3dc34b494b5383a76f471/src/pca.js#L199-L201'>
       <span>src/pca.js</span>
       </a>
     
@@ -661,7 +693,7 @@
   <div class='clearfix'>
     
     
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/c18e246558ced32b6ec122ba34ba1a8c72a97cca/src/pca.js#L157-L159'>
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/c91604d8146bb82a00e3dc34b494b5383a76f471/src/pca.js#L191-L193'>
       <span>src/pca.js</span>
       </a>
     
@@ -711,6 +743,83 @@
       </div>
     </div>
   
+    <div class='border-bottom' id='pcainvert'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>invert(dataset)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/c91604d8146bb82a00e3dc34b494b5383a76f471/src/pca.js#L131-L144'>
+      <span>src/pca.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Calculates the inverse PCA transform</p>
+
+    <div class='pre p1 fill-light mt0'>invert(dataset: Matrix): Matrix</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>dataset</span> <code class='quiet'>(Matrix)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>Matrix</code>:
+        dataset projected in the PCA space
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='pcapredict'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -725,7 +834,7 @@
   <div class='clearfix'>
     
     
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/c18e246558ced32b6ec122ba34ba1a8c72a97cca/src/pca.js#L98-L111'>
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/c91604d8146bb82a00e3dc34b494b5383a76f471/src/pca.js#L110-L124'>
       <span>src/pca.js</span>
       </a>
     
@@ -811,7 +920,7 @@
   <div class='clearfix'>
     
     
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/c18e246558ced32b6ec122ba34ba1a8c72a97cca/src/pca.js#L173-L183'>
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/pca/blob/c91604d8146bb82a00e3dc34b494b5383a76f471/src/pca.js#L207-L217'>
       <span>src/pca.js</span>
       </a>
     
