@@ -52,7 +52,7 @@ export class PCA {
     this._adjust(dataset, ignoreZeroVariance);
     switch (method) {
       case 'covarianceMatrix': {
-      // User provided a dataset but wants us to compute and use the covariance matrix.
+        // User provided a dataset but wants us to compute and use the covariance matrix.
         const covarianceMatrix = new MatrixTransposeView(dataset)
           .mmul(dataset)
           .div(dataset.rows - 1);
