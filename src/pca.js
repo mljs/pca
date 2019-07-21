@@ -62,7 +62,7 @@ export class PCA {
       case 'NIPALS':
         this._computeWithNIPALS(dataset, nCompNIPALS);
         break;
-      default: {
+      case 'SVD': {
         const svd = new SVD(dataset, {
           computeLeftSingularVectors: false,
           computeRightSingularVectors: true,
