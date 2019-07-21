@@ -35,6 +35,12 @@ describe('iris dataset test method covarianceMatrix', function () {
   });
 });
 
+describe('iris dataset test wrong method', function () {
+  it('wrong method', function () {
+    expect(() => new PCA(iris, { scale: true, method: 'variance' })).toThrow('unknown method: variance');
+  });
+});
+
 describe('iris dataset', function () {
   var pca = new PCA(iris, { scale: true, method: 'SVD' });
   it('loadings', function () {
