@@ -30,7 +30,7 @@ export class PCA {
 
     const {
       isCovarianceMatrix = false,
-      method = 'svd',
+      method = 'SVD',
       nCompNIPALS = 2,
       center = true,
       scale = false,
