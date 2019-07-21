@@ -24,6 +24,17 @@ const expectedLoadingsNIPALS = [
   [-0.2613, 0.1235, 0.8014, -0.5236],
 ];
 
+describe('iris dataset test method covarianceMatrix', function () {
+  var pca = new PCA(iris, { scale: true, method: 'covarianceMatrix' });
+  it('loadings', function () {
+    var loadings = pca
+      .getLoadings()
+      .to2DArray()
+      .map((x) => x.map((y) => Math.abs(y)));
+    expect(loadings).toBeDeepCloseTo(expectedLoadings, 3);
+  });
+});
+
 describe('iris dataset', function () {
   var pca = new PCA(iris, { scale: true, method: 'svd' });
   it('loadings', function () {
