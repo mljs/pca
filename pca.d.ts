@@ -3,7 +3,7 @@ import { Matrix } from 'ml-matrix';
 declare module 'ml-pca' {
   export interface IPCAOptions {
     isCovarianceMatrix?: boolean;
-    method?: String;
+    method?: 'SVD' | 'NIPALS' | 'covarianceMatrix';
     center?: boolean;
     scale?: boolean;
     nCompNIPALS?: number;

@@ -36,7 +36,7 @@ describe('iris dataset test method covarianceMatrix', function () {
 });
 
 describe('iris dataset', function () {
-  var pca = new PCA(iris, { scale: true, method: 'svd' });
+  var pca = new PCA(iris, { scale: true, method: 'SVD' });
   it('loadings', function () {
     var loadings = pca
       .getLoadings()
