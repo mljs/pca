@@ -77,7 +77,10 @@ export class PCA {
           eigenvalues.push((singularValue * singularValue) / (dataset.rows - 1));
         }
         this.S = eigenvalues;
+        break;
       }
+      default:
+        throw new Error(`unknown method: ${method}`);
     }
   }
 
