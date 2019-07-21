@@ -1,3 +1,19 @@
+# [4.0.0](https://github.com/mljs/pca/compare/v3.0.0...v4.0.0) (2019-07-21)
+
+
+### Features
+
+* add ignoreZeroVariance option ([aefd93c](https://github.com/mljs/pca/commit/aefd93c))
+* add invert method ([617446c](https://github.com/mljs/pca/commit/617446c))
+* add NIPALS option ([f8f9862](https://github.com/mljs/pca/commit/f8f9862))
+
+
+### BREAKING CHANGES
+
+* The `use*` options have been replaced by a single `method` option.
+
+
+
 # [3.0.0](https://github.com/mljs/pca/compare/v3.0.0-0...v3.0.0) (2019-04-25)
 
 
