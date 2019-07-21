@@ -51,11 +51,11 @@ describe('PCA algorithm', function () {
     [1.18023320575165, 2.87869409391385],
     [1.91895045046187, 5.07107847507096],
     [3.95524687147485, 4.50532709674253],
-    [5.11795499426461, 6.08507386392396]
+    [5.11795499426461, 6.08507386392396],
   ];
 
   var pca = new PCA(testDataset, {
-    scale: true
+    scale: true,
   });
 
   it('PCA Main test', function () {
@@ -109,10 +109,23 @@ describe('PCA algorithm', function () {
   });
 
   it('Standardization error with constant column', function () {
-    var dataset = [[1, 2, 0], [3, 4, 0], [5, 6, 0]];
+    let dataset = [[1, 2, 3.7], [1, 3, 3.2], [1, 2.5, 3.1], [1, 2.1, 3]];
     expect(() => new PCA(dataset, { scale: true })).toThrow(
-      /standard deviation is zero at index 2/
+      /standard deviation is zero at index 0/,
     );
+  });
+
+  it('Standardization error with constant column - ignoreZeroVariance', function () {
+    let dataset = [
+      [2, 1, 0, 3.7],
+      [3, 1, 0, 3.2],
+      [2.5, 1, 0, 3.1],
+      [2.1, 1, 0, 3],
+    ];
+    let newpca = new PCA(dataset, { scale: true, ignoreZeroVariance: true });
+    expect(newpca.getLoadings().rows).toBe(2);
+    expect(newpca.predict(dataset).rows).toStrictEqual(4);
+    expect(newpca.predict(dataset).columns).toStrictEqual(2);
   });
 
   it('Test number components in function predict', function () {
@@ -124,5 +137,9 @@ describe('PCA algorithm', function () {
   it('should throw on load if wrong model', () => {
     expect(() => PCA.load({})).toThrow(/model must have a name property/);
     expect(() => PCA.load({ name: 'test' })).toThrow(/invalid model: test/);
+  });
+
+  it('should throw on wrong method', () => {
+    expect(() => new PCA([[0, 1], [1, 0]], { method: 'XXX ' })).toThrow(/unknown method: XXX/);
   });
 });
