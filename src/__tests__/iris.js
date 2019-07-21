@@ -25,7 +25,7 @@ const expectedLoadingsNIPALS = [
 ];
 
 describe('iris dataset', function () {
-  var pca = new PCA(iris, { scale: true, useCovarianceMatrix: false });
+  var pca = new PCA(iris, { scale: true, method: 'svd' });
   it('loadings', function () {
     var loadings = pca
       .getLoadings()
@@ -93,7 +93,7 @@ describe('iris dataset with computed covariance matrix', function () {
 describe('iris dataset and nipals', function () {
   var pca = new PCA(iris, {
     scale: true,
-    useNIPALS: true,
+    method: 'NIPALS',
     nCompNIPALS: 4,
     useCovarianceMatrix: false,
   });
@@ -163,7 +163,7 @@ describe('iris dataset and nipals', function () {
 describe('iris dataset and nipals default nCompNIPALS', function () {
   var pca = new PCA(iris, {
     scale: true,
-    useNIPALS: true,
+    method: 'NIPALS',
     useCovarianceMatrix: false,
   });
 

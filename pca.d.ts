@@ -3,10 +3,9 @@ import { Matrix } from 'ml-matrix';
 declare module 'ml-pca' {
   export interface IPCAOptions {
     isCovarianceMatrix?: boolean;
-    useCovarianceMatrix?: boolean;
+    method?: String;
     center?: boolean;
     scale?: boolean;
-    useNIPALS?: boolean;
     nCompNIPALS?: number;
     ignoreZeroVariance?: boolean;
   }

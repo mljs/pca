@@ -5,8 +5,7 @@ import { Matrix, MatrixTransposeView, EVD, SVD, NIPALS } from 'ml-matrix';
  * @param {Matrix} dataset - dataset or covariance matrix.
  * @param {Object} [options]
  * @param {boolean} [options.isCovarianceMatrix=false] - true if the dataset is a covariance matrix.
- * @param {boolean} [options.useCovarianceMatrix=false] - force the use of the covariance matrix instead of singular value decomposition.
- * @param {boolean} [options.useNIPALS=false] - if true, then NIPALS algorithm is used to compute nCompNIPALS first components.
+ * @param {boolean} [options.method='svd'] - select which method to use: svd (default), covarianceMatrirx or NIPALS.
  * @param {boolean} [options.nCompNIPALS=2] - number of components to be computed with NIPALS.
  * @param {boolean} [options.center=true] - should the data be centered (subtract the mean).
  * @param {boolean} [options.scale=false] - should the data be scaled (divide by the standard deviation).
@@ -31,7 +30,7 @@ export class PCA {
 
     const {
       isCovarianceMatrix = false,
-      useNIPALS = false,
+      method = 'svd',
       nCompNIPALS = 2,
       center = true,
       scale = false,
@@ -50,37 +49,35 @@ export class PCA {
       return;
     }
 
-    var useCovarianceMatrix;
-    if (typeof options.useCovarianceMatrix === 'boolean') {
-      useCovarianceMatrix = options.useCovarianceMatrix;
-    } else {
-      useCovarianceMatrix = dataset.rows > dataset.columns;
-    }
-
     this._adjust(dataset, ignoreZeroVariance);
-    if (useCovarianceMatrix) {
+    switch (method) {
+      case 'covarianceMatrix': {
       // User provided a dataset but wants us to compute and use the covariance matrix.
-      const covarianceMatrix = new MatrixTransposeView(dataset)
-        .mmul(dataset)
-        .div(dataset.rows - 1);
-      this._computeFromCovarianceMatrix(covarianceMatrix);
-    } else if (useNIPALS) {
-      this._computeWithNIPALS(dataset, nCompNIPALS);
-    } else {
-      const svd = new SVD(dataset, {
-        computeLeftSingularVectors: false,
-        computeRightSingularVectors: true,
-        autoTranspose: true,
-      });
-
-      this.U = svd.rightSingularVectors;
-
-      const singularValues = svd.diagonal;
-      const eigenvalues = [];
-      for (const singularValue of singularValues) {
-        eigenvalues.push((singularValue * singularValue) / (dataset.rows - 1));
+        const covarianceMatrix = new MatrixTransposeView(dataset)
+          .mmul(dataset)
+          .div(dataset.rows - 1);
+        this._computeFromCovarianceMatrix(covarianceMatrix);
       }
-      this.S = eigenvalues;
+        break;
+      case 'NIPALS':
+        this._computeWithNIPALS(dataset, nCompNIPALS);
+        break;
+      default: {
+        const svd = new SVD(dataset, {
+          computeLeftSingularVectors: false,
+          computeRightSingularVectors: true,
+          autoTranspose: true,
+        });
+
+        this.U = svd.rightSingularVectors;
+
+        const singularValues = svd.diagonal;
+        const eigenvalues = [];
+        for (const singularValue of singularValues) {
+          eigenvalues.push((singularValue * singularValue) / (dataset.rows - 1));
+        }
+        this.S = eigenvalues;
+      }
     }
   }
 
