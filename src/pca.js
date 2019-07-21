@@ -2,14 +2,14 @@ import { Matrix, MatrixTransposeView, EVD, SVD, NIPALS } from 'ml-matrix';
 
 /**
  * Creates new PCA (Principal Component Analysis) from the dataset
- * @param {Matrix} dataset - dataset or covariance matrix
+ * @param {Matrix} dataset - dataset or covariance matrix.
  * @param {Object} [options]
- * @param {boolean} [options.isCovarianceMatrix=false] - true if the dataset is a covariance matrix
- * @param {boolean} [options.useCovarianceMatrix=false] - force the use of the covariance matrix instead of singular value decomposition.
- * @param {boolean} [options.useNIPALS=false] - if true, then NIPALS algorithm is used to compute nCompNIPALS first components
- * @param {boolean} [options.nCompNIPALS=2] - number of components to be computed with NIPALS
- * @param {boolean} [options.center=true] - should the data be centered (subtract the mean)
- * @param {boolean} [options.scale=false] - should the data be scaled (divide by the standard deviation)
+ * @param {boolean} [options.isCovarianceMatrix=false] - true if the dataset is a covariance matrix.
+ * @param {boolean} [options.method='SVD'] - select which method to use: SVD (default), covarianceMatrirx or NIPALS.
+ * @param {boolean} [options.nCompNIPALS=2] - number of components to be computed with NIPALS.
+ * @param {boolean} [options.center=true] - should the data be centered (subtract the mean).
+ * @param {boolean} [options.scale=false] - should the data be scaled (divide by the standard deviation).
+ * @param {boolean} [options.ignoreZeroVariance=false] - ignore columns with zero variance if `scale` is `true`.
  * */
 export class PCA {
   constructor(dataset, options = {}) {
@@ -22,6 +22,7 @@ export class PCA {
       this.U = Matrix.checkMatrix(model.U);
       this.S = model.S;
       this.R = model.R;
+      this.excludedFeatures = model.excludedFeatures;
       return;
     }
 
@@ -29,56 +30,59 @@ export class PCA {
 
     const {
       isCovarianceMatrix = false,
-      useNIPALS = false,
+      method = 'SVD',
       nCompNIPALS = 2,
       center = true,
       scale = false,
+      ignoreZeroVariance = false,
     } = options;
 
     this.center = center;
     this.scale = scale;
     this.means = null;
     this.stdevs = null;
+    this.excludedFeatures = [];
 
     if (isCovarianceMatrix) {
-      // user provided a covariance matrix instead of dataset
+      // User provided a covariance matrix instead of dataset.
       this._computeFromCovarianceMatrix(dataset);
       return;
     }
 
-    var useCovarianceMatrix;
-    if (typeof options.useCovarianceMatrix === 'boolean') {
-      useCovarianceMatrix = options.useCovarianceMatrix;
-    } else {
-      useCovarianceMatrix = dataset.rows > dataset.columns;
-    }
-
-    if (useCovarianceMatrix) {
-      // user provided a dataset but wants us to compute and use the covariance matrix
-      this._adjust(dataset);
-      const covarianceMatrix = new MatrixTransposeView(dataset)
-        .mmul(dataset)
-        .div(dataset.rows - 1);
-      this._computeFromCovarianceMatrix(covarianceMatrix);
-    } else if (useNIPALS) {
-      this._adjust(dataset);
-      this._computeWithNIPALS(dataset, nCompNIPALS);
-    } else {
-      this._adjust(dataset);
-      var svd = new SVD(dataset, {
-        computeLeftSingularVectors: false,
-        computeRightSingularVectors: true,
-        autoTranspose: true,
-      });
-
-      this.U = svd.rightSingularVectors;
-
-      const singularValues = svd.diagonal;
-      const eigenvalues = [];
-      for (const singularValue of singularValues) {
-        eigenvalues.push((singularValue * singularValue) / (dataset.rows - 1));
+    this._adjust(dataset, ignoreZeroVariance);
+    switch (method) {
+      case 'covarianceMatrix': {
+        // User provided a dataset but wants us to compute and use the covariance matrix.
+        const covarianceMatrix = new MatrixTransposeView(dataset)
+          .mmul(dataset)
+          .div(dataset.rows - 1);
+        this._computeFromCovarianceMatrix(covarianceMatrix);
+        break;
       }
-      this.S = eigenvalues;
+      case 'NIPALS': {
+        this._computeWithNIPALS(dataset, nCompNIPALS);
+        break;
+      }
+      case 'SVD': {
+        const svd = new SVD(dataset, {
+          computeLeftSingularVectors: false,
+          computeRightSingularVectors: true,
+          autoTranspose: true,
+        });
+
+        this.U = svd.rightSingularVectors;
+
+        const singularValues = svd.diagonal;
+        const eigenvalues = [];
+        for (const singularValue of singularValues) {
+          eigenvalues.push((singularValue * singularValue) / (dataset.rows - 1));
+        }
+        this.S = eigenvalues;
+        break;
+      }
+      default: {
+        throw new Error(`unknown method: ${method}`);
+      }
     }
   }
 
@@ -105,15 +109,16 @@ export class PCA {
    */
   predict(dataset, options = {}) {
     const { nComponents = this.U.columns } = options;
-
     dataset = new Matrix(dataset);
     if (this.center) {
       dataset.subRowVector(this.means);
       if (this.scale) {
+        for (let i of this.excludedFeatures) {
+          dataset.removeColumn(i);
+        }
         dataset.divRowVector(this.stdevs);
       }
     }
-
     var predictions = dataset.mmul(this.U);
     return predictions.subMatrix(0, predictions.rows - 1, 0, nComponents - 1);
   }
@@ -190,7 +195,7 @@ export class PCA {
     };
   }
 
-  _adjust(dataset) {
+  _adjust(dataset, ignoreZeroVariance) {
     if (this.center) {
       const mean = dataset.mean('column');
       const stdevs = this.scale
@@ -199,11 +204,18 @@ export class PCA {
       this.means = mean;
       dataset.subRowVector(mean);
       if (this.scale) {
-        for (var i = 0; i < stdevs.length; i++) {
+        for (let i = 0; i < stdevs.length; i++) {
           if (stdevs[i] === 0) {
-            throw new RangeError(
-              `Cannot scale the dataset (standard deviation is zero at index ${i}`,
-            );
+            if (ignoreZeroVariance) {
+              dataset.removeColumn(i);
+              stdevs.splice(i, 1);
+              this.excludedFeatures.push(i);
+              i--;
+            } else {
+              throw new RangeError(
+                `Cannot scale the dataset (standard deviation is zero at index ${i}`,
+              );
+            }
           }
         }
         this.stdevs = stdevs;

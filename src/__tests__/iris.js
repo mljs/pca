@@ -24,8 +24,25 @@ const expectedLoadingsNIPALS = [
   [-0.2613, 0.1235, 0.8014, -0.5236],
 ];
 
+describe('iris dataset test method covarianceMatrix', function () {
+  var pca = new PCA(iris, { scale: true, method: 'covarianceMatrix' });
+  it('loadings', function () {
+    var loadings = pca
+      .getLoadings()
+      .to2DArray()
+      .map((x) => x.map((y) => Math.abs(y)));
+    expect(loadings).toBeDeepCloseTo(expectedLoadings, 3);
+  });
+});
+
+describe('iris dataset test wrong method', function () {
+  it('wrong method', function () {
+    expect(() => new PCA(iris, { scale: true, method: 'variance' })).toThrow('unknown method: variance');
+  });
+});
+
 describe('iris dataset', function () {
-  var pca = new PCA(iris, { scale: true, useCovarianceMatrix: false });
+  var pca = new PCA(iris, { scale: true, method: 'SVD' });
   it('loadings', function () {
     var loadings = pca
       .getLoadings()
@@ -93,7 +110,7 @@ describe('iris dataset with computed covariance matrix', function () {
 describe('iris dataset and nipals', function () {
   var pca = new PCA(iris, {
     scale: true,
-    useNIPALS: true,
+    method: 'NIPALS',
     nCompNIPALS: 4,
     useCovarianceMatrix: false,
   });
@@ -163,7 +180,7 @@ describe('iris dataset and nipals', function () {
 describe('iris dataset and nipals default nCompNIPALS', function () {
   var pca = new PCA(iris, {
     scale: true,
-    useNIPALS: true,
+    method: 'NIPALS',
     useCovarianceMatrix: false,
   });
 
