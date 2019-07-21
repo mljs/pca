@@ -124,6 +124,27 @@ export class PCA {
   }
 
   /**
+   * Calculates the inverse PCA transform
+   * @param {Matrix} dataset
+   * @return {Matrix} dataset projected in the PCA space
+   */
+  invert(dataset) {
+    dataset = Matrix.checkMatrix(dataset);
+
+    var inverse = dataset.mmul(this.U.transpose());
+
+    if (this.center) {
+      if (this.scale) {
+        inverse.mulRowVector(this.stdevs);
+      }
+      inverse.addRowVector(this.means);
+    }
+
+    return inverse;
+  }
+
+
+  /**
    * Returns the proportion of variance for each component
    * @return {[number]}
    */

@@ -22,6 +22,7 @@ declare module 'ml-pca' {
     constructor(dataset: number[][] | Matrix, options?: IPCAOptions);
     static load(model: IPCAModel): PCA;
     predict(dataset: number[][] | Matrix, options?: IPredictOptions): Matrix;
+    invert(dataset: number[][] | Matrix): Matrix;
     getExplainedVariance(): number[];
     getCumulativeVariance(): number[];
     getEigenvectors(): Matrix;
