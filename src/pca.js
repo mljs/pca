@@ -5,8 +5,8 @@ import { Matrix, MatrixTransposeView, EVD, SVD, NIPALS } from 'ml-matrix';
  * @param {Matrix} dataset - dataset or covariance matrix.
  * @param {Object} [options]
  * @param {boolean} [options.isCovarianceMatrix=false] - true if the dataset is a covariance matrix.
- * @param {boolean} [options.method='SVD'] - select which method to use: SVD (default), covarianceMatrirx or NIPALS.
- * @param {boolean} [options.nCompNIPALS=2] - number of components to be computed with NIPALS.
+ * @param {string} [options.method='SVD'] - select which method to use: SVD (default), covarianceMatrirx or NIPALS.
+ * @param {number} [options.nCompNIPALS=2] - number of components to be computed with NIPALS.
  * @param {boolean} [options.center=true] - should the data be centered (subtract the mean).
  * @param {boolean} [options.scale=false] - should the data be scaled (divide by the standard deviation).
  * @param {boolean} [options.ignoreZeroVariance=false] - ignore columns with zero variance if `scale` is `true`.
