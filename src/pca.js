@@ -22,7 +22,7 @@ export class PCA {
       this.U = Matrix.checkMatrix(model.U);
       this.S = model.S;
       this.R = model.R;
-      this.excludedFeatures = model.excludedFeatures;
+      this.excludedFeatures = model.excludedFeatures || [];
       return;
     }
 
@@ -213,6 +213,7 @@ export class PCA {
       stdevs: this.stdevs,
       U: this.U,
       S: this.S,
+      excludedFeatures: this.excludedFeatures,
     };
   }
 
