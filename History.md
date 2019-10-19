@@ -1,3 +1,12 @@
+## [4.0.1](https://github.com/mljs/pca/compare/v4.0.0...v4.0.1) (2019-10-19)
+
+
+### Bug Fixes
+
+* save excludedFeatures in the model and default to empty array ([4a33387](https://github.com/mljs/pca/commit/4a333878383cfa2137fb20ea2868aa6506fdf507))
+
+
+
 # [4.0.0](https://github.com/mljs/pca/compare/v3.0.0...v4.0.0) (2019-07-21)
 
 
