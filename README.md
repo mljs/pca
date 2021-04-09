@@ -1,11 +1,23 @@
 # ml-pca
 
+Principal component analysis (PCA).
+
+<h3 align="center">
+
+  <a href="https://www.zakodium.com">
+    <img src="https://www.zakodium.com/brand/zakodium-logo-white.svg" width="50" alt="Zakodium logo" />
+  </a>
+
+  <p>
+    Maintained by <a href="https://www.zakodium.com">Zakodium</a>
+  </p>
+
 [![NPM version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
 [![David deps][david-image]][david-url]
 [![npm download][download-image]][download-url]
 
-Principal component analysis (PCA).
+</h3>
 
 ## Installation
 
@@ -14,8 +26,8 @@ Principal component analysis (PCA).
 ## Usage
 
 ```js
-const { PCA } = require('ml-pca');
-const dataset = require('ml-dataset-iris').getNumbers();
+const { PCA } = require("ml-pca");
+const dataset = require("ml-dataset-iris").getNumbers();
 // dataset is a two-dimensional array where rows represent the samples and columns the features
 const pca = new PCA(dataset);
 console.log(pca.getExplainedVariance());
@@ -25,7 +37,10 @@ console.log(pca.getExplainedVariance());
   0.017102609807929704,
   0.005212183873275558 ]
 */
-const newPoints = [[4.9, 3.2, 1.2, 0.4], [5.4, 3.3, 1.4, 0.9]];
+const newPoints = [
+  [4.9, 3.2, 1.2, 0.4],
+  [5.4, 3.3, 1.4, 0.9],
+];
 console.log(pca.predict(newPoints)); // project new points into the PCA space
 /*
 [
