@@ -75,7 +75,9 @@ export class PCA {
         const singularValues = svd.diagonal;
         const eigenvalues = [];
         for (const singularValue of singularValues) {
-          eigenvalues.push((singularValue * singularValue) / (dataset.rows - 1));
+          eigenvalues.push(
+            (singularValue * singularValue) / (dataset.rows - 1),
+          );
         }
         this.S = eigenvalues;
         break;
@@ -119,7 +121,7 @@ export class PCA {
         dataset.divRowVector(this.stdevs);
       }
     }
-    var predictions = dataset.mmul(this.U);
+    let predictions = dataset.mmul(this.U);
     return predictions.subMatrix(0, predictions.rows - 1, 0, nComponents - 1);
   }
 
@@ -131,7 +133,7 @@ export class PCA {
   invert(dataset) {
     dataset = Matrix.checkMatrix(dataset);
 
-    var inverse = dataset.mmul(this.U.transpose());
+    let inverse = dataset.mmul(this.U.transpose());
 
     if (this.center) {
       if (this.scale) {
@@ -143,13 +145,12 @@ export class PCA {
     return inverse;
   }
 
-
   /**
    * Returns the proportion of variance for each component
    * @return {[number]}
    */
   getExplainedVariance() {
-    var sum = 0;
+    let sum = 0;
     for (const s of this.S) {
       sum += s;
     }
@@ -161,8 +162,8 @@ export class PCA {
    * @return {[number]}
    */
   getCumulativeVariance() {
-    var explained = this.getExplainedVariance();
-    for (var i = 1; i < explained.length; i++) {
+    let explained = this.getExplainedVariance();
+    for (let i = 1; i < explained.length; i++) {
       explained[i] += explained[i - 1];
     }
     return explained;

@@ -1,8 +1,8 @@
 // Ref: http://www.r-bloggers.com/computing-and-visualizing-pca-in-r/
 
-import { Matrix } from 'ml-matrix';
-import { getNumbers } from 'ml-dataset-iris';
 import { toBeDeepCloseTo } from 'jest-matcher-deep-close-to';
+import { getNumbers } from 'ml-dataset-iris';
+import { Matrix } from 'ml-matrix';
 
 import { PCA } from '../pca';
 
@@ -25,9 +25,9 @@ const expectedLoadingsNIPALS = [
 ];
 
 describe('iris dataset test method covarianceMatrix', function () {
-  var pca = new PCA(iris, { scale: true, method: 'covarianceMatrix' });
+  let pca = new PCA(iris, { scale: true, method: 'covarianceMatrix' });
   it('loadings', function () {
-    var loadings = pca
+    let loadings = pca
       .getLoadings()
       .to2DArray()
       .map((x) => x.map((y) => Math.abs(y)));
@@ -37,14 +37,16 @@ describe('iris dataset test method covarianceMatrix', function () {
 
 describe('iris dataset test wrong method', function () {
   it('wrong method', function () {
-    expect(() => new PCA(iris, { scale: true, method: 'variance' })).toThrow('unknown method: variance');
+    expect(() => new PCA(iris, { scale: true, method: 'variance' })).toThrow(
+      'unknown method: variance',
+    );
   });
 });
 
 describe('iris dataset', function () {
-  var pca = new PCA(iris, { scale: true, method: 'SVD' });
+  let pca = new PCA(iris, { scale: true, method: 'SVD' });
   it('loadings', function () {
-    var loadings = pca
+    let loadings = pca
       .getLoadings()
       .to2DArray()
       .map((x) => x.map((y) => Math.abs(y)));
@@ -69,43 +71,50 @@ describe('iris dataset', function () {
     );
   });
   it('prediction', function () {
-    var pred = pca.predict(iris.slice(0, 2));
+    let pred = pca.predict(iris.slice(0, 2));
     expect(pred.to2DArray()).toBeDeepCloseTo(
-      [[-2.257, -0.478, 0.127, -0.024], [-2.074, 0.672, 0.233, -0.103]],
+      [
+        [-2.257, -0.478, 0.127, -0.024],
+        [-2.074, 0.672, 0.233, -0.103],
+      ],
       3,
     );
   });
   it('inverting scaled', () => {
-    var input = iris.slice(0, 2);
-    var pred = pca.predict(input);
+    let input = iris.slice(0, 2);
+    let pred = pca.predict(input);
 
-    var inv = pca.invert(pred);
+    let inv = pca.invert(pred);
 
     expect(inv.to2DArray()).toBeDeepCloseTo(input);
   });
   it('inverting not scaled', () => {
-    var dataset = [[1, 2, 3], [0, 3, 5], [2, 2, 2]];
-    var newpca = new PCA(dataset);
-    var pred = newpca.predict(dataset);
+    let dataset = [
+      [1, 2, 3],
+      [0, 3, 5],
+      [2, 2, 2],
+    ];
+    let newpca = new PCA(dataset);
+    let pred = newpca.predict(dataset);
 
-    var inv = newpca.invert(pred);
+    let inv = newpca.invert(pred);
 
     expect(inv.to2DArray()).toBeDeepCloseTo(dataset);
   });
 });
 
 describe('iris dataset with provided covariance matrix', function () {
-  var dataset = new Matrix(iris);
-  var mean = dataset.mean('column');
-  var stdevs = dataset.standardDeviation('column', { mean });
+  let dataset = new Matrix(iris);
+  let mean = dataset.mean('column');
+  let stdevs = dataset.standardDeviation('column', { mean });
   dataset.subRowVector(mean).divRowVector(stdevs);
-  var covarianceMatrix = dataset
+  let covarianceMatrix = dataset
     .transpose()
     .mmul(dataset)
     .divS(dataset.rows - 1);
-  var pca = new PCA(covarianceMatrix, { isCovarianceMatrix: true });
+  let pca = new PCA(covarianceMatrix, { isCovarianceMatrix: true });
   it('loadings', function () {
-    var loadings = pca
+    let loadings = pca
       .getLoadings()
       .to2DArray()
       .map((x) => x.map((y) => Math.abs(y)));
@@ -114,9 +123,9 @@ describe('iris dataset with provided covariance matrix', function () {
 });
 
 describe('iris dataset with computed covariance matrix', function () {
-  var pca = new PCA(iris, { scale: true, useCovarianceMatrix: true });
+  let pca = new PCA(iris, { scale: true, useCovarianceMatrix: true });
   it('loadings', function () {
-    var loadings = pca
+    let loadings = pca
       .getLoadings()
       .to2DArray()
       .map((x) => x.map((y) => Math.abs(y)));
@@ -125,7 +134,7 @@ describe('iris dataset with computed covariance matrix', function () {
 });
 
 describe('iris dataset and nipals', function () {
-  var pca = new PCA(iris, {
+  let pca = new PCA(iris, {
     scale: true,
     method: 'NIPALS',
     nCompNIPALS: 4,
@@ -144,11 +153,7 @@ describe('iris dataset and nipals', function () {
   });
 
   it('loadings should be orthogonal', function () {
-    let m = pca
-      .getLoadings()
-      .transpose()
-      .mmul(pca.getLoadings())
-      .round();
+    let m = pca.getLoadings().transpose().mmul(pca.getLoadings()).round();
     expect(m.sub(Matrix.eye(4, 4)).sum()).toStrictEqual(0);
   });
 
@@ -195,7 +200,7 @@ describe('iris dataset and nipals', function () {
 });
 
 describe('iris dataset and nipals default nCompNIPALS', function () {
-  var pca = new PCA(iris, {
+  let pca = new PCA(iris, {
     scale: true,
     method: 'NIPALS',
     useCovarianceMatrix: false,
@@ -207,9 +212,12 @@ describe('iris dataset and nipals default nCompNIPALS', function () {
   });
 
   it('prediction', () => {
-    var pred = pca.predict(iris.slice(0, 2));
+    let pred = pca.predict(iris.slice(0, 2));
     expect(pred.to2DArray()).toBeDeepCloseTo(
-      [[-2.257, 0.478], [-2.074, -0.672]],
+      [
+        [-2.257, 0.478],
+        [-2.074, -0.672],
+      ],
       3,
     );
   });

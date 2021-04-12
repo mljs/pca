@@ -1,7 +1,7 @@
 import { PCA } from '../pca';
 
 describe('PCA algorithm', function () {
-  var testDataset = [
+  let testDataset = [
     [3.38156266663556, 3.38911268489207],
     [4.52787538040321, 5.85417810116941],
     [2.65568186873946, 4.41199471748479],
@@ -54,62 +54,73 @@ describe('PCA algorithm', function () {
     [5.11795499426461, 6.08507386392396],
   ];
 
-  var pca = new PCA(testDataset, {
+  let pca = new PCA(testDataset, {
     scale: true,
   });
 
   it('PCA Main test', function () {
-    var U = [[0.7071, 0.7071], [0.7071, -0.7071]];
-    var S = [1.73553, 0.2644696];
+    let U = [
+      [0.7071, 0.7071],
+      [0.7071, -0.7071],
+    ];
+    let S = [1.73553, 0.2644696];
 
-    var currentU = pca.getEigenvectors();
-    var currentS = pca.getEigenvalues();
+    let currentU = pca.getEigenvectors();
+    let currentS = pca.getEigenvalues();
 
-    for (var i = 0; i < 2; ++i) {
-      for (var j = 0; j < 2; ++j) {
+    for (let i = 0; i < 2; ++i) {
+      for (let j = 0; j < 2; ++j) {
         expect(currentU.get(i, j)).toBeCloseTo(U[i][j], 3);
       }
     }
 
-    for (i = 0; i < 2; ++i) {
+    for (let i = 0; i < 2; ++i) {
       expect(currentS[i]).toBeCloseTo(S[i], 3);
     }
   });
 
   it('Projection method', function () {
-    var result = pca.predict(testDataset, 1);
+    let result = pca.predict(testDataset, 1);
     expect(result.get(0, 0)).toBeCloseTo(-1.481274, 5);
   });
 
   it('Variance explained method', function () {
-    var varianceExplained = pca.getExplainedVariance();
+    let varianceExplained = pca.getExplainedVariance();
     expect(varianceExplained[0]).toBeCloseTo(0.8678, 4);
     expect(varianceExplained[1]).toBeCloseTo(0.1322, 4);
   });
 
   it('Export and import', function () {
-    var model = JSON.stringify(pca.toJSON());
-    var newpca = PCA.load(JSON.parse(model));
+    let model = JSON.stringify(pca.toJSON());
+    let newpca = PCA.load(JSON.parse(model));
 
-    var U = [[0.7071, 0.7071], [0.7071, -0.7071]];
-    var S = [1.73553, 0.2644696];
+    let U = [
+      [0.7071, 0.7071],
+      [0.7071, -0.7071],
+    ];
+    let S = [1.73553, 0.2644696];
 
-    var currentU = newpca.getEigenvectors();
-    var currentS = newpca.getEigenvalues();
+    let currentU = newpca.getEigenvectors();
+    let currentS = newpca.getEigenvalues();
 
-    for (var i = 0; i < 2; ++i) {
-      for (var j = 0; j < 2; ++j) {
+    for (let i = 0; i < 2; ++i) {
+      for (let j = 0; j < 2; ++j) {
         expect(currentU.get(i, j)).toBeCloseTo(U[i][j], 3);
       }
     }
 
-    for (i = 0; i < 2; ++i) {
+    for (let i = 0; i < 2; ++i) {
       expect(currentS[i]).toBeCloseTo(S[i], 3);
     }
   });
 
   it('Standardization error with constant column', function () {
-    let dataset = [[1, 2, 3.7], [1, 3, 3.2], [1, 2.5, 3.1], [1, 2.1, 3]];
+    let dataset = [
+      [1, 2, 3.7],
+      [1, 3, 3.2],
+      [1, 2.5, 3.1],
+      [1, 2.1, 3],
+    ];
     expect(() => new PCA(dataset, { scale: true })).toThrow(
       /standard deviation is zero at index 0/,
     );
@@ -129,8 +140,12 @@ describe('PCA algorithm', function () {
   });
 
   it('Test number components in function predict', function () {
-    var dataset = [[1, 2, 0], [3, 4, 0], [5, 6, 0]];
-    var newpca = new PCA(dataset);
+    let dataset = [
+      [1, 2, 0],
+      [3, 4, 0],
+      [5, 6, 0],
+    ];
+    let newpca = new PCA(dataset);
     expect(newpca.predict(dataset, { nComponents: 2 }).columns).toBe(2);
   });
 
@@ -140,6 +155,15 @@ describe('PCA algorithm', function () {
   });
 
   it('should throw on wrong method', () => {
-    expect(() => new PCA([[0, 1], [1, 0]], { method: 'XXX ' })).toThrow(/unknown method: XXX/);
+    expect(
+      () =>
+        new PCA(
+          [
+            [0, 1],
+            [1, 0],
+          ],
+          { method: 'XXX ' },
+        ),
+    ).toThrow(/unknown method: XXX/);
   });
 });
