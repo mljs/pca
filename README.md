@@ -13,8 +13,7 @@ Principal component analysis (PCA).
   </p>
 
 [![NPM version][npm-image]][npm-url]
-[![build status][travis-image]][travis-url]
-[![David deps][david-image]][david-url]
+[![build status][ci-image]][ci-url]
 [![npm download][download-image]][download-url]
 
 </h3>
@@ -26,8 +25,8 @@ Principal component analysis (PCA).
 ## Usage
 
 ```js
-const { PCA } = require("ml-pca");
-const dataset = require("ml-dataset-iris").getNumbers();
+const { PCA } = require('ml-pca');
+const dataset = require('ml-dataset-iris').getNumbers();
 // dataset is a two-dimensional array where rows represent the samples and columns the features
 const pca = new PCA(dataset);
 console.log(pca.getExplainedVariance());
@@ -61,11 +60,9 @@ console.log(pca.predict(newPoints)); // project new points into the PCA space
 
 [MIT](./LICENSE)
 
-[npm-image]: https://img.shields.io/npm/v/ml-pca.svg?style=flat-square
+[npm-image]: https://img.shields.io/npm/v/ml-pca.svg
 [npm-url]: https://npmjs.org/package/ml-pca
-[travis-image]: https://img.shields.io/travis/mljs/pca/master.svg?style=flat-square
-[travis-url]: https://travis-ci.org/mljs/pca
-[david-image]: https://img.shields.io/david/mljs/pca.svg?style=flat-square
-[david-url]: https://david-dm.org/mljs/pca
-[download-image]: https://img.shields.io/npm/dm/ml-pca.svg?style=flat-square
+[ci-image]: https://github.com/mljs/pca/workflows/Node.js%20CI/badge.svg?branch=master
+[ci-url]: https://github.com/mljs/pca/actions?query=workflow%3A%22Node.js+CI%22
+[download-image]: https://img.shields.io/npm/dm/ml-pca.svg
 [download-url]: https://npmjs.org/package/ml-pca
