@@ -1,3 +1,5 @@
+### [4.0.2](https://github.com/mljs/pca/compare/v4.0.1...v4.0.2) (2021-04-12)
+
 ## [4.0.1](https://github.com/mljs/pca/compare/v4.0.0...v4.0.1) (2019-10-19)
 
 
