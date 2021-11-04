@@ -53,6 +53,7 @@
     "ml-matrix": "^6.8.0"
   },
   "devDependencies": {
+    "@types/jest": "^27.0.2",
     "eslint": "^8.1.0",
     "eslint-config-cheminfo-typescript": "^10.2.2",
     "eslint-plugin-import": "^2.25.2",

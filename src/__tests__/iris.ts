@@ -111,7 +111,7 @@ describe('iris dataset with provided covariance matrix', () => {
   let covarianceMatrix = dataset
     .transpose()
     .mmul(dataset)
-    .divS(dataset.rows - 1);
+    .div(dataset.rows - 1);
   let pca = new PCA(covarianceMatrix, { isCovarianceMatrix: true });
   it('loadings', () => {
     let loadings = pca
@@ -123,7 +123,11 @@ describe('iris dataset with provided covariance matrix', () => {
 });
 
 describe('iris dataset with computed covariance matrix', () => {
-  let pca = new PCA(iris, { scale: true, useCovarianceMatrix: true });
+  const subData = iris.slice(0, 4);
+  let pca = new PCA(subData, {
+    scale: true,
+    isCovarianceMatrix: true,
+  });
   it('loadings', () => {
     let loadings = pca
       .getLoadings()
@@ -138,7 +142,7 @@ describe('iris dataset and nipals', () => {
     scale: true,
     method: 'NIPALS',
     nCompNIPALS: 4,
-    useCovarianceMatrix: false,
+    isCovarianceMatrix: false,
   });
 
   it('loadings', () => {
@@ -203,7 +207,7 @@ describe('iris dataset and nipals default nCompNIPALS', () => {
   let pca = new PCA(iris, {
     scale: true,
     method: 'NIPALS',
-    useCovarianceMatrix: false,
+    isCovarianceMatrix: false,
   });
 
   it('eigenvalues', () => {

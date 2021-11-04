@@ -80,7 +80,7 @@ describe('PCA algorithm', () => {
   });
 
   it('Projection method', () => {
-    let result = pca.predict(testDataset, 1);
+    let result = pca.predict(testDataset, { nComponents: 1 });
     expect(result.get(0, 0)).toBeCloseTo(-1.481274, 5);
   });
 

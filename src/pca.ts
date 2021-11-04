@@ -1,4 +1,13 @@
-import { Matrix, MatrixTransposeView, EVD, SVD, NIPALS } from 'ml-matrix';
+import {
+  Matrix,
+  MatrixTransposeView,
+  EVD,
+  SVD,
+  NIPALS,
+  AbstractMatrix,
+} from 'ml-matrix';
+
+type MaybeMatrix = AbstractMatrix | number[][];
 
 /**
  * Creates new PCA (Principal Component Analysis) from the dataset
@@ -12,9 +21,28 @@ import { Matrix, MatrixTransposeView, EVD, SVD, NIPALS } from 'ml-matrix';
  * @param {boolean} [options.ignoreZeroVariance=false] - ignore columns with zero variance if `scale` is `true`.
  * */
 export class PCA {
-  constructor(dataset, options = {}) {
-    if (dataset === true) {
-      const model = options;
+  center: boolean;
+  scale: boolean;
+  excludedFeatures: number[];
+  U: Matrix | null = null;
+  S: number[] | null = null;
+  R: any;
+  means: number[] | null;
+  stdevs: number[] | null;
+
+  constructor(
+    dataset?: MaybeMatrix,
+    options: {
+      isCovarianceMatrix?: boolean;
+      method?: string;
+      nCompNIPALS?: number;
+      center?: boolean;
+      scale?: boolean;
+      ignoreZeroVariance?: boolean;
+    } = {},
+    model?,
+  ) {
+    if (model) {
       this.center = model.center;
       this.scale = model.scale;
       this.means = model.means;
@@ -25,8 +53,10 @@ export class PCA {
       this.excludedFeatures = model.excludedFeatures || [];
       return;
     }
-
-    dataset = new Matrix(dataset);
+    let datasetMatrix: Matrix;
+    if (Array.isArray(dataset))
+      datasetMatrix = new Matrix(dataset as number[][]);
+    else datasetMatrix = new Matrix(dataset as Matrix);
 
     const {
       isCovarianceMatrix = false,
@@ -45,26 +75,26 @@ export class PCA {
 
     if (isCovarianceMatrix) {
       // User provided a covariance matrix instead of dataset.
-      this._computeFromCovarianceMatrix(dataset);
+      this._computeFromCovarianceMatrix(datasetMatrix);
       return;
     }
 
-    this._adjust(dataset, ignoreZeroVariance);
+    this._adjust(datasetMatrix, ignoreZeroVariance);
     switch (method) {
       case 'covarianceMatrix': {
         // User provided a dataset but wants us to compute and use the covariance matrix.
-        const covarianceMatrix = new MatrixTransposeView(dataset)
-          .mmul(dataset)
-          .div(dataset.rows - 1);
+        const covarianceMatrix = new MatrixTransposeView(datasetMatrix)
+          .mmul(datasetMatrix)
+          .div(datasetMatrix.rows - 1);
         this._computeFromCovarianceMatrix(covarianceMatrix);
         break;
       }
       case 'NIPALS': {
-        this._computeWithNIPALS(dataset, nCompNIPALS);
+        this._computeWithNIPALS(datasetMatrix, nCompNIPALS);
         break;
       }
       case 'SVD': {
-        const svd = new SVD(dataset, {
+        const svd = new SVD(datasetMatrix, {
           computeLeftSingularVectors: false,
           computeRightSingularVectors: true,
           autoTranspose: true,
@@ -73,10 +103,10 @@ export class PCA {
         this.U = svd.rightSingularVectors;
 
         const singularValues = svd.diagonal;
-        const eigenvalues = [];
+        const eigenvalues: Array<number> = [];
         for (const singularValue of singularValues) {
           eigenvalues.push(
-            (singularValue * singularValue) / (dataset.rows - 1),
+            (singularValue * singularValue) / (datasetMatrix.rows - 1),
           );
         }
         this.S = eigenvalues;
@@ -93,14 +123,14 @@ export class PCA {
    * @param {Object} model
    * @return {PCA}
    */
-  static load(model) {
+  static load(model: any): PCA {
     if (typeof model.name !== 'string') {
       throw new TypeError('model must have a name property');
     }
     if (model.name !== 'PCA') {
       throw new RangeError(`invalid model: ${model.name}`);
     }
-    return new PCA(true, model);
+    return new PCA(undefined, undefined, model);
   }
 
   /**
@@ -109,19 +139,25 @@ export class PCA {
    * @param {Object} options
    * @return {Matrix} dataset projected in the PCA space
    */
-  predict(dataset, options = {}) {
-    const { nComponents = this.U.columns } = options;
-    dataset = new Matrix(dataset);
+  predict(
+    dataset: MaybeMatrix,
+    options: { nComponents?: number } = {},
+  ): Matrix {
+    const { nComponents = (this.U as Matrix).columns } = options;
+    let datasetmatrix: Matrix;
+    if (Array.isArray(dataset))
+      datasetmatrix = new Matrix(dataset as number[][]);
+    else datasetmatrix = new Matrix(dataset as Matrix);
     if (this.center) {
-      dataset.subRowVector(this.means);
+      datasetmatrix.subRowVector(this.means as number[]);
       if (this.scale) {
         for (let i of this.excludedFeatures) {
-          dataset.removeColumn(i);
+          datasetmatrix.removeColumn(i);
         }
-        dataset.divRowVector(this.stdevs);
+        datasetmatrix.divRowVector(this.stdevs as number[]);
       }
     }
-    let predictions = dataset.mmul(this.U);
+    let predictions = datasetmatrix.mmul(this.U as Matrix);
     return predictions.subMatrix(0, predictions.rows - 1, 0, nComponents - 1);
   }
 
@@ -130,16 +166,16 @@ export class PCA {
    * @param {Matrix} dataset
    * @return {Matrix} dataset projected in the PCA space
    */
-  invert(dataset) {
+  invert(dataset: Matrix): Matrix {
     dataset = Matrix.checkMatrix(dataset);
 
-    let inverse = dataset.mmul(this.U.transpose());
+    let inverse = dataset.mmul((this.U as Matrix).transpose());
 
     if (this.center) {
       if (this.scale) {
-        inverse.mulRowVector(this.stdevs);
+        inverse.mulRowVector(this.stdevs as number[]);
       }
-      inverse.addRowVector(this.means);
+      inverse.addRowVector(this.means as number[]);
     }
 
     return inverse;
@@ -149,20 +185,22 @@ export class PCA {
    * Returns the proportion of variance for each component
    * @return {[number]}
    */
-  getExplainedVariance() {
+  getExplainedVariance(): number[] {
     let sum = 0;
-    for (const s of this.S) {
-      sum += s;
+    if (this.S) {
+      for (const s of this.S) {
+        sum += s;
+      }
     }
-    return this.S.map((value) => value / sum);
+    return this.S?.map((value) => value / sum) as number[];
   }
 
   /**
    * Returns the cumulative proportion of variance
    * @return {[number]}
    */
-  getCumulativeVariance() {
-    let explained = this.getExplainedVariance();
+  getCumulativeVariance(): number[] {
+    let explained = this.getExplainedVariance() as number[];
     for (let i = 1; i < explained.length; i++) {
       explained[i] += explained[i - 1];
     }
@@ -173,39 +211,39 @@ export class PCA {
    * Returns the Eigenvectors of the covariance matrix
    * @returns {Matrix}
    */
-  getEigenvectors() {
-    return this.U;
+  getEigenvectors(): Matrix {
+    return this.U as Matrix;
   }
 
   /**
    * Returns the Eigenvalues (on the diagonal)
    * @returns {[number]}
    */
-  getEigenvalues() {
-    return this.S;
+  getEigenvalues(): number[] {
+    return this.S as number[];
   }
 
   /**
    * Returns the standard deviations of the principal components
    * @returns {[number]}
    */
-  getStandardDeviations() {
-    return this.S.map((x) => Math.sqrt(x));
+  getStandardDeviations(): number[] {
+    return (this.S as number[]).map((x) => Math.sqrt(x));
   }
 
   /**
    * Returns the loadings matrix
    * @return {Matrix}
    */
-  getLoadings() {
-    return this.U.transpose();
+  getLoadings(): Matrix {
+    return (this.U as Matrix).transpose();
   }
 
   /**
    * Export the current model to a JSON object
    * @return {Object} model
    */
-  toJSON() {
+  toJSON(): any {
     return {
       name: 'PCA',
       center: this.center,
@@ -218,7 +256,7 @@ export class PCA {
     };
   }
 
-  _adjust(dataset, ignoreZeroVariance) {
+  _adjust(dataset: Matrix, ignoreZeroVariance: boolean) {
     if (this.center) {
       const mean = dataset.mean('column');
       const stdevs = this.scale
@@ -227,11 +265,11 @@ export class PCA {
       this.means = mean;
       dataset.subRowVector(mean);
       if (this.scale) {
-        for (let i = 0; i < stdevs.length; i++) {
-          if (stdevs[i] === 0) {
+        for (let i = 0; i < (stdevs as number[]).length; i++) {
+          if ((stdevs as number[])[i] === 0) {
             if (ignoreZeroVariance) {
               dataset.removeColumn(i);
-              stdevs.splice(i, 1);
+              (stdevs as number[]).splice(i, 1);
               this.excludedFeatures.push(i);
               i--;
             } else {
@@ -242,20 +280,20 @@ export class PCA {
           }
         }
         this.stdevs = stdevs;
-        dataset.divRowVector(stdevs);
+        dataset.divRowVector(stdevs as number[]);
       }
     }
   }
 
-  _computeFromCovarianceMatrix(dataset) {
-    const evd = new EVD(dataset, { assumeSymmetric: true });
+  _computeFromCovarianceMatrix(dataset: MaybeMatrix) {
+    const evd = new EVD(dataset as number[][], { assumeSymmetric: true });
     this.U = evd.eigenvectorMatrix;
     this.U.flipRows();
     this.S = evd.realEigenvalues;
     this.S.reverse();
   }
 
-  _computeWithNIPALS(dataset, nCompNIPALS) {
+  _computeWithNIPALS(dataset: Matrix, nCompNIPALS: number) {
     this.U = new Matrix(nCompNIPALS, dataset.columns);
     this.S = [];
 
