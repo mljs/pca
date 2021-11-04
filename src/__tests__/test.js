@@ -1,6 +1,6 @@
 import { PCA } from '../pca';
 
-describe('PCA algorithm', function () {
+describe('PCA algorithm', () => {
   let testDataset = [
     [3.38156266663556, 3.38911268489207],
     [4.52787538040321, 5.85417810116941],
@@ -58,7 +58,7 @@ describe('PCA algorithm', function () {
     scale: true,
   });
 
-  it('PCA Main test', function () {
+  it('PCA Main test', () => {
     let U = [
       [0.7071, 0.7071],
       [0.7071, -0.7071],
@@ -79,18 +79,18 @@ describe('PCA algorithm', function () {
     }
   });
 
-  it('Projection method', function () {
+  it('Projection method', () => {
     let result = pca.predict(testDataset, 1);
     expect(result.get(0, 0)).toBeCloseTo(-1.481274, 5);
   });
 
-  it('Variance explained method', function () {
+  it('Variance explained method', () => {
     let varianceExplained = pca.getExplainedVariance();
     expect(varianceExplained[0]).toBeCloseTo(0.8678, 4);
     expect(varianceExplained[1]).toBeCloseTo(0.1322, 4);
   });
 
-  it('Export and import', function () {
+  it('Export and import', () => {
     let model = JSON.stringify(pca.toJSON());
     let newpca = PCA.load(JSON.parse(model));
 
@@ -114,7 +114,7 @@ describe('PCA algorithm', function () {
     }
   });
 
-  it('Standardization error with constant column', function () {
+  it('Standardization error with constant column', () => {
     let dataset = [
       [1, 2, 3.7],
       [1, 3, 3.2],
@@ -126,7 +126,7 @@ describe('PCA algorithm', function () {
     );
   });
 
-  it('Standardization error with constant column - ignoreZeroVariance', function () {
+  it('Standardization error with constant column - ignoreZeroVariance', () => {
     let dataset = [
       [2, 1, 0, 3.7],
       [3, 1, 0, 3.2],
@@ -135,11 +135,11 @@ describe('PCA algorithm', function () {
     ];
     let newpca = new PCA(dataset, { scale: true, ignoreZeroVariance: true });
     expect(newpca.getLoadings().rows).toBe(2);
-    expect(newpca.predict(dataset).rows).toStrictEqual(4);
-    expect(newpca.predict(dataset).columns).toStrictEqual(2);
+    expect(newpca.predict(dataset).rows).toBe(4);
+    expect(newpca.predict(dataset).columns).toBe(2);
   });
 
-  it('Test number components in function predict', function () {
+  it('Test number components in function predict', () => {
     let dataset = [
       [1, 2, 0],
       [3, 4, 0],
