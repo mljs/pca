@@ -21,16 +21,17 @@ type MaybeMatrix = AbstractMatrix | number[][];
  * @param {boolean} [options.ignoreZeroVariance=false] - ignore columns with zero variance if `scale` is `true`.
  * */
 export class PCA {
-  center: boolean;
-  scale: boolean;
-  excludedFeatures: number[];
-  U: Matrix | null = null;
-  S: number[] | null = null;
-  R: any;
-  means: number[] | null;
-  stdevs: number[] | null;
+  private center: boolean;
+  private scale: boolean;
+  private excludedFeatures: number[];
+  /* eslint-disable @typescript-eslint/naming-convention */
+  private U: Matrix | null = null;
+  private S: number[] | null = null;
+  private R: any;
+  private means: number[] | null;
+  private stdevs: number[] | null;
 
-  constructor(
+  public constructor(
     dataset?: MaybeMatrix,
     options: {
       isCovarianceMatrix?: boolean;
@@ -54,9 +55,11 @@ export class PCA {
       return;
     }
     let datasetMatrix: Matrix;
-    if (Array.isArray(dataset))
-      datasetMatrix = new Matrix(dataset as number[][]);
-    else datasetMatrix = new Matrix(dataset as Matrix);
+    if (Array.isArray(dataset)) {
+      datasetMatrix = new Matrix(dataset);
+    } else {
+      datasetMatrix = new Matrix(dataset as Matrix);
+    }
 
     const {
       isCovarianceMatrix = false,
@@ -123,7 +126,7 @@ export class PCA {
    * @param {Object} model
    * @return {PCA}
    */
-  static load(model: any): PCA {
+  public static load(model: any): PCA {
     if (typeof model.name !== 'string') {
       throw new TypeError('model must have a name property');
     }
@@ -139,15 +142,17 @@ export class PCA {
    * @param {Object} options
    * @return {Matrix} dataset projected in the PCA space
    */
-  predict(
+  public predict(
     dataset: MaybeMatrix,
     options: { nComponents?: number } = {},
   ): Matrix {
     const { nComponents = (this.U as Matrix).columns } = options;
-    let datasetmatrix: Matrix;
-    if (Array.isArray(dataset))
-      datasetmatrix = new Matrix(dataset as number[][]);
-    else datasetmatrix = new Matrix(dataset as Matrix);
+    let datasetmatrix;
+    if (Array.isArray(dataset)) {
+      datasetmatrix = new Matrix(dataset);
+    } else {
+      datasetmatrix = new Matrix(dataset);
+    }
     if (this.center) {
       datasetmatrix.subRowVector(this.means as number[]);
       if (this.scale) {
@@ -166,7 +171,7 @@ export class PCA {
    * @param {Matrix} dataset
    * @return {Matrix} dataset projected in the PCA space
    */
-  invert(dataset: Matrix): Matrix {
+  public invert(dataset: Matrix): Matrix {
     dataset = Matrix.checkMatrix(dataset);
 
     let inverse = dataset.mmul((this.U as Matrix).transpose());
@@ -185,7 +190,7 @@ export class PCA {
    * Returns the proportion of variance for each component
    * @return {[number]}
    */
-  getExplainedVariance(): number[] {
+  public getExplainedVariance(): number[] {
     let sum = 0;
     if (this.S) {
       for (const s of this.S) {
@@ -199,8 +204,8 @@ export class PCA {
    * Returns the cumulative proportion of variance
    * @return {[number]}
    */
-  getCumulativeVariance(): number[] {
-    let explained = this.getExplainedVariance() as number[];
+  public getCumulativeVariance(): number[] {
+    let explained = this.getExplainedVariance();
     for (let i = 1; i < explained.length; i++) {
       explained[i] += explained[i - 1];
     }
@@ -211,7 +216,7 @@ export class PCA {
    * Returns the Eigenvectors of the covariance matrix
    * @returns {Matrix}
    */
-  getEigenvectors(): Matrix {
+  public getEigenvectors(): Matrix {
     return this.U as Matrix;
   }
 
@@ -219,7 +224,7 @@ export class PCA {
    * Returns the Eigenvalues (on the diagonal)
    * @returns {[number]}
    */
-  getEigenvalues(): number[] {
+  public getEigenvalues(): number[] {
     return this.S as number[];
   }
 
@@ -227,7 +232,7 @@ export class PCA {
    * Returns the standard deviations of the principal components
    * @returns {[number]}
    */
-  getStandardDeviations(): number[] {
+  public getStandardDeviations(): number[] {
     return (this.S as number[]).map((x) => Math.sqrt(x));
   }
 
@@ -235,7 +240,7 @@ export class PCA {
    * Returns the loadings matrix
    * @return {Matrix}
    */
-  getLoadings(): Matrix {
+  public getLoadings(): Matrix {
     return (this.U as Matrix).transpose();
   }
 
@@ -243,7 +248,7 @@ export class PCA {
    * Export the current model to a JSON object
    * @return {Object} model
    */
-  toJSON(): any {
+  public toJSON() {
     return {
       name: 'PCA',
       center: this.center,
@@ -256,7 +261,7 @@ export class PCA {
     };
   }
 
-  _adjust(dataset: Matrix, ignoreZeroVariance: boolean) {
+  private _adjust(dataset: Matrix, ignoreZeroVariance: boolean) {
     if (this.center) {
       const mean = dataset.mean('column');
       const stdevs = this.scale
@@ -285,7 +290,7 @@ export class PCA {
     }
   }
 
-  _computeFromCovarianceMatrix(dataset: MaybeMatrix) {
+  private _computeFromCovarianceMatrix(dataset: MaybeMatrix) {
     const evd = new EVD(dataset as number[][], { assumeSymmetric: true });
     this.U = evd.eigenvectorMatrix;
     this.U.flipRows();
@@ -293,7 +298,7 @@ export class PCA {
     this.S.reverse();
   }
 
-  _computeWithNIPALS(dataset: Matrix, nCompNIPALS: number) {
+  private _computeWithNIPALS(dataset: Matrix, nCompNIPALS: number) {
     this.U = new Matrix(nCompNIPALS, dataset.columns);
     this.S = [];
 

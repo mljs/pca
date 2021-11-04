@@ -140,8 +140,6 @@ describe('iris dataset with computed covariance matrix', () => {
       .getLoadings()
       .to2DArray()
       .map((x) => x.map((y) => Math.abs(y)));
-    console.log(loadings);
-
     expect(loadings).toBeDeepCloseTo(expectedLoadingsSquare, 3);
   });
 });
