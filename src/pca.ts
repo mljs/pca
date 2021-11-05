@@ -9,10 +9,35 @@ import {
 
 type MaybeMatrix = AbstractMatrix | number[][];
 
+export interface PCAOptions {
+  isCovarianceMatrix?: boolean;
+  method?: 'SVD' | 'NIPALS' | 'covarianceMatrix';
+  center?: boolean;
+  scale?: boolean;
+  nCompNIPALS?: number;
+  ignoreZeroVariance?: boolean;
+}
+
+export interface PCAModel {
+  name: 'PCA';
+  center: boolean;
+  scale: boolean;
+  means: number[];
+  stdevs: number[];
+  U: Matrix;
+  S: number[];
+  R?: any;
+  excludedFeatures?: number[];
+}
+
+export interface PredictOptions {
+  nComponents?: number;
+}
+
 /**
  * Creates new PCA (Principal Component Analysis) from the dataset
- * @param {Matrix} dataset - dataset or covariance matrix.
- * @param {Object} [options]
+ * @param {MaybeMatrix} dataset - dataset or covariance matrix.
+ * @param {PCAOptions} [options]
  * @param {boolean} [options.isCovarianceMatrix=false] - true if the dataset is a covariance matrix.
  * @param {string} [options.method='SVD'] - select which method to use: SVD (default), covarianceMatrirx or NIPALS.
  * @param {number} [options.nCompNIPALS=2] - number of components to be computed with NIPALS.
@@ -33,15 +58,8 @@ export class PCA {
 
   public constructor(
     dataset?: MaybeMatrix,
-    options: {
-      isCovarianceMatrix?: boolean;
-      method?: string;
-      nCompNIPALS?: number;
-      center?: boolean;
-      scale?: boolean;
-      ignoreZeroVariance?: boolean;
-    } = {},
-    model?,
+    options: PCAOptions = {},
+    model?: PCAModel,
   ) {
     if (model) {
       this.center = model.center;
@@ -106,7 +124,7 @@ export class PCA {
         this.U = svd.rightSingularVectors;
 
         const singularValues = svd.diagonal;
-        const eigenvalues: Array<number> = [];
+        const eigenvalues: number[] = [];
         for (const singularValue of singularValues) {
           eigenvalues.push(
             (singularValue * singularValue) / (datasetMatrix.rows - 1),
@@ -116,36 +134,33 @@ export class PCA {
         break;
       }
       default: {
-        throw new Error(`unknown method: ${method}`);
+        throw new Error(`unknown method: ${method as string}`);
       }
     }
   }
 
   /**
    * Load a PCA model from JSON
-   * @param {Object} model
+   * @param {PCAModel} model
    * @return {PCA}
    */
-  public static load(model: any): PCA {
+  public static load(model: PCAModel): PCA {
     if (typeof model.name !== 'string') {
       throw new TypeError('model must have a name property');
     }
     if (model.name !== 'PCA') {
-      throw new RangeError(`invalid model: ${model.name}`);
+      throw new RangeError(`invalid model: ${model.name as string}`);
     }
     return new PCA(undefined, undefined, model);
   }
 
   /**
    * Project the dataset into the PCA space
-   * @param {Matrix} dataset
-   * @param {Object} options
+   * @param {MaybeMatrix} dataset
+   * @param {PredictOptions} options
    * @return {Matrix} dataset projected in the PCA space
    */
-  public predict(
-    dataset: MaybeMatrix,
-    options: { nComponents?: number } = {},
-  ): Matrix {
+  public predict(dataset: MaybeMatrix, options: PredictOptions = {}): Matrix {
     const { nComponents = (this.U as Matrix).columns } = options;
     let datasetmatrix;
     if (Array.isArray(dataset)) {
@@ -248,15 +263,15 @@ export class PCA {
    * Export the current model to a JSON object
    * @return {Object} model
    */
-  public toJSON() {
+  public toJSON(): PCAModel {
     return {
       name: 'PCA',
       center: this.center,
       scale: this.scale,
-      means: this.means,
-      stdevs: this.stdevs,
-      U: this.U,
-      S: this.S,
+      means: this.means as number[],
+      stdevs: this.stdevs as number[],
+      U: this.U as Matrix,
+      S: this.S as number[],
       excludedFeatures: this.excludedFeatures,
     };
   }
