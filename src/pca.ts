@@ -212,7 +212,10 @@ export class PCA {
         sum += s;
       }
     }
-    return this.S?.map((value) => value / sum) as number[];
+    if (this.S) {
+      return this.S.map((value) => value / sum);
+    }
+    return [];
   }
 
   /**
