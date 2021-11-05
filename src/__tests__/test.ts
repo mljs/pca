@@ -150,9 +150,9 @@ describe('PCA algorithm', () => {
   });
 
   it('should throw on load if wrong model', () => {
-    // @ts-ignore
+    // @ts-expect-error
     expect(() => PCA.load({})).toThrow(/model must have a name property/);
-    // @ts-ignore
+    // @ts-expect-error
     expect(() => PCA.load({ name: 'test' })).toThrow(/invalid model: test/);
   });
 
@@ -164,7 +164,7 @@ describe('PCA algorithm', () => {
             [0, 1],
             [1, 0],
           ],
-          // @ts-ignore
+          // @ts-expect-error
           { method: 'XXX ' },
         ),
     ).toThrow(/unknown method: XXX/);
