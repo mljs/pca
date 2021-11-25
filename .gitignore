@@ -1,3 +1,5 @@
 node_modules
 /pca.js
 coverage
+lib
+lib-esm

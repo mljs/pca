@@ -2,26 +2,29 @@
   "name": "ml-pca",
   "version": "4.0.2",
   "description": "Principal component analysis",
-  "main": "pca.js",
-  "module": "src/pca.js",
-  "types": "pca.d.ts",
+  "main": "lib/pca.js",
+  "module": "lib-esm/pca.js",
+  "types": "lib/pca.d.ts",
   "files": [
     "pca.js",
     "pca.d.ts",
-    "src"
+    "src",
+    "lib",
+    "lib-esm"
   ],
   "scripts": {
-    "compile": "rollup -c",
+    "check-types": "tsc --noEmit",
+    "clean": "rimraf lib lib-esm",
     "eslint": "eslint src",
     "eslint-fix": "npm run eslint -- --fix",
-    "prepack": "npm run compile",
+    "prepack": "npm run tsc",
     "prettier": "prettier --check src",
     "prettier-write": "prettier --write src",
-    "test": "npm run test-only && npm run eslint && npm run prettier",
-    "test-only": "jest --coverage"
-  },
-  "jest": {
-    "testEnvironment": "node"
+    "test": "npm run test-only && npm run eslint && npm run prettier && npm run check-types",
+    "test-only": "jest --coverage",
+    "tsc": "npm run clean && npm run tsc-cjs && npm run tsc-esm",
+    "tsc-cjs": "tsc --project tsconfig.cjs.json",
+    "tsc-esm": "tsc --project tsconfig.esm.json"
   },
   "repository": {
     "type": "git",
@@ -50,13 +53,15 @@
     "ml-matrix": "^6.8.0"
   },
   "devDependencies": {
-    "@babel/plugin-transform-modules-commonjs": "^7.16.0",
+    "@types/jest": "^27.0.2",
     "eslint": "^8.1.0",
-    "eslint-config-cheminfo": "^7.2.0",
+    "eslint-config-cheminfo-typescript": "^10.2.2",
     "jest": "^27.3.1",
     "jest-matcher-deep-close-to": "^3.0.2",
     "ml-dataset-iris": "^1.2.1",
     "prettier": "^2.4.1",
-    "rollup": "^2.59.0"
+    "rimraf": "^3.0.2",
+    "ts-jest": "^27.0.7",
+    "typescript": "^4.4.4"
   }
 }

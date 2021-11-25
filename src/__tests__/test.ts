@@ -80,7 +80,7 @@ describe('PCA algorithm', () => {
   });
 
   it('Projection method', () => {
-    let result = pca.predict(testDataset, 1);
+    let result = pca.predict(testDataset, { nComponents: 1 });
     expect(result.get(0, 0)).toBeCloseTo(-1.481274, 5);
   });
 
@@ -150,7 +150,9 @@ describe('PCA algorithm', () => {
   });
 
   it('should throw on load if wrong model', () => {
+    // @ts-expect-error
     expect(() => PCA.load({})).toThrow(/model must have a name property/);
+    // @ts-expect-error
     expect(() => PCA.load({ name: 'test' })).toThrow(/invalid model: test/);
   });
 
@@ -162,6 +164,7 @@ describe('PCA algorithm', () => {
             [0, 1],
             [1, 0],
           ],
+          // @ts-expect-error
           { method: 'XXX ' },
         ),
     ).toThrow(/unknown method: XXX/);
