@@ -44,7 +44,7 @@ describe('iris dataset test method covarianceMatrix', () => {
 
 describe('iris dataset test wrong method', () => {
   it('wrong method', () => {
-    // @ts-expect-error
+    // @ts-expect-error temporal
     expect(() => new PCA(iris, { scale: true, method: 'variance' })).toThrow(
       'unknown method: variance',
     );
