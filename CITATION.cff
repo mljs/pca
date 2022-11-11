@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: 'If you use this software, please cite it as below.'
+title: 'Javascript implementation of Principal Component Analysis (PCA)'
+abstract: 'This tool allows to reduce the dimensionality of a dataset by projecting it into a new space where the variance can be explained by most important dimensions using Javascript.'
+repository-artifact: http://cheminfo.github.io/jcampconverter/
+repository-code: https://github.com/cheminfo/jcampconverter
+authors:
+  - family-names: 'Zasso'
+    given-names: 'Michaël'
+    affiliation: 'Zakodium Sàrl, Switzerland'
+    orcid: 'https://orcid.org/0000-0001-5295-2159'
+  - family-names: 'Patiny'
+    given-names: 'Luc'
+    orcid: 'https://orcid.org/0000-0002-4943-2643'
+  - family-names: 'Wist'
+    given-names: 'Julien'
+    affiliation: 'Universidad del Valle, Cali, Colombia'
+    orcid: 'https://orcid.org/0000-0002-3416-2572'
+  - family-names: 'Kostro'
+    given-names: 'Daniel'
+    affiliation: 'Zakodium Sàrl, Switzerland'
+    orcid: 'https://orcid.org/0000-0003-3885-6579'
+license: MIT
+keywords:
+  - PCA
+  - Machine learning
+  - Unsupervised learning
+doi: 10.5281/zenodo.5091526
