@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.1.1](https://github.com/mljs/pca/compare/v4.1.0...v4.1.1) (2022-11-11)
+
+
+### Bug Fixes
+
+* update DOI of Zenodo ([fffc814](https://github.com/mljs/pca/commit/fffc814a49a369ee4e0748e17b8b8c8a8ca5ea74))
+
 ## [4.1.0](https://github.com/mljs/pca/compare/v4.0.2...v4.1.0) (2022-11-11)
 
 
