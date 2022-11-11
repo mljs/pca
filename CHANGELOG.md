@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.1.0](https://github.com/mljs/pca/compare/v4.0.2...v4.1.0) (2022-11-11)
+
+
+### Features
+
+* add citation ([677d49a](https://github.com/mljs/pca/commit/677d49aa4ab26b83afb17262cc99593332eb25ec))
+
 ### [4.0.2](https://github.com/mljs/pca/compare/v4.0.1...v4.0.2) (2021-04-12)
 
 ## [4.0.1](https://github.com/mljs/pca/compare/v4.0.0...v4.0.1) (2019-10-19)
@@ -94,6 +101,3 @@
 
 * **standardize:** optional standardization added. ([e6b7a5f](https://github.com/mljs/pca/commit/e6b7a5f))
 * **test:** 'new' added in the PCA test. ([2cdb5f5](https://github.com/mljs/pca/commit/2cdb5f5))
-
-
-
