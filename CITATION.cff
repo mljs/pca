@@ -1,0 +1,33 @@
+cff-version: 1.2.0
+message: 'If you use this software, please cite it as below.'
+title: 'Javascript implementation of JCAMP-DX converter'
+abstract: 'This package allows to convert a JCAMP-DX file to a JSON that can be further processed in javascript'
+repository-artifact: http://cheminfo.github.io/jcampconverter/
+repository-code: https://github.com/cheminfo/jcampconverter
+authors:
+  - family-names: 'Patiny'
+    given-names: 'Luc'
+    orcid: 'https://orcid.org/0000-0002-4943-2643'
+  - family-names: 'Zasso'
+    given-names: 'Michaël'
+    affiliation: 'Zakodium Sàrl, Switzerland'
+    orcid: 'https://orcid.org/0000-0001-5295-2159'
+  - family-names: 'Kostro'
+    given-names: 'Daniel'
+    affiliation: 'Zakodium Sàrl, Switzerland'
+    orcid: 'https://orcid.org/0000-0003-3885-6579'
+  - family-names: 'Bolaños'
+    given-names: 'Alejandro'
+    affiliation: 'Universidad del Valle, Cali, Colombia'
+    orcid: 'https://orcid.org/0000-0001-5933-5524'
+  - family-names: 'Wist'
+    given-names: 'Julien'
+    affiliation: 'Universidad del Valle, Cali, Colombia'
+    orcid: 'https://orcid.org/0000-0002-3416-2572'
+license: MIT
+keywords:
+  - JCAMP-DX
+  - Nuclear magnetic resonance-
+  - NMR
+  - FAIR data
+doi: 10.5281/zenodo.5091526
