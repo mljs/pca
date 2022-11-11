@@ -14,6 +14,7 @@ Principal component analysis (PCA).
 
 [![NPM version][npm-image]][npm-url]
 [![build status][ci-image]][ci-url]
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7314532.svg)](https://doi.org/10.5281/zenodo.7314532)
 [![npm download][download-image]][download-url]
 
 </h3>
