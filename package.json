@@ -1,6 +1,6 @@
 {
   "name": "ml-pca",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "description": "Principal component analysis",
   "main": "lib/pca.js",
   "module": "lib-esm/pca.js",
