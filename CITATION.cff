@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: 'If you use this software, please cite it as below.'
-title: 'Javascript implementation of JCAMP-DX converter'
-abstract: 'This package allows to convert a JCAMP-DX file to a JSON that can be further processed in javascript'
+title: 'Javascript implementation of Principal Component Analysis (PCA)'
+abstract: 'This tool allows to reduce the dimensionality of a dataset by projecting it into a new space where the variance can be explained by most important dimensions using Javascript.'
 repository-artifact: http://cheminfo.github.io/jcampconverter/
 repository-code: https://github.com/cheminfo/jcampconverter
 authors:
@@ -22,8 +22,7 @@ authors:
     orcid: 'https://orcid.org/0000-0003-3885-6579'
 license: MIT
 keywords:
-  - JCAMP-DX
-  - Nuclear magnetic resonance-
-  - NMR
-  - FAIR data
+  - PCA
+  - Machine learning
+  - Unsupervised learning
 doi: 10.5281/zenodo.5091526
