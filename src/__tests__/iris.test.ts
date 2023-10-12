@@ -1,13 +1,12 @@
 // Ref: http://www.r-bloggers.com/computing-and-visualizing-pca-in-r/
-
 import { toBeDeepCloseTo } from 'jest-matcher-deep-close-to';
 import { getNumbers } from 'ml-dataset-iris';
 import { Matrix } from 'ml-matrix';
+import { expect, describe, it } from 'vitest';
 
 import { PCA } from '../pca';
 
 expect.extend({ toBeDeepCloseTo });
-
 const iris = getNumbers();
 
 const expectedLoadings = [

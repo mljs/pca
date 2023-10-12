@@ -1,3 +1,5 @@
+import { describe,it, expect } from 'vitest';
+
 import { PCA } from '../pca';
 
 describe('PCA model', () => {
