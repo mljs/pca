@@ -63,7 +63,7 @@ console.log(pca.predict(newPoints)); // project new points into the PCA space
 
 [npm-image]: https://img.shields.io/npm/v/ml-pca.svg
 [npm-url]: https://npmjs.org/package/ml-pca
-[ci-image]: https://github.com/mljs/pca/workflows/Node.js%20CI/badge.svg?branch=master
+[ci-image]: https://github.com/mljs/pca/workflows/Node.js%20CI/badge.svg?branch=main
 [ci-url]: https://github.com/mljs/pca/actions?query=workflow%3A%22Node.js+CI%22
 [download-image]: https://img.shields.io/npm/dm/ml-pca.svg
 [download-url]: https://npmjs.org/package/ml-pca
