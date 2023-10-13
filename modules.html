@@ -15,28 +15,19 @@
 <div class="col-content">
 <div class="tsd-page-title">
 <h2>ml-pca</h2></div>
-<div class="tsd-panel tsd-typography"><a id="md:ml-pca" class="tsd-anchor"></a><h1><a href="#md:ml-pca">ml-pca</a></h1><p>Principal component analysis (PCA).</p>
-<h3 align="center">
-
-  <a href="https://www.zakodium.com">
-    <img src="https://www.zakodium.com/brand/zakodium-logo-white.svg" width="50" alt="Zakodium logo" />
-  </a>
-
-  <p>
-    Maintained by <a href="https://www.zakodium.com">Zakodium</a>
-  </p>
-
-<p><a href="https://npmjs.org/package/ml-pca"><img src="https://img.shields.io/npm/v/ml-pca.svg" alt="NPM version"></a>
-<a href="https://github.com/mljs/pca/actions?query=workflow%3A%22Node.js+CI%22"><img src="https://github.com/mljs/pca/workflows/Node.js%20CI/badge.svg?branch=main" alt="build status"></a>
-<a href="https://doi.org/10.5281/zenodo.7314532"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.7314532.svg" alt="DOI"></a>
-<a href="https://npmjs.org/package/ml-pca"><img src="https://img.shields.io/npm/dm/ml-pca.svg" alt="npm download"></a></p>
-</h3>
-
-<a id="md:installation" class="tsd-anchor"></a><h2><a href="#md:installation">Installation</a></h2><p><code>$ npm install ml-pca</code></p>
-<a id="md:usage" class="tsd-anchor"></a><h2><a href="#md:usage">Usage</a></h2><pre><code class="language-js"><span class="hl-0">const</span><span class="hl-1"> { </span><span class="hl-2">PCA</span><span class="hl-1"> } = </span><span class="hl-3">require</span><span class="hl-1">(</span><span class="hl-4">&#39;ml-pca&#39;</span><span class="hl-1">);</span><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">dataset</span><span class="hl-1"> = </span><span class="hl-3">require</span><span class="hl-1">(</span><span class="hl-4">&#39;ml-dataset-iris&#39;</span><span class="hl-1">).</span><span class="hl-3">getNumbers</span><span class="hl-1">();</span><br/><span class="hl-5">// dataset is a two-dimensional array where rows represent the samples and columns the features</span><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">pca</span><span class="hl-1"> = </span><span class="hl-0">new</span><span class="hl-1"> </span><span class="hl-3">PCA</span><span class="hl-1">(</span><span class="hl-6">dataset</span><span class="hl-1">);</span><br/><span class="hl-6">console</span><span class="hl-1">.</span><span class="hl-3">log</span><span class="hl-1">(</span><span class="hl-6">pca</span><span class="hl-1">.</span><span class="hl-3">getExplainedVariance</span><span class="hl-1">());</span><br/><span class="hl-5">/*</span><br/><span class="hl-5">[ 0.9246187232017269,</span><br/><span class="hl-5">  0.05306648311706785,</span><br/><span class="hl-5">  0.017102609807929704,</span><br/><span class="hl-5">  0.005212183873275558 ]</span><br/><span class="hl-5">*/</span><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">newPoints</span><span class="hl-1"> = [</span><br/><span class="hl-1">  [</span><span class="hl-7">4.9</span><span class="hl-1">, </span><span class="hl-7">3.2</span><span class="hl-1">, </span><span class="hl-7">1.2</span><span class="hl-1">, </span><span class="hl-7">0.4</span><span class="hl-1">],</span><br/><span class="hl-1">  [</span><span class="hl-7">5.4</span><span class="hl-1">, </span><span class="hl-7">3.3</span><span class="hl-1">, </span><span class="hl-7">1.4</span><span class="hl-1">, </span><span class="hl-7">0.9</span><span class="hl-1">],</span><br/><span class="hl-1">];</span><br/><span class="hl-6">console</span><span class="hl-1">.</span><span class="hl-3">log</span><span class="hl-1">(</span><span class="hl-6">pca</span><span class="hl-1">.</span><span class="hl-3">predict</span><span class="hl-1">(</span><span class="hl-6">newPoints</span><span class="hl-1">)); </span><span class="hl-5">// project new points into the PCA space</span><br/><span class="hl-5">/*</span><br/><span class="hl-5">[</span><br/><span class="hl-5">  [ -2.830722471866897,</span><br/><span class="hl-5">    0.01139060953209596,</span><br/><span class="hl-5">    0.0030369648815961603,</span><br/><span class="hl-5">    -0.2817812120420965 ],</span><br/><span class="hl-5">  [ -2.308002707614927,</span><br/><span class="hl-5">    -0.3175048770719249,</span><br/><span class="hl-5">    0.059976053412802766,</span><br/><span class="hl-5">    -0.688413413360567 ]]</span><br/><span class="hl-5">*/</span>
-</code><button>Copy</button></pre>
-<a id="md:api-documentation" class="tsd-anchor"></a><h2><a href="#md:api-documentation"><a href="https://mljs.github.io/pca/">API Documentation</a></a></h2><a id="md:license" class="tsd-anchor"></a><h2><a href="#md:license">License</a></h2><p><a href="./LICENSE">MIT</a></p>
-</div></div>
+<section class="tsd-panel-group tsd-index-group">
+<section class="tsd-panel tsd-index-panel">
+<h3 class="tsd-index-heading uppercase">Index</h3>
+<section class="tsd-index-section">
+<h3 class="tsd-index-heading">Classes</h3>
+<div class="tsd-index-list"><a href="classes/PCA.html" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>PCA</span></a>
+</div></section>
+<section class="tsd-index-section">
+<h3 class="tsd-index-heading">Interfaces</h3>
+<div class="tsd-index-list"><a href="interfaces/PCAModel.html" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>PCAModel</span></a>
+<a href="interfaces/PCAOptions.html" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>PCAOptions</span></a>
+<a href="interfaces/PredictOptions.html" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>Predict<wbr/>Options</span></a>
+</div></section></section></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -50,20 +41,7 @@
 <li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><use href="#icon-checkbox"></use></svg><span>Inherited</span></label></li>
 <li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><use href="#icon-checkbox"></use></svg><span>External</span></label></li></ul></form></div>
 <div class="tsd-theme-toggle">
-<h4 class="uppercase">Theme</h4><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div>
-<details open class="tsd-index-accordion tsd-page-navigation"><summary class="tsd-accordion-summary">
-<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="#icon-chevronDown"></use></svg>On This Page</h3></summary>
-<div class="tsd-accordion-details">
-<ul>
-<li>
-<ul>
-<li><a href="#md:ml-pca"><span>ml-<wbr/>pca</span></a></li>
-<li>
-<ul>
-<li><a href="#md:installation"><span>Installation</span></a></li>
-<li><a href="#md:usage"><span>Usage</span></a></li>
-<li><a href="#md:api-documentation"><span>API <wbr/>Documentation</span></a></li>
-<li><a href="#md:license"><span>License</span></a></li></ul></li></ul></li></ul></div></details></div>
+<h4 class="uppercase">Theme</h4><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div></div>
 <div class="site-menu">
 <nav class="tsd-navigation"><a href="modules.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1"></use></svg><span>ml-pca</span></a>
 <ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base=".">
