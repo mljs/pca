@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.1.2](https://github.com/mljs/pca/compare/v4.1.1...v4.1.2) (2023-11-23)
+
+
+### Documentation
+
+* fix CI icon in readme ([df738b3](https://github.com/mljs/pca/commit/df738b3721281115244a3a60a50f48c928762770))
+
 ## [4.1.1](https://github.com/mljs/pca/compare/v4.1.0...v4.1.1) (2022-11-11)
 
 
