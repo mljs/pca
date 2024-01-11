@@ -7,14 +7,38 @@ import {
   AbstractMatrix,
 } from 'ml-matrix';
 
-type MaybeMatrix = AbstractMatrix | number[][];
+export type MaybeMatrix = AbstractMatrix | number[][];
 
 export interface PCAOptions {
+  /**
+   * Pass true if the dataset is a covariance matrix.
+   * @default false
+   */
   isCovarianceMatrix?: boolean;
+  /**
+   * select which method to use: SVD (default), covarianceMatrix or NIPALS.
+   * @default 'SVD'
+   */
   method?: 'SVD' | 'NIPALS' | 'covarianceMatrix';
+  /**
+   * should the data be centered (subtract the mean).
+   * @default true
+   */
   center?: boolean;
+  /**
+   * should the data be scaled (divide by the standard deviation).
+   * @default false
+   *  */
   scale?: boolean;
+  /**
+   * number of components to be computed with NIPALS.
+   * @default 2
+   */
   nCompNIPALS?: number;
+  /**
+   * ignore columns with zero variance if `scale` is `true`.
+   * @default false
+   */
   ignoreZeroVariance?: boolean;
 }
 
@@ -36,15 +60,7 @@ export interface PredictOptions {
 
 /**
  * Creates new PCA (Principal Component Analysis) from the dataset
- * @param {MaybeMatrix} dataset - dataset or covariance matrix.
- * @param {PCAOptions} [options]
- * @param {boolean} [options.isCovarianceMatrix=false] - true if the dataset is a covariance matrix.
- * @param {string} [options.method='SVD'] - select which method to use: SVD (default), covarianceMatrix or NIPALS.
- * @param {number} [options.nCompNIPALS=2] - number of components to be computed with NIPALS.
- * @param {boolean} [options.center=true] - should the data be centered (subtract the mean).
- * @param {boolean} [options.scale=false] - should the data be scaled (divide by the standard deviation).
- * @param {boolean} [options.ignoreZeroVariance=false] - ignore columns with zero variance if `scale` is `true`.
- * */
+ */
 export class PCA {
   private center: boolean;
   private scale: boolean;
@@ -55,7 +71,13 @@ export class PCA {
   private R: any;
   private means: number[] | null;
   private stdevs: number[] | null;
-
+  /**
+   *
+   * @param  dataset - dataset or covariance matrix.
+   * @param  options - see {@link PCAOptions}
+   * @param  model - use existing model see {@link PCAModel}
+   * @returns
+   */
   public constructor(
     dataset?: MaybeMatrix,
     options: PCAOptions = {},
