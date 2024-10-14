@@ -44,7 +44,7 @@ export interface PredictOptions {
  * @param {boolean} [options.center=true] - should the data be centered (subtract the mean).
  * @param {boolean} [options.scale=false] - should the data be scaled (divide by the standard deviation).
  * @param {boolean} [options.ignoreZeroVariance=false] - ignore columns with zero variance if `scale` is `true`.
- * */
+ */
 export class PCA {
   private center: boolean;
   private scale: boolean;
@@ -141,8 +141,8 @@ export class PCA {
 
   /**
    * Load a PCA model from JSON
-   * @param {PCAModel} model
-   * @return {PCA}
+   * @param model
+   * @returns
    */
   public static load(model: PCAModel): PCA {
     if (typeof model.name !== 'string') {
@@ -156,9 +156,9 @@ export class PCA {
 
   /**
    * Project the dataset into the PCA space
-   * @param {MaybeMatrix} dataset
-   * @param {PredictOptions} options
-   * @return {Matrix} dataset projected in the PCA space
+   * @param dataset
+   * @param options
+   * @returns dataset projected in the PCA space
    */
   public predict(dataset: MaybeMatrix, options: PredictOptions = {}): Matrix {
     const { nComponents = (this.U as Matrix).columns } = options;
@@ -171,25 +171,25 @@ export class PCA {
     if (this.center) {
       datasetmatrix.subRowVector(this.means as number[]);
       if (this.scale) {
-        for (let i of this.excludedFeatures) {
+        for (const i of this.excludedFeatures) {
           datasetmatrix.removeColumn(i);
         }
         datasetmatrix.divRowVector(this.stdevs as number[]);
       }
     }
-    let predictions = datasetmatrix.mmul(this.U as Matrix);
+    const predictions = datasetmatrix.mmul(this.U as Matrix);
     return predictions.subMatrix(0, predictions.rows - 1, 0, nComponents - 1);
   }
 
   /**
    * Calculates the inverse PCA transform
-   * @param {Matrix} dataset
-   * @return {Matrix} dataset projected in the PCA space
+   * @param dataset
+   * @returns dataset projected in the PCA space
    */
   public invert(dataset: Matrix): Matrix {
     dataset = Matrix.checkMatrix(dataset);
 
-    let inverse = dataset.mmul((this.U as Matrix).transpose());
+    const inverse = dataset.mmul((this.U as Matrix).transpose());
 
     if (this.center) {
       if (this.scale) {
@@ -203,7 +203,7 @@ export class PCA {
 
   /**
    * Returns the proportion of variance for each component
-   * @return {[number]}
+   * @returns
    */
   public getExplainedVariance(): number[] {
     let sum = 0;
@@ -220,10 +220,10 @@ export class PCA {
 
   /**
    * Returns the cumulative proportion of variance
-   * @return {[number]}
+   * @returns
    */
   public getCumulativeVariance(): number[] {
-    let explained = this.getExplainedVariance();
+    const explained = this.getExplainedVariance();
     for (let i = 1; i < explained.length; i++) {
       explained[i] += explained[i - 1];
     }
@@ -232,7 +232,7 @@ export class PCA {
 
   /**
    * Returns the Eigenvectors of the covariance matrix
-   * @returns {Matrix}
+   * @returns
    */
   public getEigenvectors(): Matrix {
     return this.U as Matrix;
@@ -240,7 +240,7 @@ export class PCA {
 
   /**
    * Returns the Eigenvalues (on the diagonal)
-   * @returns {[number]}
+   * @returns
    */
   public getEigenvalues(): number[] {
     return this.S as number[];
@@ -248,7 +248,7 @@ export class PCA {
 
   /**
    * Returns the standard deviations of the principal components
-   * @returns {[number]}
+   * @returns
    */
   public getStandardDeviations(): number[] {
     return (this.S as number[]).map((x) => Math.sqrt(x));
@@ -256,7 +256,7 @@ export class PCA {
 
   /**
    * Returns the loadings matrix
-   * @return {Matrix}
+   * @returns
    */
   public getLoadings(): Matrix {
     return (this.U as Matrix).transpose();
@@ -264,7 +264,7 @@ export class PCA {
 
   /**
    * Export the current model to a JSON object
-   * @return {Object} model
+   * @returns model
    */
   public toJSON(): PCAModel {
     return {
@@ -322,10 +322,10 @@ export class PCA {
 
     let x = dataset;
     for (let i = 0; i < nCompNIPALS; i++) {
-      let dc = new NIPALS(x);
+      const dc = new NIPALS(x);
 
       this.U.setRow(i, dc.w.transpose());
-      this.S.push(Math.pow(dc.s.get(0, 0), 2));
+      this.S.push(dc.s.get(0, 0) ** 2);
 
       x = dc.xResidual;
     }
