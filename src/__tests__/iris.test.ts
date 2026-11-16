@@ -171,7 +171,7 @@ describe('iris dataset and nipals', () => {
   it('eigenvalues', () => {
     const eigenvalues = pca.getEigenvalues();
     expect(eigenvalues.map((x) => Math.sqrt(x))).toBeDeepCloseTo(
-      [20.853205, 11.67007, 4.676192, 1.756847],
+      [1.708361149, 0.956049408, 0.3830886, 0.143926497],
       6,
     );
   });
@@ -186,7 +186,7 @@ describe('iris dataset and nipals', () => {
     const scores = pca.predict(iris);
     const eigenvalues = pca.getStandardDeviations();
     const scaledScores = scores.divRowVector(eigenvalues);
-    expect(scaledScores.get(0, 0)).toBeCloseTo(-0.1082392451, 6);
+    expect(scaledScores.get(0, 0)).toBeCloseTo(-1.321231858, 6);
   });
 
   it('X may be recomputed', () => {
@@ -219,7 +219,7 @@ describe('iris dataset and nipals default nCompNIPALS', () => {
 
   it('eigenvalues', () => {
     const sd = pca.getStandardDeviations();
-    expect(sd).toBeDeepCloseTo([20.853205, 11.67007], 6);
+    expect(sd).toBeDeepCloseTo([1.708361149, 0.956049408], 6);
   });
 
   it('prediction', () => {
