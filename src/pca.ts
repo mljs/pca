@@ -169,15 +169,15 @@ export class PCA {
       datasetmatrix = new Matrix(dataset);
     }
     if (this.center) {
-      datasetmatrix.subRowVector(this.means as number[]);
+      datasetmatrix.subRowVector(this.means);
       if (this.scale) {
         for (const i of this.excludedFeatures) {
           datasetmatrix.removeColumn(i);
         }
-        datasetmatrix.divRowVector(this.stdevs as number[]);
+        datasetmatrix.divRowVector(this.stdevs);
       }
     }
-    const predictions = datasetmatrix.mmul(this.U as Matrix);
+    const predictions = datasetmatrix.mmul(this.U);
     return predictions.subMatrix(0, predictions.rows - 1, 0, nComponents - 1);
   }
 
@@ -309,7 +309,7 @@ export class PCA {
   }
 
   private _computeFromCovarianceMatrix(dataset: MaybeMatrix) {
-    const evd = new EVD(dataset as number[][], { assumeSymmetric: true });
+    const evd = new EVD(dataset, { assumeSymmetric: true });
     this.U = evd.eigenvectorMatrix;
     this.U.flipRows();
     this.S = evd.realEigenvalues;
@@ -325,7 +325,7 @@ export class PCA {
       const dc = new NIPALS(x);
 
       this.U.setRow(i, dc.w.transpose());
-      this.S.push(dc.s.get(0, 0) ** 2);
+      this.S.push(dc.s.get(0, 0) ** 2 / (dataset.rows - 1));
 
       x = dc.xResidual;
     }
